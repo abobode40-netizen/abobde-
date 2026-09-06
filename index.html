@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>جنّة الرحمن - رفيقك في الذكر والقرآن</title>
+    <meta name="description" content="تطبيق وموقع جنّة الرحمن للقرآن الكريم وغراس الأذكار وثمار المشايخ وشجرة العبادات اليومية." />
+    <meta name="theme-color" content="#0F6B50" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="جنّة الرحمن" />
+    <link rel="icon" type="image/svg+xml" href="/jannat-icon.svg" />
+    <link rel="apple-touch-icon" href="/jannat-icon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Scheherazade+New:wght@400;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#FAF7F0] text-[#19302A] antialiased selection:bg-[#0F6B50] selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // تسجيل وتحديث عامل الخدمة (Service Worker) فوراً مع التحديث التلقائي
+      if ('serviceWorker' in navigator) {
+        var refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+          if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+          }
+        });
+
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then(function(registration) {
+            // فحص وجود أي إصدار أحدث فور فتح التطبيق
+            registration.update();
+
+            registration.onupdatefound = function() {
+              var installingWorker = registration.installing;
+              if (installingWorker) {
+                installingWorker.onstatechange = function() {
+                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    installingWorker.postMessage({ type: 'SKIP_WAITING' });
+                  }
+                };
+              }
+            };
+          })
+          .catch(function(err) {
+            console.warn('Service worker registration failed:', err);
+          });
+      }
+    </script>
+  </body>
+</html>
+
+

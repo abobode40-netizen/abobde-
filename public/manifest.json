@@ -1,0 +1,22 @@
+{
+  "id": "/",
+  "name": "جنّة الرحمن",
+  "short_name": "جنّة الرحمن",
+  "description": "رفيقك اليومي للقرآن والذكر ومتابعة العبادات وتدبر ثمار المشايخ.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0F6B50",
+  "background_color": "#FAF7F0",
+  "icons": [
+    {
+      "src": "/jannat-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

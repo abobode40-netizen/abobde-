@@ -1,0 +1,11 @@
+{
+  "name": "جنّة الرحمن",
+  "description": "تطبيق وموقع جنّة الرحمن للقرآن الكريم وغراس الأذكار وثمار المشايخ وشجرة العبادات اليومية ومواقيت الصلاة والاستماع بأصوات كبار القراء",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

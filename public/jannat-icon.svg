@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B5C46" />
+      <stop offset="50%" stop-color="#0F6B50" />
+      <stop offset="100%" stop-color="#168064" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3C864" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#9E7A1C" />
+    </linearGradient>
+  </defs>
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#emeraldGrad)" stroke="#D4AF37" stroke-width="8" />
+  
+  <!-- Outer Ring Ornament -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#F3C864" stroke-width="2" stroke-dasharray="8 6" opacity="0.6" />
+
+  <!-- Crescent Moon -->
+  <path d="M280 140 C200 140 150 200 150 270 C150 340 210 390 285 385 C225 365 195 320 200 265 C205 210 240 165 280 140 Z" fill="url(#goldGrad)" />
+  
+  <!-- Star -->
+  <polygon points="310,195 322,230 358,230 329,252 340,287 310,265 280,287 291,252 262,230 298,230" fill="url(#goldGrad)" />
+  
+  <!-- Lower Botanical Leaves (غراس) -->
+  <path d="M256 340 C240 370 210 395 170 400 C190 380 210 350 225 330 C240 310 256 340 256 340 Z" fill="#A7F3D0" opacity="0.8" />
+  <path d="M256 340 C272 370 302 395 342 400 C322 380 302 350 287 330 C272 310 256 340 256 340 Z" fill="#A7F3D0" opacity="0.8" />
+</svg>

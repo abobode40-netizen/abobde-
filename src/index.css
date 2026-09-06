@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
+    --font-amiri: 'Amiri', 'Noto Naskh Arabic', serif;
+    --font-quran: 'Amiri Quran', 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+  }
+
+  body {
+    font-family: var(--font-cairo);
+    background-color: #FAF7F0;
+    color: #1A2E26;
+    user-select: text;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dark body,
+  body.dark {
+    background-color: #0F1715;
+    color: #E6F0EC;
+  }
+}
+
+.font-quran {
+  font-family: var(--font-quran);
+}
+
+.font-amiri {
+  font-family: var(--font-amiri);
+}
+
+.font-cairo {
+  font-family: var(--font-cairo);
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 107, 80, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 107, 80, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 107, 80, 0.45);
+}
+
+/* Islamic Geometric & Border Accents */
+.islamic-border {
+  border: 1px solid rgba(193, 163, 88, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(15, 107, 80, 0.06);
+}
+
+.islamic-gradient {
+  background: linear-gradient(135deg, #0B5C46 0%, #0F6B50 50%, #178064 100%);
+}
+
+.islamic-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #E5C158 50%, #C19E2B 100%);
+}
+
+.quran-page-bg {
+  background-color: #FFFDF7;
+  background-image: radial-gradient(#E8DFC8 0.75px, transparent 0.75px);
+  background-size: 16px 16px;
+}
+
+.dark .quran-page-bg {
+  background-color: #141F1B;
+  background-image: radial-gradient(#2A3C34 0.75px, transparent 0.75px);
+}
+
+/* Eye Comfort / Sepia Warm Tone for Quranic Pages */
+.quran-page-sepia {
+  background-color: #F7EEDB !important;
+  background-image: radial-gradient(#D6C6A5 0.85px, transparent 0.85px) !important;
+  background-size: 16px 16px;
+  color: #2D2319 !important;
+}
+
+.dark .quran-page-sepia {
+  background-color: #241E17 !important;
+  background-image: radial-gradient(#3D3225 0.85px, transparent 0.85px) !important;
+  color: #EFE4D2 !important;
+}
