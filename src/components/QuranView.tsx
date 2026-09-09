@@ -37,21 +37,26 @@ import {
   Lock,
   Unlock,
   Sun,
-  RotateCw
+  RotateCw,
+  Palette,
+  Type
 } from 'lucide-react';
-import { SurahMeta, ReciterId, AppSettings, Bookmark } from '../types';
+import { SurahMeta, ReciterId, AppSettings, Bookmark, QuranThemeId } from '../types';
 import { SURAHS_LIST, RECITERS_LIST, PAGE_604_DATA, PAGE_1_DATA, toArabicNumerals, getSurahAudioUrl, getAyahAudioUrl } from '../data/quranData';
 import { QURAN_COMMON_WORDS } from '../data/ayahInsightsData';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { getPlayableAudioUrl, isSurahDownloaded } from '../utils/offlineAudio';
 import { loadBookmarks, loadBookmarksAsync, saveBookmarks, loadLastReadPage, saveLastReadPage, loadLastReciter, saveLastReciter, onStorageChange } from '../utils/storage';
 import { saveOfflinePage, getOfflinePage } from '../utils/quranOfflineStorage';
+import { getQuranTheme, loadSavedQuranTheme, saveSavedQuranTheme } from '../utils/quranThemes';
 import { wakeLockManager } from '../utils/wakeLock';
 import { AyahDetailsModal } from './AyahDetailsModal';
 import { RecitersModal } from './RecitersModal';
 import { PageTafseerModal } from './PageTafseerModal';
 import { BookmarksModal } from './BookmarksModal';
 import { CelebrationModal } from './CelebrationModal';
+import { QuranThemeModal } from './QuranThemeModal';
+import { QuranFrameOrnaments } from './QuranFrameOrnaments';
 import { fireCelebrationConfetti } from '../utils/confetti';
 import { cleanQuranText, removeBismillahFromAyah1, stripAllFormatting } from '../utils/quranText';
 
@@ -222,6 +227,34 @@ export const QuranView: React.FC<QuranViewProps> = ({
   const [isTopTafseerExpanded, setIsTopTafseerExpanded] = useState(false);
   const [topTafseerFontSize, setTopTafseerFontSize] = useState<number>(18);
   const [showKhatmaCelebration, setShowKhatmaCelebration] = useState(false);
+
+  // Quran Page Theme Selection State
+  const [quranThemeId, setQuranThemeId] = useState<QuranThemeId>(() => {
+    return settings.quranTheme || loadSavedQuranTheme() || 'royal_gold';
+  });
+  const [showThemeModal, setShowThemeModal] = useState<boolean>(false);
+
+  // Synchronize theme with parent settings prop or external changes
+  useEffect(() => {
+    if (settings.quranTheme && settings.quranTheme !== quranThemeId) {
+      setQuranThemeId(settings.quranTheme);
+    }
+  }, [settings.quranTheme]);
+
+  const handleSelectTheme = (newThemeId: QuranThemeId) => {
+    setQuranThemeId(newThemeId);
+    saveSavedQuranTheme(newThemeId);
+    if (onUpdateSettings) {
+      onUpdateSettings({
+        ...settings,
+        quranTheme: newThemeId
+      });
+    }
+    const th = getQuranTheme(newThemeId);
+    showToast(`تم تطبيق سمة: ${th.name} ✨`);
+  };
+
+  const currentTheme = getQuranTheme(quranThemeId);
   // Autoplay and audio uninterrupted playback state
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -1754,189 +1787,255 @@ export const QuranView: React.FC<QuranViewProps> = ({
           )}
 
           
-          {/* VIEW 1: Traditional Quranic Page Frame */}
-                      <div 
-              onClick={(e) => {
-                // If clicked directly on canvas/margin or text area rather than interactive button/modal
-                const target = e.target as HTMLElement;
-                if (!target.closest('button') && !target.closest('input') && !target.closest('a')) {
-                  toggleFocusMode();
-                }
-              }}
-              className={`rounded-2xl p-5 sm:p-7 border-2 transition-colors duration-300 shadow-md relative min-h-[460px] select-none cursor-pointer ${
-                settings.enableEyeComfortMode
-                  ? 'bg-[#FBF2E3] border-[#E1CFAC] text-[#3D281B]'
-                  : 'quran-page-bg border-[#D4AF37]/40 dark:border-[#D4AF37]/30'
-              }`}
-            >
-              {/* Ornamental Frame Corner Accents */}
-              <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#C19E2B] rounded-tr-md pointer-events-none" />
-              <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#C19E2B] rounded-tl-md pointer-events-none" />
-              <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#C19E2B] rounded-br-md pointer-events-none" />
-              <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#C19E2B] rounded-bl-md pointer-events-none" />
-
-              {/* Page Header Ribbon */}
-              <div className="flex items-center justify-between border-b border-[#E8DFC8] dark:border-[#2A3C34] pb-3 mb-4">
-                <span className="text-xs font-bold text-[#8A743F] dark:text-amber-300">
-                  الجزء {toArabicNumerals(currentSurah?.juz || 30)}
-                </span>
-                <div className="text-center">
-                  <span className="text-base font-bold font-amiri text-[#0F6B50] dark:text-[#2DD4BF] block">
-                    {pageAyahs.length > 1
-                      ? `سور ${Array.from(new Set(pageAyahs.map((s: any) => s.sName || currentSurah?.name))).filter(Boolean).join(' • ')}`
-                      : (currentSurah?.name ? `سورة ${currentSurah.name}` : 'المصحف الشريف')}
-                  </span>
-                  <span className="text-[10px] font-bold text-[#8A743F] dark:text-amber-300 block mt-0.5 font-quran">
-                    رسم المدينة النبوي الشريف
+          {/* Quick Reader Action Bar: Theme Selector, Tafseer, Font Size */}
+          {!isFocusMode && (
+            <div className="flex items-center justify-between gap-1.5 p-2 rounded-2xl bg-white/95 dark:bg-[#162720]/95 border border-[#E5DDCF] dark:border-[#2A3C34] shadow-xs text-xs">
+              {/* Quran Page Theme Selector Button */}
+              <button
+                onClick={() => {
+                  setShowThemeModal(true);
+                  playChime('click');
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300/60 dark:border-[#334D41] bg-amber-50/80 dark:bg-[#1D3229] text-[#19302A] dark:text-white hover:border-[#0F6B50] active:scale-95 transition-all shadow-2xs group"
+                title="تغيير سمة وتصميم صفحة المصحف"
+              >
+                <span 
+                  className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 shadow-2xs" 
+                  style={{ backgroundColor: currentTheme.previewColors.accent }}
+                />
+                <div className="text-right">
+                  <span className="text-[9px] text-[#8A743F] dark:text-amber-300 block leading-tight font-bold">سمة المصحف</span>
+                  <span className="text-xs font-bold font-amiri block leading-tight truncate max-w-[110px]">
+                    {currentTheme.name}
                   </span>
                 </div>
-                <span className="text-xs font-bold text-[#8A743F] dark:text-amber-300">
-                  الحزب {toArabicNumerals(Math.min(60, Math.ceil((currentSurah?.juz || 30) * 2)))}
-                </span>
-              </div>
+                <Palette className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 group-hover:rotate-12 transition-transform" />
+              </button>
 
-              {/* Loading state: Skeleton representation */}
-              {loadingPage ? (
-                <MushafSkeleton />
-              ) : (
-                /* Ayahs Stream with Islamic typography */
-                <div className="space-y-6">
-                  {pageAyahs[0]?.isOfflineUncached && (
-                    <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-center space-y-3 shadow-xs my-2">
-                      <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center mx-auto">
-                        <BookOpen className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-sm text-amber-900 dark:text-amber-200">
-                          صفحة المصحف ({toArabicNumerals(currentPage)}) غير مخزنة أوفلاين
-                        </h4>
-                        <p className="text-xs text-amber-800 dark:text-amber-300/80 leading-relaxed max-w-xs mx-auto mt-1">
-                          لم يتم حفظ نصوص هذه الصفحة مسبقاً على جهازك. يمكنك الانتقال إلى السور المحفوظة للاستماع والقراءة بدون نت، أو العودة لآخر صفحة قرأتها.
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-                        <button
-                          onClick={() => setShowRecitersModal(true)}
-                          className="px-3.5 py-1.5 rounded-xl bg-[#0F6B50] text-white text-xs font-bold hover:bg-[#138061] transition-colors shadow-xs"
-                        >
-                          السور المحفوظة (أوفلاين)
-                        </button>
-                        {lastReadPage && lastReadPage !== currentPage && (
-                          <button
-                            onClick={() => {
-                              setCurrentPage(lastReadPage);
-                              playChime('click');
-                            }}
-                            className="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] text-xs font-bold transition-colors"
-                          >
-                            العودة لصفحة {toArabicNumerals(lastReadPage)}
-                          </button>
-                        )}
-                        <button
-                          onClick={() => setShowBookmarksModal(true)}
-                          className="px-3.5 py-1.5 rounded-xl bg-amber-200/80 dark:bg-amber-900/80 text-amber-900 dark:text-amber-100 text-xs font-bold transition-colors"
-                        >
-                          الفواصل المرجعية
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  {pageAyahs.map((surahItem, sIdx) => {
-                    const isSurahStartOnThisPage = surahItem.ayahs.some((a: any) => a.number === 1);
+              <div className="flex items-center gap-1">
+                {/* Full Page Tafseer Button */}
+                <button
+                  onClick={() => {
+                    setShowPageTafseerModal(true);
+                    playChime('click');
+                  }}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#E8F3ED] dark:bg-[#1B3328] text-[#0F6B50] dark:text-[#2DD4BF] hover:bg-[#D5EADB] font-bold text-xs transition-colors"
+                  title="تفسير الصفحة الحالية وكلماتها"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">تفسير الصفحة</span>
+                </button>
 
-                    return (
-                      <div key={sIdx} className="space-y-4">
-                        {/* Surah Title Frame - Shown ONLY when the Surah starts on this page */}
-                        {isSurahStartOnThisPage && (
-                          <div className="my-4 py-2 px-4 rounded-xl bg-gradient-to-r from-amber-100/70 via-amber-200/90 to-amber-100/70 dark:from-amber-950/40 dark:via-amber-900/60 dark:to-amber-950/40 border border-[#D4AF37]/50 text-center shadow-sm">
-                            <span className="text-xs font-bold text-[#8A743F] dark:text-amber-300 block">سُورَةُ</span>
-                            <h4 className="text-xl font-bold font-amiri text-[#19302A] dark:text-amber-100">
-                              {surahItem.name}
-                            </h4>
-                          </div>
-                        )}
-
-                        {/* Bismillah Header - Shown ONLY when the Surah starts on this page */}
-                        {isSurahStartOnThisPage && surahItem.bismillah && (
-                          <div className="text-center font-quran text-lg font-bold text-[#0F6B50] dark:text-[#2DD4BF] my-2">
-                            {surahItem.bismillah}
-                          </div>
-                        )}
-
-                      {/* Text block of Ayahs with Synchronized Highlighting */}
-                      <div 
-                        className="text-justify font-quran leading-[2.5] tracking-normal text-black dark:text-white font-semibold"
-                        style={{ fontSize: `${fontSize}px` }}
-                      >
-                        {surahItem.ayahs.map((ayah: any) => {
-                          const rawText = cleanQuranText(ayah.text);
-                          const sNum = surahItem.number || currentSurah?.number || 1;
-                          const isPlayingThisAyah = isPlaying && currentPlayingAyah?.surahNumber === sNum && currentPlayingAyah?.ayahNumber === ayah.number;
-
-                          return (
-                            <span 
-                              key={ayah.number} 
-                              id={`mushaf-ayah-${sNum}-${ayah.number}`}
-                              className={`inline relative transition-all duration-300 rounded-xl ${
-                                isPlayingThisAyah 
-                                  ? 'bg-amber-300/80 dark:bg-amber-800/80 text-[#073628] dark:text-amber-100 ring-2 ring-amber-400 dark:ring-amber-500 shadow-sm px-1.5 py-0.5' 
-                                  : 'hover:bg-amber-200/40 dark:hover:bg-amber-900/40 px-0.5'
-                              }`}
-                            >
-                              <span 
-                                onClick={() => {
-                                  if (isPlayingThisAyah) {
-                                    toggleAudio();
-                                  } else {
-                                    playAyah(sNum, surahItem.name, ayah.number, rawText);
-                                    playChime('click');
-                                  }
-                                }}
-                                title={isPlayingThisAyah ? 'جارٍ تلاوة هذه الآية (انقر للإيقاف)' : 'انقر للاستماع لهذه الآية وتظليلها'}
-                                className={`cursor-pointer transition-colors ${
-                                  isPlayingThisAyah 
-                                    ? 'font-bold' 
-                                    : 'hover:text-[#0F6B50] dark:hover:text-amber-200'
-                                }`}
-                              >
-                                {rawText}
-                              </span>
-                              
-                              {/* Ayah End Ornamental Symbol */}
-                              <span 
-                                onClick={() => {
-                                  handleOpenAyahDetails({
-                                    surahNumber: sNum,
-                                    surahName: surahItem.name,
-                                    ayahNumber: ayah.number,
-                                    ayahText: rawText,
-                                    defaultTafseer: ayah.tafseer
-                                  });
-                                }}
-                                title={`الآية ${toArabicNumerals(ayah.number)} - اضغط لتفاصيل الآية والتفسير`}
-                                className={`inline-block px-1 font-bold font-quran select-none cursor-pointer hover:scale-125 transition-transform align-baseline text-[0.9em] ${
-                                  isPlayingThisAyah 
-                                    ? 'text-[#B45309] dark:text-amber-300 animate-pulse font-extrabold scale-110' 
-                                    : 'text-[#C19E2B] dark:text-amber-400'
-                                }`}
-                              >
-                                ۝{toArabicNumerals(ayah.number)}
-                              </span>
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              )}
-
-              {/* Page Bottom Number */}
-              <div className="mt-8 pt-3 border-t border-[#E8DFC8] dark:border-[#2A3C34] text-center font-bold text-xs text-[#8A743F] dark:text-amber-300">
-                — {toArabicNumerals(currentPage)} —
+                {/* Font Size Adjusters */}
+                <div className="flex items-center bg-gray-100 dark:bg-[#12201A] rounded-xl p-0.5 border border-gray-200 dark:border-gray-800">
+                  <button
+                    onClick={() => {
+                      setFontSize((prev) => Math.max(18, prev - 2));
+                      playChime('click');
+                    }}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-[#1D3229]"
+                    title="تصغير الخط"
+                  >
+                    -A
+                  </button>
+                  <span className="text-[10px] px-1 font-bold font-mono text-gray-500 dark:text-gray-400">
+                    {toArabicNumerals(fontSize)}
+                  </span>
+                  <button
+                    onClick={() => {
+                      setFontSize((prev) => Math.min(42, prev + 2));
+                      playChime('click');
+                    }}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-[#1D3229]"
+                    title="تكبير الخط"
+                  >
+                    +A
+                  </button>
+                </div>
               </div>
             </div>
+          )}
+
+          {/* VIEW 1: Traditional Quranic Page Frame */}
+          <div 
+            onClick={(e) => {
+              // If clicked directly on canvas/margin or text area rather than interactive button/modal
+              const target = e.target as HTMLElement;
+              if (!target.closest('button') && !target.closest('input') && !target.closest('a')) {
+                toggleFocusMode();
+              }
+            }}
+            className={`rounded-3xl p-5 sm:p-7 border-2 transition-all duration-300 shadow-md relative min-h-[460px] select-none cursor-pointer ${
+              settings.enableEyeComfortMode
+                ? 'bg-[#FBF2E3] border-[#E1CFAC] text-[#3D281B]'
+                : `${currentTheme.containerBgClass} ${currentTheme.containerBorderClass}`
+            }`}
+          >
+            {/* Ornamental Frame Corner Accents */}
+            <QuranFrameOrnaments theme={currentTheme} />
+
+            {/* Page Header Ribbon */}
+            <div className={`flex items-center justify-between border-b pb-3 mb-4 ${currentTheme.ribbonClass}`}>
+              <span className={`text-xs font-bold ${currentTheme.headerSubtextColor}`}>
+                الجزء {toArabicNumerals(currentSurah?.juz || 30)}
+              </span>
+              <div className="text-center">
+                <span className={`text-base font-bold font-amiri block ${currentTheme.headerTextColor}`}>
+                  {pageAyahs.length > 1
+                    ? `سور ${Array.from(new Set(pageAyahs.map((s: any) => s.sName || currentSurah?.name))).filter(Boolean).join(' • ')}`
+                    : (currentSurah?.name ? `سورة ${currentSurah.name}` : 'المصحف الشريف')}
+                </span>
+                <span className={`text-[10px] font-bold block mt-0.5 font-quran ${currentTheme.headerSubtextColor}`}>
+                  رسم المدينة النبوي الشريف • {currentTheme.name}
+                </span>
+              </div>
+              <span className={`text-xs font-bold ${currentTheme.headerSubtextColor}`}>
+                الحزب {toArabicNumerals(Math.min(60, Math.ceil((currentSurah?.juz || 30) * 2)))}
+              </span>
+            </div>
+
+            {/* Loading state: Skeleton representation */}
+            {loadingPage ? (
+              <MushafSkeleton />
+            ) : (
+              /* Ayahs Stream with Islamic typography */
+              <div className="space-y-6">
+                {pageAyahs[0]?.isOfflineUncached && (
+                  <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-center space-y-3 shadow-xs my-2">
+                    <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center mx-auto">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm text-amber-900 dark:text-amber-200">
+                        صفحة المصحف ({toArabicNumerals(currentPage)}) غير مخزنة أوفلاين
+                      </h4>
+                      <p className="text-xs text-amber-800 dark:text-amber-300/80 leading-relaxed max-w-xs mx-auto mt-1">
+                        لم يتم حفظ نصوص هذه الصفحة مسبقاً على جهازك. يمكنك الانتقال إلى السور المحفوظة للاستماع والقراءة بدون نت، أو العودة لآخر صفحة قرأتها.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                      <button
+                        onClick={() => setShowRecitersModal(true)}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#0F6B50] text-white text-xs font-bold hover:bg-[#138061] transition-colors shadow-xs"
+                      >
+                        السور المحفوظة (أوفلاين)
+                      </button>
+                      {lastReadPage && lastReadPage !== currentPage && (
+                        <button
+                          onClick={() => {
+                            setCurrentPage(lastReadPage);
+                            playChime('click');
+                          }}
+                          className="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] text-xs font-bold transition-colors"
+                        >
+                          العودة لصفحة {toArabicNumerals(lastReadPage)}
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setShowBookmarksModal(true)}
+                        className="px-3.5 py-1.5 rounded-xl bg-amber-200/80 dark:bg-amber-900/80 text-amber-900 dark:text-amber-100 text-xs font-bold transition-colors"
+                      >
+                        الفواصل المرجعية
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {pageAyahs.map((surahItem, sIdx) => {
+                  const isSurahStartOnThisPage = surahItem.ayahs.some((a: any) => a.number === 1);
+
+                  return (
+                    <div key={sIdx} className="space-y-4">
+                      {/* Surah Title Frame - Shown ONLY when the Surah starts on this page */}
+                      {isSurahStartOnThisPage && (
+                        <div className={`my-4 py-2 px-4 rounded-xl border text-center shadow-sm ${currentTheme.surahBannerClass}`}>
+                          <span className={`text-xs font-bold block ${currentTheme.headerSubtextColor}`}>سُورَةُ</span>
+                          <h4 className={`text-xl font-bold font-amiri ${currentTheme.surahTitleColor}`}>
+                            {surahItem.name}
+                          </h4>
+                        </div>
+                      )}
+
+                      {/* Bismillah Header - Shown ONLY when the Surah starts on this page */}
+                      {isSurahStartOnThisPage && surahItem.bismillah && (
+                        <div className={`text-center font-quran text-lg font-bold my-2 ${currentTheme.bismillahColor}`}>
+                          {surahItem.bismillah}
+                        </div>
+                      )}
+
+                    {/* Text block of Ayahs with Synchronized Highlighting */}
+                    <div 
+                      className={`text-justify font-quran leading-[2.5] tracking-normal font-semibold ${currentTheme.ayahTextColor}`}
+                      style={{ fontSize: `${fontSize}px` }}
+                    >
+                      {surahItem.ayahs.map((ayah: any) => {
+                        const rawText = cleanQuranText(ayah.text);
+                        const sNum = surahItem.number || currentSurah?.number || 1;
+                        const isPlayingThisAyah = isPlaying && currentPlayingAyah?.surahNumber === sNum && currentPlayingAyah?.ayahNumber === ayah.number;
+
+                        return (
+                          <span 
+                            key={ayah.number} 
+                            id={`mushaf-ayah-${sNum}-${ayah.number}`}
+                            className={`inline relative transition-all duration-300 rounded-xl ${
+                              isPlayingThisAyah 
+                                ? currentTheme.activeAyahClass
+                                : 'hover:bg-amber-200/40 dark:hover:bg-amber-900/40 px-0.5'
+                            }`}
+                          >
+                            <span 
+                              onClick={() => {
+                                if (isPlayingThisAyah) {
+                                  toggleAudio();
+                                } else {
+                                  playAyah(sNum, surahItem.name, ayah.number, rawText);
+                                  playChime('click');
+                                }
+                              }}
+                              title={isPlayingThisAyah ? 'جارٍ تلاوة هذه الآية (انقر للإيقاف)' : 'انقر للاستماع لهذه الآية وتظليلها'}
+                              className={`cursor-pointer transition-colors ${
+                                isPlayingThisAyah 
+                                  ? 'font-bold' 
+                                  : 'hover:text-[#0F6B50] dark:hover:text-amber-200'
+                              }`}
+                            >
+                              {rawText}
+                            </span>
+                            
+                            {/* Ayah End Ornamental Symbol */}
+                            <span 
+                              onClick={() => {
+                                handleOpenAyahDetails({
+                                  surahNumber: sNum,
+                                  surahName: surahItem.name,
+                                  ayahNumber: ayah.number,
+                                  ayahText: rawText,
+                                  defaultTafseer: ayah.tafseer
+                                });
+                              }}
+                              title={`الآية ${toArabicNumerals(ayah.number)} - اضغط لتفاصيل الآية والتفسير`}
+                              className={`inline-block px-1 font-bold font-quran select-none cursor-pointer hover:scale-125 transition-transform align-baseline text-[0.9em] ${
+                                isPlayingThisAyah 
+                                  ? 'text-[#B45309] dark:text-amber-300 animate-pulse font-extrabold scale-110' 
+                                  : currentTheme.ayahMarkerColor
+                              }`}
+                            >
+                              ۝{toArabicNumerals(ayah.number)}
+                            </span>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            )}
+
+            {/* Page Bottom Number */}
+            <div className={`mt-8 pt-3 border-t text-center font-bold text-xs ${currentTheme.ribbonClass} ${currentTheme.pageNumberColor}`}>
+              — {toArabicNumerals(currentPage)} —
+            </div>
+          </div>
           {/* Synchronized Quran Audio Player Bar */}
           <div className="bg-white dark:bg-[#1A2621] p-3.5 rounded-3xl border-2 border-[#E5DDCF] dark:border-[#2A3C34] shadow-md space-y-3">
             {/* Top Row: Live Recitation Status, Repeat Mode, Repetition Count, and Screen Lock */}
@@ -2246,6 +2345,14 @@ export const QuranView: React.FC<QuranViewProps> = ({
         onToggleCurrentPageBookmark={handleToggleBookmark}
         onRemoveBookmark={handleRemoveBookmark}
         onUpdateBookmarkTitle={handleUpdateBookmarkTitle}
+      />
+
+      {/* Quran Page Visual Theme Selector Modal */}
+      <QuranThemeModal
+        isOpen={showThemeModal}
+        onClose={() => setShowThemeModal(false)}
+        selectedThemeId={quranThemeId}
+        onSelectTheme={handleSelectTheme}
       />
     </div>
   );

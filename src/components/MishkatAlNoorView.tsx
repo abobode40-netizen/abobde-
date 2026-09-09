@@ -10,21 +10,18 @@ import {
   Search, 
   Copy, 
   Check, 
-  Volume2, 
-  VolumeX, 
   Share2, 
   Heart, 
   ArrowRight, 
   BookOpen, 
-  CheckCircle,
-  Compass,
-  ChevronDown,
-  ChevronUp,
-  Quote
+  CheckCircle, 
+  Compass, 
+  ChevronDown, 
+  ChevronUp, 
+  Quote 
 } from 'lucide-react';
 import { MishkatLesson, Bookmark } from '../types';
 import { MISHKAT_CATEGORIES, MISHKAT_LESSONS } from '../data/mishkatData';
-import { speakArabicText, stopSpeech } from '../utils/speech';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { loadBookmarks, saveBookmarks } from '../utils/storage';
 import { toArabicNumerals } from '../data/quranData';
@@ -38,16 +35,9 @@ export const MishkatAlNoorView: React.FC<MishkatAlNoorViewProps> = ({ onBack, on
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [playingLessonId, setPlayingLessonId] = useState<string | null>(null);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => loadBookmarks());
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [expandedStoryIds, setExpandedStoryIds] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    return () => {
-      stopSpeech();
-    };
-  }, []);
 
   const favoriteIds = useMemo(() => {
     return new Set(
@@ -99,23 +89,6 @@ export const MishkatAlNoorView: React.FC<MishkatAlNoorViewProps> = ({ onBack, on
       }).catch(() => {});
     } else {
       handleCopy(lesson);
-    }
-  };
-
-  const handleToggleSpeech = (lesson: MishkatLesson) => {
-    triggerHaptic('light');
-    if (playingLessonId === lesson.id) {
-      stopSpeech();
-      setPlayingLessonId(null);
-    } else {
-      stopSpeech();
-      setPlayingLessonId(lesson.id);
-      playChime('click');
-      const textToRead = `${lesson.title}. ${lesson.summary}. القصة: ${lesson.storyText}. القبس المستفاد للشباب: ${lesson.practicalTakeaway}`;
-      speakArabicText(textToRead, {
-        onEnd: () => setPlayingLessonId(null),
-        onError: () => setPlayingLessonId(null),
-      });
     }
   };
 
@@ -305,7 +278,6 @@ export const MishkatAlNoorView: React.FC<MishkatAlNoorViewProps> = ({ onBack, on
           filteredLessons.map((lesson) => {
             const isFav = favoriteIds.has(lesson.id);
             const isCopied = copiedId === lesson.id;
-            const isPlaying = playingLessonId === lesson.id;
             const isExpanded = expandedStoryIds[lesson.id] !== false; // Default expanded for rich experience
 
             return (
@@ -345,19 +317,6 @@ export const MishkatAlNoorView: React.FC<MishkatAlNoorViewProps> = ({ onBack, on
                       className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center transition-all"
                     >
                       <Share2 className="w-4 h-4" />
-                    </button>
-
-                    <button
-                      onClick={() => handleToggleSpeech(lesson)}
-                      aria-label="الاستماع للدرس"
-                      title="الاستماع للدرس"
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                        isPlaying
-                          ? 'text-white bg-[#0F6B50] animate-pulse'
-                          : 'text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800'
-                      }`}
-                    >
-                      {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                     </button>
                   </div>
 

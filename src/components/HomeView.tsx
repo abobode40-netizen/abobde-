@@ -13,8 +13,6 @@ import {
   Flame, 
   Compass,
   CheckCircle2,
-  Volume2,
-  VolumeX,
   Headphones,
   BookmarkCheck,
   BookCheck,
@@ -22,7 +20,6 @@ import {
 } from 'lucide-react';
 import { AppTab, DayTrackerData, Bookmark } from '../types';
 import { toArabicNumerals } from '../data/quranData';
-import { speakArabicText, stopSpeech } from '../utils/speech';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { loadBookmarks, loadBookmarksAsync, onStorageChange } from '../utils/storage';
 import { PrayerTimesWidget } from './PrayerTimesWidget';
@@ -43,7 +40,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   trackerData,
   lastReadPage,
 }) => {
-  const [isPlayingVerse, setIsPlayingVerse] = useState(false);
   const [isGitHubModalOpen, setIsGitHubModalOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => loadBookmarks());
 
@@ -61,28 +57,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   }, []);
 
   const latestBookmark = bookmarks.length > 0 ? bookmarks[0] : null;
-
-  useEffect(() => {
-    return () => {
-      stopSpeech();
-    };
-  }, []);
-
-  const handlePlayDailyVerse = () => {
-    if (isPlayingVerse) {
-      stopSpeech();
-      setIsPlayingVerse(false);
-      playChime('click');
-    } else {
-      setIsPlayingVerse(true);
-      playChime('click');
-      speakArabicText('ألا بذكر الله تطمئن القلوب. سورة الرعد، آية ثمانية وعشرون.', {
-        rate: 0.85,
-        onEnd: () => setIsPlayingVerse(false),
-        onError: () => setIsPlayingVerse(false)
-      });
-    }
-  };
 
   const treePct = trackerData.treeGrowthPercentage || 0;
   const completedHabitsCount = Object.values(trackerData.habits).filter(Boolean).length;
@@ -208,7 +182,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           >
             <div className="flex items-center justify-between w-full">
               <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-emerald-100">
-                محققة
+                محققة • رقية
               </span>
               <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <BookCheck className="w-4 h-4 text-white" />
@@ -217,7 +191,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="mt-2">
               <h3 className="font-bold text-xs sm:text-sm text-white">باب الأدعية المأثورة</h3>
               <p className="text-[10px] text-emerald-100/90 leading-tight mt-1 line-clamp-2">
-                دعاء ختم القرآن، أدعية التنزيل، وصحيح السنة
+                صحيح السنة، الرقية والتحصين من السحر والعين، تفريج الكروب، والختم
               </p>
             </div>
             <div className="flex items-center gap-1 text-[11px] font-bold text-amber-200 mt-2 justify-end">
@@ -258,7 +232,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </div>
 
       {/* Mini Widget: مواقيت الصلاة والوقت المتبقي مع الموقع الجغرافي */}
-      <PrayerTimesWidget onNavigateToTracker={() => onNavigate('tracker')} />
+      <PrayerTimesWidget 
+        onNavigateToTracker={() => onNavigate('tracker')} 
+        onNavigateToQibla={() => onNavigate('qibla')}
+      />
 
       {/* Main Sections Navigation: مواضع الخير */}
       <div>
@@ -329,17 +306,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="p-4 rounded-2xl bg-gradient-to-b from-white to-emerald-50/40 dark:from-[#1A2621] dark:to-[#12241C] border border-[#0F6B50]/30 dark:border-[#2DD4BF]/30 hover:border-[#0F6B50] dark:hover:border-[#2DD4BF] text-right flex flex-col justify-between transition-all active:scale-[0.98] shadow-sm hover:shadow group min-h-[155px] relative overflow-hidden"
           >
             <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#34D399] border border-emerald-300 dark:border-emerald-800">
-              محققة
+              صحيحة • رقية
             </span>
             <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center self-end group-hover:scale-110 transition-transform">
               <BookCheck className="w-5 h-5" />
             </div>
             <div className="mt-3">
               <h3 className="font-bold text-sm text-[#19302A] dark:text-white group-hover:text-[#0F6B50] dark:group-hover:text-[#2DD4BF] transition-colors flex items-center justify-end gap-1">
-                <span>الأدعية المأثورة</span>
+                <span>الأدعية والرقية</span>
               </h3>
               <p className="text-[11px] text-[#6F786E] dark:text-[#8E9B93] leading-relaxed mt-1 line-clamp-2">
-                دعاء ختم القرآن، وأدعية التنزيل وصحيح السنة النبوية.
+                الرقية الشرعية، تفريج الكروب، جوامع الدعاء، وصحيح السنة.
               </p>
             </div>
             <div className="flex items-center gap-1 text-[11px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] mt-2 justify-end">
@@ -376,20 +353,23 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
           </button>
 
-          {/* Card 5: ثمار المشايخ */}
+          {/* Card 5: المكتبة الصوتية وثمار المشايخ */}
           <button
             onClick={() => onNavigate('thimar')}
-            className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50] dark:hover:border-[#2DD4BF] text-right flex flex-col justify-between transition-all active:scale-[0.98] shadow-sm hover:shadow group min-h-[145px]"
+            className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50] dark:hover:border-[#2DD4BF] text-right flex flex-col justify-between transition-all active:scale-[0.98] shadow-sm hover:shadow group min-h-[155px] relative overflow-hidden"
           >
+            <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-[#7E22CE] dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+              صوتيات 2-5 د
+            </span>
             <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-[#7E22CE] dark:text-purple-300 flex items-center justify-center self-end group-hover:scale-110 transition-transform">
-              <Quote className="w-5 h-5" />
+              <Headphones className="w-5 h-5" />
             </div>
             <div className="mt-3">
               <h3 className="font-bold text-sm text-[#19302A] dark:text-white group-hover:text-[#0F6B50] dark:group-hover:text-[#2DD4BF] transition-colors">
-                ثمار المشايخ
+                المكتبة الصوتية والثمار
               </h3>
               <p className="text-[11px] text-[#6F786E] dark:text-[#8E9B93] leading-relaxed mt-1 line-clamp-2">
-                درر وفوائد مختارة تعينك على الثبات والعمل الصالح.
+                كبسولات للشباب (2-5 د) بصوت كبار مشايخ أهل السنة، ودرر العلماء.
               </p>
             </div>
             <div className="flex items-center gap-1 text-[11px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] mt-2 justify-end">
@@ -416,6 +396,37 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
             <div className="flex items-center gap-1 text-[11px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] mt-2 justify-end">
               <span>افتح القسم</span>
+              <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+            </div>
+          </button>
+
+          {/* Card 7: بوصلة القبلة المشرفة */}
+          <button
+            onClick={() => {
+              onNavigate('qibla');
+              playChime('click');
+            }}
+            className="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-teal-50/50 dark:from-[#132A20] dark:to-[#0F221A] border border-emerald-300/80 dark:border-emerald-800/60 hover:border-[#0F6B50] dark:hover:border-[#2DD4BF] text-right flex flex-col justify-between transition-all active:scale-[0.98] shadow-sm hover:shadow group min-h-[145px] col-span-2 relative overflow-hidden"
+          >
+            <div className="flex items-center justify-between w-full">
+              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#34D399] border border-emerald-300 dark:border-emerald-800">
+                مستشعر الجيروسكوب 🧭
+              </span>
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Compass className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="mt-3">
+              <h3 className="font-bold text-sm text-[#19302A] dark:text-white group-hover:text-[#0F6B50] dark:group-hover:text-[#2DD4BF] transition-colors flex items-center justify-end gap-1.5">
+                <span>بوصلة القبلة المشرفة</span>
+                <span className="text-base">🕋</span>
+              </h3>
+              <p className="text-[11px] text-[#6F786E] dark:text-[#8E9B93] leading-relaxed mt-1">
+                تحديد اتجاه الكعبة المشرفة بمستشعر الهاتف وحساب الدرجة الجغرافية والمسافة بدقة.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-[11px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] mt-2 justify-end">
+              <span>توجيه البوصلة</span>
               <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
             </div>
           </button>
@@ -492,23 +503,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* Daily Verse Inspiration Card */}
       <div className="p-4 rounded-2xl bg-[#F0F5F0] dark:bg-[#16221D] border border-[#D5E5DE] dark:border-[#253930] text-center space-y-1.5 relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handlePlayDailyVerse}
-            className={`p-1.5 rounded-lg transition-all ${
-              isPlayingVerse
-                ? 'bg-emerald-600 text-white animate-pulse'
-                : 'text-[#0F6B50] dark:text-[#2DD4BF] hover:bg-emerald-100/60 dark:hover:bg-emerald-950/60'
-            }`}
-            title="استماع صوتي للآية"
-          >
-            {isPlayingVerse ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
-          <Heart className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF] opacity-80" />
-          <div className="w-6" /> {/* spacer */}
+        <div className="flex items-center justify-center gap-1.5 text-[#0F6B50] dark:text-[#2DD4BF] opacity-80 mb-1">
+          <Sparkles className="w-4 h-4 text-amber-500" />
+          <span className="text-xs font-bold">آية وتدبر</span>
         </div>
 
-        <p className="text-base font-bold font-amiri text-[#2D5B49] dark:text-[#A7F3D0]">
+        <p className="text-base sm:text-lg font-bold font-amiri text-[#2D5B49] dark:text-[#A7F3D0]">
           «أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ»
         </p>
         <span className="text-[11px] text-[#768878] dark:text-[#8FA59A] block font-medium">

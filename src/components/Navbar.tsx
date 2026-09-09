@@ -116,6 +116,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab, onOpenS
                 </div>
               </button>
 
+              {/* بوصلة القبلة المشرفة */}
+              <button
+                onClick={() => handleSelectFromDoors('qibla')}
+                className={`p-3.5 rounded-2xl text-right border transition-all flex flex-col justify-between min-h-[100px] col-span-2 bg-gradient-to-r from-emerald-50 to-teal-50/60 dark:from-[#0E2820] dark:to-[#0D241C] ${
+                  currentTab === 'qibla'
+                    ? 'border-[#0F6B50] dark:border-[#2DD4BF] ring-2 ring-emerald-400/30'
+                    : 'border-[#E5DDCF] dark:border-[#2A3C34] hover:border-emerald-500'
+                }`}
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-[10px] text-emerald-800 dark:text-emerald-200 font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950">
+                    مستشعر الجيروسكوب • دقة جغرافية
+                  </span>
+                  <div className="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+                    <Compass className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="mt-1">
+                  <h4 className="text-xs font-bold text-gray-900 dark:text-white">بوصلة القبلة المشرفة</h4>
+                  <p className="text-[10px] text-gray-600 dark:text-gray-300 line-clamp-1 mt-0.5">
+                    تحديد اتجاه الكعبة المشرفة بدقة مع المسافة والإرشادات
+                  </p>
+                </div>
+              </button>
+
               {/* غراس الأذكار */}
               <button
                 onClick={() => handleSelectFromDoors('athkar')}
@@ -152,24 +177,28 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab, onOpenS
                 </div>
               </button>
 
-              {/* ثمار المشايخ */}
+              {/* ثمار المشايخ والمكتبة الصوتية */}
               <button
                 onClick={() => handleSelectFromDoors('thimar')}
-                className={`p-3 rounded-2xl text-right border transition-all flex flex-col justify-between min-h-[90px] bg-white dark:bg-[#1A2822] col-span-2 ${
+                className={`p-3.5 rounded-2xl text-right border transition-all flex flex-col justify-between min-h-[100px] col-span-2 bg-gradient-to-r from-purple-50/70 to-emerald-50/40 dark:from-[#20142B] dark:to-[#12241C] ${
                   currentTab === 'thimar'
                     ? 'border-[#0F6B50] dark:border-[#2DD4BF] ring-2 ring-emerald-400/30'
                     : 'border-[#E5DDCF] dark:border-[#2A3C34]'
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-[10px] text-purple-600 dark:text-purple-400 font-semibold">فوائد ودرر السلف</span>
-                  <div className="w-7 h-7 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 flex items-center justify-center">
-                    <Quote className="w-3.5 h-3.5" />
+                  <span className="text-[10px] text-purple-700 dark:text-purple-300 font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950">
+                    صوتيات 2-5 د • كبار مشايخ أهل السنة
+                  </span>
+                  <div className="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 flex items-center justify-center">
+                    <Quote className="w-4 h-4" />
                   </div>
                 </div>
                 <div className="mt-1">
-                  <h4 className="text-xs font-bold text-gray-900 dark:text-white">ثمار المشايخ</h4>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">حكم وتوجيهات لكبار العلماء والمربين</p>
+                  <h4 className="text-xs font-bold text-gray-900 dark:text-white">المكتبة الصوتية وثمار المشايخ</h4>
+                  <p className="text-[10px] text-gray-600 dark:text-gray-300 line-clamp-1 mt-0.5">
+                    مقتطفات دعوية للشباب (2-5 دقائق) لأهل السنة، ودرر العلماء
+                  </p>
                 </div>
               </button>
             </div>

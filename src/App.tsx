@@ -28,6 +28,7 @@ import { SearchView } from './components/SearchView';
 import { SettingsView } from './components/SettingsView';
 import { DuasView } from './components/DuasView';
 import { MishkatAlNoorView } from './components/MishkatAlNoorView';
+import { QiblaCompassView } from './components/QiblaCompassView';
 import { SebhaModal } from './components/SebhaModal';
 import { VoicePracticeModal } from './components/VoicePracticeModal';
 import { HomeButtonFloating } from './components/HomeButtonFloating';
@@ -330,11 +331,24 @@ export default function App() {
               />
             </motion.div>
           )}
+
+          {currentTab === 'qibla' && (
+            <motion.div
+              key="qibla"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="w-full"
+            >
+              <QiblaCompassView onBackToHome={() => setCurrentTab('home')} />
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       {/* Global Navigation Bar (shown on core tabs when not in focus mode) */}
-      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
+      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar', 'qibla'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
         <Navbar
           currentTab={currentTab}
           onSelectTab={(tab) => {

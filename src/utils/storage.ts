@@ -208,6 +208,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   isDarkMode: false,
   enableEyeComfortMode: false,
   selectedReciter: 'alafasy',
+  quranTheme: 'royal_gold',
   quranFontSize: 24,
   enableAutoScroll: true,
   enableAudioChimes: true,

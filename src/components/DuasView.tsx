@@ -7,8 +7,6 @@ import {
   Search, 
   Copy, 
   Check, 
-  Volume2, 
-  VolumeX, 
   Share2, 
   Bookmark as BookmarkIcon, 
   BookmarkCheck,
@@ -21,7 +19,6 @@ import {
 } from 'lucide-react';
 import { DuaItem, DuaCategoryType, Bookmark } from '../types';
 import { DUA_CATEGORIES, DUAS_LIST } from '../data/duasData';
-import { speakArabicText, stopSpeech } from '../utils/speech';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { loadBookmarks, saveBookmarks } from '../utils/storage';
 import { toArabicNumerals } from '../data/quranData';
@@ -35,16 +32,9 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
   const [selectedCategory, setSelectedCategory] = useState<DuaCategoryType | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [playingDuaId, setPlayingDuaId] = useState<string | null>(null);
   const [counters, setCounters] = useState<Record<string, number>>({});
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => loadBookmarks());
   const [onlyFavorites, setOnlyFavorites] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      stopSpeech();
-    };
-  }, []);
 
   const favoriteIds = useMemo(() => {
     return new Set(
@@ -96,22 +86,6 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
       }).catch(() => {});
     } else {
       handleCopy(dua);
-    }
-  };
-
-  const handleToggleSpeech = (dua: DuaItem) => {
-    triggerHaptic('light');
-    if (playingDuaId === dua.id) {
-      stopSpeech();
-      setPlayingDuaId(null);
-    } else {
-      stopSpeech();
-      setPlayingDuaId(dua.id);
-      playChime('click');
-      speakArabicText(dua.arabicText, {
-        onEnd: () => setPlayingDuaId(null),
-        onError: () => setPlayingDuaId(null),
-      });
     }
   };
 
@@ -310,7 +284,6 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
           filteredDuas.map((dua) => {
             const isFav = favoriteIds.has(dua.id);
             const isCopied = copiedId === dua.id;
-            const isPlaying = playingDuaId === dua.id;
             const maxRepeat = dua.repeatCount || 1;
             const currentCount = counters[dua.id] || 0;
             const isCompleted = currentCount >= maxRepeat;
@@ -353,19 +326,6 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
                       className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center transition-all"
                     >
                       <Share2 className="w-4 h-4" />
-                    </button>
-
-                    <button
-                      onClick={() => handleToggleSpeech(dua)}
-                      aria-label="الاستماع للدعاء"
-                      title="الاستماع للدعاء"
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                        isPlaying
-                          ? 'text-white bg-[#0F6B50] animate-pulse'
-                          : 'text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800'
-                      }`}
-                    >
-                      {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                     </button>
                   </div>
 

@@ -34,14 +34,46 @@ import {
   CloudDownload,
   Trash,
   PauseCircle,
-  HardDrive
+  HardDrive,
+  Clock,
+  MapPin,
+  Sliders,
+  Pin,
+  CheckCheck,
+  Navigation,
+  Search,
+  RotateCcw,
+  Plus,
+  Minus,
+  Palette
 } from 'lucide-react';
-import { AppSettings, ReciterId } from '../types';
+import { AppSettings, ReciterId, QuranThemeId } from '../types';
 import { RECITERS_LIST, toArabicNumerals } from '../data/quranData';
+import { QURAN_THEMES, saveSavedQuranTheme } from '../utils/quranThemes';
 import { exportBackupJSON, importBackupJSON } from '../utils/storage';
 import { playChime } from '../utils/audio';
 import { generateStandaloneHTML, generateAndDownloadZipArchive, triggerFileDownload } from '../utils/exportHelpers';
 import { getCachedPagesCount, downloadAllQuranPages, clearAllOfflinePages } from '../utils/quranOfflineStorage';
+import { 
+  loadSavedPrayerMethod, 
+  savePrayerMethod, 
+  loadSavedLocation, 
+  saveLocation, 
+  loadSavedPrayerOffsets,
+  savePrayerOffsets,
+  getPrayerTimesList,
+  pinCairoEgyptianSurvey, 
+  getCurrentCairoTime, 
+  requestDeviceLocation,
+  PRAYER_CALC_METHODS, 
+  PrayerCalcMethod, 
+  PrayerMinuteOffsets,
+  DEFAULT_PRAYER_OFFSETS,
+  CAIRO_LOCATION, 
+  POPULAR_CITIES,
+  UserLocation,
+  PRAYER_SETTINGS_CHANGE_EVENT
+} from '../utils/prayerTimes';
 import { HowToInstallModal } from './InstallPwaBanner';
 import { GitHubBridgeModal } from './GitHubBridgeModal';
 
@@ -81,6 +113,96 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [showInstallModal, setShowInstallModal] = useState<boolean>(false);
   const [isGitHubBridgeOpen, setIsGitHubBridgeOpen] = useState<boolean>(false);
   const cancelDownloadRef = useRef<boolean>(false);
+
+  // Prayer calculations, locations & offsets state
+  const [prayerMethod, setPrayerMethod] = useState<PrayerCalcMethod>(() => loadSavedPrayerMethod());
+  const [prayerLocation, setPrayerLocation] = useState<UserLocation>(() => loadSavedLocation());
+  const [prayerOffsets, setPrayerOffsets] = useState<PrayerMinuteOffsets>(() => loadSavedPrayerOffsets());
+  const [cairoClock, setCairoClock] = useState<string>(() => getCurrentCairoTime());
+  const [prayerSettingsTab, setPrayerSettingsTab] = useState<'methods' | 'location' | 'offsets' | 'preview'>('methods');
+  const [citySearchQuery, setCitySearchQuery] = useState<string>('');
+  const [isGpsLoading, setIsGpsLoading] = useState<boolean>(false);
+  const [gpsError, setGpsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCairoClock(getCurrentCairoTime());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Listen to prayer settings changes
+  useEffect(() => {
+    const handleSettingsChanged = () => {
+      setPrayerMethod(loadSavedPrayerMethod());
+      setPrayerLocation(loadSavedLocation());
+      setPrayerOffsets(loadSavedPrayerOffsets());
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener(PRAYER_SETTINGS_CHANGE_EVENT, handleSettingsChanged);
+      return () => window.removeEventListener(PRAYER_SETTINGS_CHANGE_EVENT, handleSettingsChanged);
+    }
+  }, []);
+
+  const handlePinCairoMethod = () => {
+    const res = pinCairoEgyptianSurvey();
+    setPrayerMethod(res.method);
+    setPrayerLocation(res.location);
+    setPrayerOffsets(DEFAULT_PRAYER_OFFSETS);
+    playChime('bell');
+    setToastMessage('تم تثبيت أوقات الصلاة بطريقة هيئة المساحة المصرية وتوقيت القاهرة بنجاح 🇪🇬');
+  };
+
+  const handleChangePrayerMethod = (m: PrayerCalcMethod) => {
+    setPrayerMethod(m);
+    savePrayerMethod(m);
+    playChime('click');
+    const methodObj = PRAYER_CALC_METHODS.find(x => x.id === m);
+    setToastMessage(`تم تفعيل: ${methodObj?.name}`);
+  };
+
+  const handleSelectCity = (city: UserLocation) => {
+    const updated = { ...city, isGps: false, timestamp: Date.now() };
+    saveLocation(updated);
+    setPrayerLocation(updated);
+    playChime('click');
+    setToastMessage(`تم ضبط المدينة على: ${city.cityName} (${city.countryName})`);
+  };
+
+  const handleRequestGpsLocation = async () => {
+    setIsGpsLoading(true);
+    setGpsError(null);
+    try {
+      const loc = await requestDeviceLocation();
+      saveLocation(loc);
+      setPrayerLocation(loc);
+      playChime('success');
+      setToastMessage(`تم تحديد موقعك بدقة عبر GPS: ${loc.cityName}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'تعذر تحديد الموقع الجغرافي';
+      setGpsError(msg.includes('denied') ? 'يرجى تفعيل صلاحية الموقع من إعدادات المتصفح' : msg);
+      playChime('click');
+    } finally {
+      setIsGpsLoading(false);
+    }
+  };
+
+  const handleAdjustPrayerOffset = (prayerKey: keyof PrayerMinuteOffsets, delta: number) => {
+    const current = prayerOffsets[prayerKey] || 0;
+    const nextVal = Math.max(-60, Math.min(60, current + delta));
+    const updated = { ...prayerOffsets, [prayerKey]: nextVal };
+    setPrayerOffsets(updated);
+    savePrayerOffsets(updated);
+    playChime('click');
+  };
+
+  const handleResetPrayerOffsets = () => {
+    setPrayerOffsets(DEFAULT_PRAYER_OFFSETS);
+    savePrayerOffsets(DEFAULT_PRAYER_OFFSETS);
+    playChime('success');
+    setToastMessage('تمت إعادة ضبط فوارق الدقائق إلى صفر (٠)');
+  };
 
   useEffect(() => {
     // Initial check of cached pages
@@ -511,6 +633,500 @@ async function startMic() {
             </span>
           </div>
         </div>
+
+        {/* Quran Page Visual Themes Picker */}
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-800/60 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[#0F6B50] dark:text-[#2DD4BF] font-bold">
+              {QURAN_THEMES.find(t => t.id === (settings.quranTheme || 'royal_gold'))?.name}
+            </span>
+            <div className="text-right">
+              <span className="text-sm font-bold text-[#19302A] dark:text-white flex items-center justify-end gap-1.5">
+                <span>سمة وتصميم صفحة المصحف</span>
+                <Palette className="w-3.5 h-3.5 text-amber-600" />
+              </span>
+              <span className="text-[11px] text-gray-500">
+                اختر النمط البصري والزخارف المناسبة لذوقك مع ثبات رسم المصحف
+              </span>
+            </div>
+          </div>
+
+          {/* Theme Quick Selector Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+            {QURAN_THEMES.map((th) => {
+              const isSelected = (settings.quranTheme || 'royal_gold') === th.id;
+              return (
+                <button
+                  key={th.id}
+                  onClick={() => {
+                    onUpdateSettings({ ...settings, quranTheme: th.id });
+                    saveSavedQuranTheme(th.id);
+                    playChime('click');
+                    showToast(`تم تطبيق ${th.name}`);
+                  }}
+                  className={`p-2.5 rounded-xl border text-right transition-all flex items-center justify-between gap-2 ${
+                    isSelected
+                      ? 'border-[#0F6B50] dark:border-[#2DD4BF] bg-emerald-50/60 dark:bg-[#1C3328] ring-1 ring-[#0F6B50]'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 bg-white/50 dark:bg-black/20'
+                  }`}
+                >
+                  {isSelected ? (
+                    <Check className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF] shrink-0" />
+                  ) : (
+                    <span 
+                      className="w-3 h-3 rounded-full shrink-0 border border-black/20" 
+                      style={{ backgroundColor: th.previewColors.accent }}
+                    />
+                  )}
+                  <div className="text-right flex-1 truncate">
+                    <span className="text-xs font-bold block text-[#19302A] dark:text-white truncate">
+                      {th.name}
+                    </span>
+                    <span className="text-[10px] text-gray-400 block truncate">
+                      {th.badge}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Comprehensive Prayer Times & Egyptian Survey Calculation Settings Card */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-4 text-right">
+        {/* Header */}
+        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100/80 dark:bg-amber-950/80 text-[#0F6B50] dark:text-[#2DD4BF] border border-amber-300/40 dark:border-amber-800/40">
+            {prayerMethod === 'egypt' ? 'المساحة المصرية 🇪🇬' : PRAYER_CALC_METHODS.find(m => m.id === prayerMethod)?.badge}
+          </span>
+          <div className="flex items-center gap-2">
+            <div>
+              <h4 className="font-bold text-sm text-[#19302A] dark:text-white">ضبط مواقيت الصلاة والحساب الفلكي</h4>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400">طريقة الحساب، تحديد المدينة، والضبط الدقيق للأذان بالدقائق</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center shrink-0">
+              <Clock className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* Featured Banner: Cairo & Egyptian Survey Quick Pin */}
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50/90 via-emerald-50/70 to-amber-50/90 dark:from-amber-950/30 dark:via-emerald-950/30 dark:to-amber-950/30 border border-amber-300/60 dark:border-amber-800/50 shadow-xs">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <button
+              onClick={handlePinCairoMethod}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm ${
+                prayerMethod === 'egypt' && prayerLocation.cityName === 'القاهرة'
+                  ? 'bg-amber-400 hover:bg-amber-500 text-[#0F4234] ring-2 ring-amber-300'
+                  : 'bg-[#0F6B50] hover:bg-[#168064] text-white'
+              }`}
+            >
+              <Pin className="w-4 h-4" />
+              <span>
+                {prayerMethod === 'egypt' && prayerLocation.cityName === 'القاهرة'
+                  ? 'مثبت حالياً: القاهرة (المساحة المصرية 🇪🇬)'
+                  : 'تثبيت القاهرة (هيئة المساحة المصرية) 🇪🇬'}
+              </span>
+            </button>
+
+            <div className="text-right">
+              <div className="flex items-center justify-end gap-1.5">
+                <span className="text-xs font-bold text-[#19302A] dark:text-white">
+                  الهيئة العامة المصرية للمساحة (القاهرة ومصر)
+                </span>
+                <span className="text-[10px] bg-amber-200/60 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1.5 py-0.5 rounded font-mono">
+                  19.5° / 17.5°
+                </span>
+              </div>
+              <span className="text-[11px] text-[#0F6B50] dark:text-[#2DD4BF] font-mono block mt-0.5">
+                توقيت القاهرة الآن: {toArabicNumerals(cairoClock)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Sub-Navigation Tabs inside Prayer Settings */}
+        <div className="grid grid-cols-4 gap-1 p-1 bg-gray-100 dark:bg-gray-800/80 rounded-xl text-xs font-bold">
+          <button
+            onClick={() => setPrayerSettingsTab('methods')}
+            className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
+              prayerSettingsTab === 'methods'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+            }`}
+          >
+            طريقة الحساب
+          </button>
+          <button
+            onClick={() => setPrayerSettingsTab('location')}
+            className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
+              prayerSettingsTab === 'location'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+            }`}
+          >
+            المدينة والموقع
+          </button>
+          <button
+            onClick={() => setPrayerSettingsTab('offsets')}
+            className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
+              prayerSettingsTab === 'offsets'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+            }`}
+          >
+            الضبط بالدقائق
+          </button>
+          <button
+            onClick={() => setPrayerSettingsTab('preview')}
+            className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
+              prayerSettingsTab === 'preview'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+            }`}
+          >
+            معاينة الأوقات
+          </button>
+        </div>
+
+        {/* TAB 1: Calculation Methods */}
+        {prayerSettingsTab === 'methods' && (
+          <div className="space-y-2.5 pt-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-gray-500">اختر الطريقة الفلكية المعتمدة لبلدك</span>
+              <label className="font-bold text-gray-800 dark:text-gray-200">
+                طرق الحساب الفلكي المتاحة:
+              </label>
+            </div>
+            
+            <div className="space-y-2">
+              {PRAYER_CALC_METHODS.map((m) => {
+                const isSelected = prayerMethod === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => handleChangePrayerMethod(m.id)}
+                    className={`w-full p-3 rounded-xl text-right transition-all border flex items-center justify-between ${
+                      isSelected
+                        ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0F6B50] dark:text-[#2DD4BF] border-[#0F6B50] font-bold shadow-xs'
+                        : 'bg-[#FAF7F0] dark:bg-[#15231E] hover:bg-emerald-50/40 dark:hover:bg-[#1D2E27] border-[#E5DDCF] dark:border-[#2A3C34] text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 shrink-0">
+                      {isSelected && <CheckCheck className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF]" />}
+                      <span className="text-[11px] bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-md font-normal">
+                        {m.badge}
+                      </span>
+                    </div>
+
+                    <div className="text-right flex-1 pr-3">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <span className="text-xs font-bold">{m.name}</span>
+                        {m.id === 'egypt' && <span className="text-sm">🇪🇬</span>}
+                        {m.id === 'makkah' && <span className="text-sm">🇸🇦</span>}
+                      </div>
+                      <span className="text-[11px] text-gray-500 dark:text-gray-400 block mt-0.5 leading-normal">
+                        {m.description}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Egyptian Official Standard Jurisprudential & Astronomical Details Card */}
+            {prayerMethod === 'egypt' && (
+              <div className="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 text-right space-y-2 text-xs mt-2">
+                <div className="flex items-center justify-between pb-1.5 border-b border-amber-200/50 dark:border-amber-800/30">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-200/60 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-mono">
+                    معايير جمهورية مصر العربية 🇪🇬
+                  </span>
+                  <div className="flex items-center gap-1.5 font-bold text-amber-900 dark:text-amber-200 text-xs">
+                    <span>التفصيل الفقهي والفلكي المعتمد بمصر</span>
+                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-amber-700 dark:text-amber-400 font-bold shrink-0">• صلاة الفجر:</span>
+                    <span>تُحسب عند درجة انخفاض للشمس تبلغ <strong>١٩.٥°</strong> تحت الأفق وفق التقديرات الفلكية والمعايير المعتمدة رسمياً في مصر.</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-amber-700 dark:text-amber-400 font-bold shrink-0">• صلاة العصر (المذهب الشافعي):</span>
+                    <span>يُعتمد عليه في تحديد وقت العصر؛ حيث يبدأ عندما يصير ظل كل شيء مثله (بالإضافة إلى ظل الزوال).</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-amber-700 dark:text-amber-400 font-bold shrink-0">• صلاة العشاء (المذهب الحنفي):</span>
+                    <span>يُعتمد عليه في تحديد وقت العشاء؛ حيث يُحسب عند غياب الشفق عند انخفاض الشمس <strong>١٧.٥°</strong> تحت الأفق.</span>
+                  </div>
+                  <div className="pt-1 border-t border-amber-200/40 dark:border-amber-800/30 flex items-center justify-end text-[10px] text-gray-500 dark:text-gray-400">
+                    <span>الاعتماد: الهيئة المصرية العامة للمساحة بالنسق والتعاون مع دار الإفتاء المصرية ووزارة الأوقاف.</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB 2: Location & City Picker */}
+        {prayerSettingsTab === 'location' && (
+          <div className="space-y-3 pt-1">
+            {/* Current Active Location Info Box */}
+            <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/80 dark:border-gray-700/80 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleRequestGpsLocation}
+                  disabled={isGpsLoading}
+                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center gap-1.5 active:scale-95 transition-all text-xs"
+                >
+                  <Navigation className={`w-3.5 h-3.5 ${isGpsLoading ? 'animate-spin' : ''}`} />
+                  <span>{isGpsLoading ? 'جاري التحديد...' : 'موقعي الحالي (GPS)'}</span>
+                </button>
+              </div>
+
+              <div className="text-right">
+                <span className="text-gray-500 text-[11px] block">الموقع المعتمد حالياً:</span>
+                <span className="font-bold text-gray-800 dark:text-gray-200 text-xs">
+                  {prayerLocation.cityName} ({prayerLocation.countryName})
+                </span>
+              </div>
+            </div>
+
+            {gpsError && (
+              <div className="p-2 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-[11px] text-red-600 dark:text-red-300 text-right">
+                {gpsError}
+              </div>
+            )}
+
+            {/* City Search Bar */}
+            <div className="relative">
+              <input
+                type="text"
+                value={citySearchQuery}
+                onChange={(e) => setCitySearchQuery(e.target.value)}
+                placeholder="ابحث عن اسم مدينة أو محافظة..."
+                className="w-full pr-9 pl-3 py-2 text-xs rounded-xl bg-white dark:bg-[#15231E] border border-gray-200 dark:border-gray-700 text-right placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F6B50]"
+              />
+              <Search className="w-4 h-4 text-gray-400 absolute right-3 top-2.5 pointer-events-none" />
+            </div>
+
+            {/* Filtered Search Results if user types */}
+            {citySearchQuery.trim() ? (
+              <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+                {POPULAR_CITIES.filter(c => 
+                  c.cityName.includes(citySearchQuery.trim()) || 
+                  c.countryName.includes(citySearchQuery.trim())
+                ).map((c, i) => {
+                  const isSelected = prayerLocation.cityName === c.cityName && prayerLocation.countryName === c.countryName;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => handleSelectCity(c)}
+                      className={`w-full p-2 rounded-lg text-right text-xs flex items-center justify-between border ${
+                        isSelected
+                          ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0F6B50] dark:text-[#2DD4BF] border-[#0F6B50] font-bold'
+                          : 'bg-white dark:bg-[#15231E] hover:bg-gray-50 border-gray-100 dark:border-gray-800 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {isSelected ? <Check className="w-3.5 h-3.5 text-[#0F6B50]" /> : <span className="text-[10px] text-gray-400">{c.countryName}</span>}
+                      <span>{c.cityName}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              /* Presets: Egyptian Governorates & Islamic Capitals */
+              <div className="space-y-3">
+                {/* Egyptian Cities */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300">
+                    <span className="text-gray-400 text-[10px]">توقيت هيئة المساحة</span>
+                    <span className="flex items-center gap-1">
+                      <span>محافظات جمهورية مصر العربية 🇪🇬</span>
+                      <MapPin className="w-3 h-3 text-amber-600" />
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                    {POPULAR_CITIES.filter(c => c.countryName === 'مصر').map((c, i) => {
+                      const isSelected = prayerLocation.cityName === c.cityName;
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => handleSelectCity(c)}
+                          className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-center border truncate active:scale-95 ${
+                            isSelected
+                              ? 'bg-[#0F6B50] text-white border-[#0F6B50] shadow-xs'
+                              : 'bg-gray-50 dark:bg-gray-800/70 hover:bg-amber-50/50 border-gray-200/80 dark:border-gray-700/80 text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          {c.cityName}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Holy Cities & Capitals */}
+                <div className="space-y-1.5 pt-1 border-t border-gray-100 dark:border-gray-800">
+                  <div className="flex items-center justify-end text-[11px] font-bold text-gray-700 dark:text-gray-300 gap-1">
+                    <span>العواصم والمدن الإسلامية والعربية</span>
+                    <MapPin className="w-3 h-3 text-emerald-600" />
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                    {POPULAR_CITIES.filter(c => c.countryName !== 'مصر').slice(0, 9).map((c, i) => {
+                      const isSelected = prayerLocation.cityName === c.cityName;
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => handleSelectCity(c)}
+                          className={`px-2 py-1.5 rounded-lg text-xs transition-all text-center border truncate active:scale-95 ${
+                            isSelected
+                              ? 'bg-[#0F6B50] text-white border-[#0F6B50] font-bold shadow-xs'
+                              : 'bg-gray-50 dark:bg-gray-800/70 hover:bg-emerald-50/50 border-gray-200/80 dark:border-gray-700/80 text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          {c.cityName}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB 3: Fine-Tuning Minute Offsets */}
+        {prayerSettingsTab === 'offsets' && (
+          <div className="space-y-3 pt-1">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={handleResetPrayerOffsets}
+                className="text-[11px] font-bold text-red-600 dark:text-red-400 hover:underline flex items-center gap-1 active:scale-95 transition-all"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>إعادة ضبط الكل لصفر (٠)</span>
+              </button>
+
+              <p className="text-[11px] text-gray-500">
+                تقديم (+) أو تأخير (-) الموعد بالدقائق لمطابقة مسجد حيك
+              </p>
+            </div>
+
+            {/* Prayers Stepper Rows */}
+            <div className="space-y-2">
+              {[
+                { key: 'fajr' as keyof PrayerMinuteOffsets, name: 'الفجر' },
+                { key: 'sunrise' as keyof PrayerMinuteOffsets, name: 'الشروق' },
+                { key: 'dhuhr' as keyof PrayerMinuteOffsets, name: 'الظهر' },
+                { key: 'asr' as keyof PrayerMinuteOffsets, name: 'العصر' },
+                { key: 'maghrib' as keyof PrayerMinuteOffsets, name: 'المغرب' },
+                { key: 'isha' as keyof PrayerMinuteOffsets, name: 'العشاء' }
+              ].map((p) => {
+                const val = prayerOffsets[p.key] || 0;
+                return (
+                  <div
+                    key={p.key}
+                    className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/70 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleAdjustPrayerOffset(p.key, -1)}
+                        className="w-7 h-7 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 active:scale-90 transition-all"
+                        title="إنقاص دقيقة"
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+
+                      <span
+                        className={`min-w-16 text-center font-mono text-xs font-bold px-2 py-1 rounded-md ${
+                          val > 0
+                            ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
+                            : val < 0
+                            ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                        }`}
+                      >
+                        {val > 0 ? `+${toArabicNumerals(val)}` : val < 0 ? `-${toArabicNumerals(Math.abs(val))}` : '٠'}{' '}
+                        دقيقة
+                      </span>
+
+                      <button
+                        onClick={() => handleAdjustPrayerOffset(p.key, 1)}
+                        className="w-7 h-7 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 active:scale-90 transition-all"
+                        title="زيادة دقيقة"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    <div className="text-right">
+                      <span className="text-xs font-bold text-gray-800 dark:text-gray-200 block">
+                        صلاة {p.name}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: Live Schedule Preview */}
+        {prayerSettingsTab === 'preview' && (
+          <div className="space-y-3 pt-1">
+            <div className="flex items-center justify-between text-xs">
+              <button
+                onClick={() => {
+                  playChime('bell');
+                  setToastMessage('تم تشغيل صوت نداء الأذان والتنبيه 🔊');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300/60 dark:border-amber-800/60 font-bold flex items-center gap-1.5 active:scale-95 transition-all text-xs"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>تجربة صوت التنبيه</span>
+              </button>
+
+              <span className="text-gray-500 text-[11px]">
+                المواقيت لليوم بحسب {prayerLocation.cityName}:
+              </span>
+            </div>
+
+            {/* Prayer times list */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {getPrayerTimesList(prayerLocation, new Date(), prayerMethod, prayerOffsets).map((item) => (
+                <div
+                  key={item.id}
+                  className={`p-2.5 rounded-xl border text-center transition-all ${
+                    item.isNext
+                      ? 'bg-emerald-50 dark:bg-emerald-950/50 border-[#0F6B50] dark:border-[#2DD4BF] ring-1 ring-[#0F6B50]'
+                      : item.isPassed
+                      ? 'bg-gray-50/70 dark:bg-gray-800/30 border-gray-100 dark:border-gray-800 text-gray-400 opacity-80'
+                      : 'bg-white dark:bg-gray-800/70 border-gray-200/80 dark:border-gray-700/80'
+                  }`}
+                >
+                  <div className="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300 mb-1">
+                    {item.isNext && (
+                      <span className="text-[9px] bg-emerald-600 text-white px-1.5 py-0.2 rounded">
+                        القادمة
+                      </span>
+                    )}
+                    <span className="mr-auto">{item.name}</span>
+                  </div>
+                  <div className="font-mono text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] dir-rtl">
+                    {toArabicNumerals(item.formattedTime)}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[10px] text-gray-400 text-center">
+              يتم تحديث جميع مواقيت الصلاة تلقائياً في الواجهة الرئيسية وبطاقات الودجت فور التعديل.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Quran Font Size Slider Section */}

@@ -1,4 +1,4 @@
-export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings';
+export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings' | 'qibla';
 
 export type ReciterId = 
   | 'alafasy' 
@@ -110,9 +110,12 @@ export interface AudioLessonItem {
   duration: string;
   durationSeconds: number;
   summary: string;
-  audioUrl: string;
+  fullTranscript: string;
   keyTakeaway: string;
   tags: string[];
+  practicalSteps?: string[];
+  quote?: string;
+  audioUrl?: string;
   relatedVerse?: RelatedQuranVerse;
 }
 
@@ -160,7 +163,7 @@ export interface Bookmark {
   pageNumber?: number;
 }
 
-export type DuaCategoryType = 'khatm' | 'quran' | 'sunnah' | 'jawami';
+export type DuaCategoryType = 'khatm' | 'quran' | 'sunnah' | 'ruqyah' | 'magic_jinn' | 'kuroob' | 'hidayah' | 'jawami';
 
 export interface DuaItem {
   id: string;
@@ -194,10 +197,49 @@ export interface MishkatLesson {
 }
 
 
+export type QuranThemeId = 
+  | 'royal_gold'       // مصحف المدينة الملكي (الذهبي الكلاسيكي)
+  | 'emerald_rawdah'   // الروضة الشريفة (الزمردي النبوي)
+  | 'heritage_sepia'   // المخطوطة التراثية (ورق البردي الأثري)
+  | 'night_tahajjud'   // ليل التهجد (الكحلي الملكي المذهب)
+  | 'pure_dark'        // العتمة الفاحمة (Dark OLED المريح)
+  | 'andalusian_cyan'  // الفيروز الأندلسي والصفاء
+  | 'damascus_velvet'; // المخمل الدمشقي الأرجواني
+
+export interface QuranThemeConfig {
+  id: QuranThemeId;
+  name: string;
+  subname: string;
+  description: string;
+  badge: string;
+  previewColors: {
+    bg: string;
+    border: string;
+    accent: string;
+    text: string;
+  };
+  containerBgClass: string;
+  containerBorderClass: string;
+  cornerBorderColor: string;
+  cornerShape: 'classic_square' | 'arabesque_floral' | 'antique_bracket' | 'celestial_star' | 'minimal_sleek' | 'andalusian_star' | 'damascus_arch';
+  ribbonClass: string;
+  headerTextColor: string;
+  headerSubtextColor: string;
+  surahBannerClass: string;
+  surahTitleColor: string;
+  bismillahColor: string;
+  ayahTextColor: string;
+  ayahMarkerColor: string;
+  activeAyahClass: string;
+  pageNumberColor: string;
+  isDarkTheme: boolean;
+}
+
 export interface AppSettings {
   isDarkMode: boolean;
   enableEyeComfortMode?: boolean; // Warm sepia / eye comfort tone
   selectedReciter: ReciterId;
+  quranTheme?: QuranThemeId;
   quranFontSize: number; // 18 to 36
   enableAutoScroll: boolean;
   enableAudioChimes: boolean;
@@ -206,3 +248,4 @@ export interface AppSettings {
   workModeIntervalMinutes: number;
   enableWorkModeThoughts: boolean;
 }
+
