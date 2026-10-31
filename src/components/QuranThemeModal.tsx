@@ -67,7 +67,7 @@ export const QuranThemeModal: React.FC<QuranThemeModalProps> = ({
         {/* Scrollable Themes List */}
         <div className="p-4 overflow-y-auto space-y-3.5 flex-1 no-scrollbar">
           {QURAN_THEMES.map((theme) => {
-            const isSelected = selectedThemeId === theme.id || (selectedThemeId === 'sky_rawdah' && theme.id === 'azure_sky');
+            const isSelected = selectedThemeId === theme.id || ((selectedThemeId as string) === 'sky_rawdah' && theme.id === 'azure_sky');
 
             return (
               <div

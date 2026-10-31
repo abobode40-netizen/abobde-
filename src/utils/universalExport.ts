@@ -6,10 +6,13 @@
 
 export interface ExportPayload {
   title: string;
-  doorName: string;
-  formattedText: string;
-  jsonData: any;
-  filenamePrefix: string;
+  doorName?: string;
+  subtitle?: string;
+  formattedText?: string;
+  textToCopy?: string;
+  jsonData?: any;
+  filenamePrefix?: string;
+  fileName?: string;
 }
 
 /**
@@ -213,9 +216,18 @@ export function generateDuasExport(
 }
 
 export function generateThimarExport(
-  scholarOrCategory: string,
-  quotes: Array<{ quote: string; author: string; source?: string; category?: string }>
+  param1: string | Array<{ quote: string; author: string; source?: string; category?: string }>,
+  param2?: Array<{ quote: string; author: string; source?: string; category?: string }>
 ): ExportPayload {
+  let scholarOrCategory = 'جميع ثمار المشايخ';
+  let quotes: Array<{ quote: string; author: string; source?: string; category?: string }> = [];
+
+  if (typeof param1 === 'string') {
+    scholarOrCategory = param1;
+    quotes = param2 || [];
+  } else {
+    quotes = param1 || [];
+  }
   const lines: string[] = [
     `﷽`,
     `💎 *ثمار المشايخ ودرر أهل العلم*`,

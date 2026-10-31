@@ -369,11 +369,7 @@ export const ThimarView: React.FC<ThimarViewProps> = ({
       <UniversalExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
-        title={exportData.title}
-        subtitle={exportData.subtitle}
-        textToCopy={exportData.textToCopy}
-        fileName={exportData.fileName}
-        jsonData={exportData.jsonData}
+        payload={exportData}
       />
     </div>
   );

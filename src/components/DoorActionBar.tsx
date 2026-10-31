@@ -12,8 +12,9 @@ import { playChime, triggerHaptic } from '../utils/audio';
 interface DoorActionBarProps {
   doorTitle?: string;
   onExport?: () => void;
-  fontScale: 100 | 115 | 130 | 145;
-  onChangeFontScale: (scale: 100 | 115 | 130 | 145) => void;
+  onOpenExport?: () => void;
+  fontScale: number;
+  onChangeFontScale: (scale: any) => void;
   swipeHint?: string;
   className?: string;
 }
@@ -21,17 +22,19 @@ interface DoorActionBarProps {
 export const DoorActionBar: React.FC<DoorActionBarProps> = ({
   doorTitle,
   onExport,
+  onOpenExport,
   fontScale,
   onChangeFontScale,
   swipeHint = 'اسحب يميناً ويساراً للتنقل',
   className = ''
 }) => {
-  const fontScales: Array<100 | 115 | 130 | 145> = [100, 115, 130, 145];
+  const handleExportClick = onExport || onOpenExport;
+  const fontScales = [100, 115, 130, 145];
 
   const handleZoom = (direction: 'up' | 'down') => {
     triggerHaptic('light');
     playChime('click');
-    const currentIndex = fontScales.indexOf(fontScale);
+    const currentIndex = fontScales.indexOf(fontScale) >= 0 ? fontScales.indexOf(fontScale) : 0;
     if (direction === 'up' && currentIndex < fontScales.length - 1) {
       onChangeFontScale(fontScales[currentIndex + 1]);
     } else if (direction === 'down' && currentIndex > 0) {
@@ -85,12 +88,12 @@ export const DoorActionBar: React.FC<DoorActionBarProps> = ({
       </div>
 
       {/* Export / Share Button (خاصية التصدير) */}
-      {onExport && (
+      {handleExportClick && (
         <button
           onClick={() => {
             playChime('click');
             triggerHaptic('light');
-            onExport();
+            handleExportClick();
           }}
           className="flex items-center gap-1.5 py-1 px-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold text-[11px] shadow-sm transition-all active:scale-95 cursor-pointer border border-sky-400/40"
           title="تصدير ومشاركة محتوى هذا الباب"

@@ -80,6 +80,7 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
       return localStorage.getItem('jannat_prayer_notifications') === 'true';
     }
     return false;
+  });
   const [activePrayerPopup, setActivePrayerPopup] = useState<PrayerTimeItem | null>(null);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [exportPayload, setExportPayload] = useState<ExportPayload | null>(null);
@@ -89,9 +90,10 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
     triggerHaptic('light');
     const timesMap: Record<string, string> = {};
     prayerInfo.allPrayers.forEach((p) => {
-      timesMap[p.id] = `${p.time} (${p.arabicName})`;
+      timesMap[p.id] = `${p.time} (${p.name})`;
     });
-    const payload = generatePrayerTimesExport(location.cityName, prayerInfo.hijriDate, timesMap);
+    const dateStr = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const payload = generatePrayerTimesExport(location.cityName, dateStr, timesMap);
     setExportPayload(payload);
     setIsExportOpen(true);
   };

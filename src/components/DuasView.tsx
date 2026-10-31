@@ -433,11 +433,11 @@ export const DuasView: React.FC<DuasViewProps> = ({
                       <button
                         onClick={() => {
                           playChime('click');
-                          onOpenMushafPage(dua.surahInfo!.page);
+                          onOpenMushafPage((dua.surahInfo as any).page || 1);
                         }}
                         className="text-[11px] font-bold text-[#0284C7] dark:text-sky-300 hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>تلاوة في المصحف ({dua.surahInfo.name} - صفحة {toArabicNumerals(dua.surahInfo.page)})</span>
+                        <span>تلاوة في المصحف ({dua.surahInfo.surahName} - آية {toArabicNumerals(dua.surahInfo.ayahNumber)})</span>
                         <ChevronLeft className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -480,11 +480,7 @@ export const DuasView: React.FC<DuasViewProps> = ({
       <UniversalExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
-        title={exportData.title}
-        subtitle={exportData.subtitle}
-        textToCopy={exportData.textToCopy}
-        fileName={exportData.fileName}
-        jsonData={exportData.jsonData}
+        payload={exportData}
       />
     </div>
   );

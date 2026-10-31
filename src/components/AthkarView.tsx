@@ -146,7 +146,7 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
     (i) => (athkarProgress[i.id] || 0) >= i.repeatCount
   ).length;
 
-  const currentExportData = generateAthkarExport(activeCategory.title, activeCategory.items, athkarProgress);
+  const currentExportData = generateAthkarExport(activeCategory.title, activeCategory.items);
 
   return (
     <div 
@@ -428,11 +428,7 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
       <UniversalExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
-        title={currentExportData.title}
-        subtitle={currentExportData.subtitle}
-        textToCopy={currentExportData.textToCopy}
-        fileName={currentExportData.fileName}
-        jsonData={currentExportData.jsonData}
+        payload={currentExportData}
       />
     </div>
   );
