@@ -91,3 +91,39 @@ export function triggerHaptic(duration: number | number[] | 'light' | 'medium' |
     }
   }
 }
+
+// Play melodic Adhan phrase tone ("الله أكبر الله أكبر")
+export function playAdhanChime() {
+  try {
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    const now = ctx.currentTime;
+
+    // "الله أكبر" phrase 1 & 2
+    const adhanNotes = [
+      { freq: 349.23, duration: 0.6, delay: 0 },    // F4 (Allaaahu)
+      { freq: 440.00, duration: 0.7, delay: 0.6 },  // A4 (Akbar)
+      { freq: 392.00, duration: 0.8, delay: 1.3 },  // G4
+      { freq: 349.23, duration: 0.6, delay: 2.3 },  // F4 (Allaaahu)
+      { freq: 440.00, duration: 0.7, delay: 2.9 },  // A4 (Akbar)
+      { freq: 349.23, duration: 1.2, delay: 3.6 },  // F4
+    ];
+
+    adhanNotes.forEach(({ freq, duration, delay }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + delay);
+      gain.gain.setValueAtTime(0, now + delay);
+      gain.gain.linearRampToValueAtTime(0.25, now + delay + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + delay + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + delay);
+      osc.stop(now + delay + duration);
+    });
+  } catch {
+    // Ignore audio errors
+  }
+}

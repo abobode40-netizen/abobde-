@@ -49,7 +49,7 @@ import {
   toEasternArabicDigits 
 } from '../utils/prayerTimes';
 import { toArabicNumerals } from '../data/quranData';
-import { playChime, triggerHaptic } from '../utils/audio';
+import { playChime, triggerHaptic, playAdhanChime } from '../utils/audio';
 
 interface PrayerTimesWidgetProps {
   onNavigateToTracker?: () => void;
@@ -173,7 +173,7 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
               // Ignore
             }
             setActivePrayerPopup(p);
-            playChime('bell');
+            playAdhanChime();
             triggerHaptic(40);
             try {
               if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
@@ -298,12 +298,12 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
   };
 
   const handlePlayAdhanNotification = () => {
-    playChime('bell');
+    playAdhanChime();
     triggerHaptic(30);
     setIsPlayingAdhanPreview(true);
     setTimeout(() => {
       setIsPlayingAdhanPreview(false);
-    }, 1200);
+    }, 4000);
   };
 
   const getPrayerIcon = (id: string, isNext: boolean) => {

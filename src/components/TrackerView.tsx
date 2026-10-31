@@ -31,11 +31,13 @@ import { calculateTreePercentage } from '../utils/storage';
 import { DoorActionBar } from './DoorActionBar';
 import { UniversalExportModal } from './UniversalExportModal';
 import { generateTrackerExport } from '../utils/universalExport';
+import { PrayerTimesWidget } from './PrayerTimesWidget';
 
 interface TrackerViewProps {
   trackerData: DayTrackerData;
   onUpdateTracker: (updated: DayTrackerData) => void;
   onOpenSebha: () => void;
+  onNavigateToQibla?: () => void;
   fontScale?: number;
   onChangeFontScale?: (scale: number) => void;
 }
@@ -44,6 +46,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
   trackerData,
   onUpdateTracker,
   onOpenSebha,
+  onNavigateToQibla,
   fontScale = 100,
   onChangeFontScale
 }) => {
@@ -243,7 +246,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     >
       {/* Universal Action Bar: Zoom, Swipe Guidance, and Export */}
       <DoorActionBar
-        doorTitle="باب شجرة العبادات ومتابعة الطاعات"
+        doorTitle="باب الصلاة والقبلة والمواقيت"
         fontScale={fontScale}
         onChangeFontScale={onChangeFontScale}
         onOpenExport={() => setIsExportOpen(true)}
@@ -266,14 +269,17 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
 
         <div className="text-right">
           <div className="flex items-center gap-1.5 justify-end text-sky-800 dark:text-sky-300 font-bold text-base">
-            <span>شجرة العبادات</span>
+            <span>الصلاة والقبلة ومتابعة الطاعات</span>
             <TreePine className="w-5 h-5 text-[#0284C7] dark:text-sky-400" />
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            خطوات صغيرة تثبت في يومك وتكبر مع الوقت
+            مواقيت الصلاة، اتجاه القبلة، وشجرة العبادات
           </p>
         </div>
       </div>
+
+      {/* Live Prayer Times & Geolocation Widget (جامع لكل متعلقات الصلاة والقبلة) */}
+      <PrayerTimesWidget onNavigateToQibla={onNavigateToQibla} />
 
       {/* Interactive Worship Tree Card */}
       <div className="p-5 rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#103463] to-[#184882] text-white shadow-md border border-sky-400/30 relative overflow-hidden">

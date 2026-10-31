@@ -36,6 +36,7 @@ import { GlobalAudioPlayer } from './components/GlobalAudioPlayer';
 import { NetworkStatusBanner } from './components/NetworkStatusBanner';
 import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { TopNavbarWithDropdown } from './components/TopNavbarWithDropdown';
+import { GlobalPrayerAlertModal } from './components/GlobalPrayerAlertModal';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<AppTab>(() => {
@@ -282,6 +283,7 @@ export default function App() {
                 trackerData={trackerData}
                 onUpdateTracker={handleUpdateTracker}
                 onOpenSebha={() => setIsSebhaOpen(true)}
+                onNavigateToQibla={() => setCurrentTab('qibla')}
                 fontScale={settings.appFontScale || 100}
                 onChangeFontScale={handleUpdateFontScale}
               />
@@ -418,6 +420,9 @@ export default function App() {
 
       {/* Global Audio Player (persists across tab changes) */}
       <GlobalAudioPlayer />
+
+      {/* Global Prayer Time Adhan Alert Modal ("الله أكبر الله أكبر") */}
+      <GlobalPrayerAlertModal />
     </div>
   );
 }
