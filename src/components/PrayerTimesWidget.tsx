@@ -72,6 +72,78 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
   const [locationError, setLocationError] = useState<string | null>(null);
   const [isPlayingAdhanPreview, setIsPlayingAdhanPreview] = useState(false);
   const [pinnedNotification, setPinnedNotification] = useState<string | null>(null);
+  const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('jannat_prayer_notifications') === 'true';
+    }
+    return false;
+  });
+  const [activePrayerPopup, setActivePrayerPopup] = useState<PrayerTimeItem | null>(null);
+
+  const handleToggleNotifications = async () => {
+    triggerHaptic(20);
+    playChime('click');
+    if (!isNotificationsEnabled) {
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') {
+          setIsNotificationsEnabled(true);
+          localStorage.setItem('jannat_prayer_notifications', 'true');
+          setPinnedNotification('تم تفعيل إشعارات مواقيت الصلاة استناداً لموقعك الجغرافي بنجاح 🔔');
+          setTimeout(() => setPinnedNotification(null), 4000);
+          new Notification('جَنَّة الرَّحْمَٰن', {
+            body: `تم تفعيل إشعارات مواقيت الصلاة لمدينة ${location.cityName}`,
+            icon: '/favicon.ico'
+          });
+        } else {
+          setPinnedNotification('يرجى السماح بالإشعارات من إعدادات المتصفح');
+          setTimeout(() => setPinnedNotification(null), 4000);
+        }
+      } else {
+        setIsNotificationsEnabled(true);
+        localStorage.setItem('jannat_prayer_notifications', 'true');
+        setPinnedNotification('تم تفعيل التنبيهات المنبثقة داخل التطبيق بنجاح');
+        setTimeout(() => setPinnedNotification(null), 4000);
+      }
+    } else {
+      setIsNotificationsEnabled(false);
+      localStorage.setItem('jannat_prayer_notifications', 'false');
+      setPinnedNotification('تم إيقاف إشعارات مواقيت الصلاة');
+      setTimeout(() => setPinnedNotification(null), 3000);
+    }
+  };
+
+  // Check prayer time alerts every 15 seconds
+  useEffect(() => {
+    if (!isNotificationsEnabled) return;
+    const checkPrayerAlert = () => {
+      const now = new Date();
+      const currentHH = String(now.getHours()).padStart(2, '0');
+      const currentMM = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${currentHH}:${currentMM}`;
+
+      prayerInfo.allPrayers.forEach((p) => {
+        if (p.time === timeStr && p.id !== 'sunrise') {
+          const lastNotifiedKey = `jannat_notified_${p.id}_${now.toDateString()}`;
+          if (!localStorage.getItem(lastNotifiedKey)) {
+            localStorage.setItem(lastNotifiedKey, 'true');
+            setActivePrayerPopup(p);
+            playChime('bell');
+            triggerHaptic(40);
+            if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+              new Notification(`حان الآن موعد صلاة ${p.name}`, {
+                body: `حان وقت صلاة ${p.name} حسب توقيت ${location.cityName} (${location.isGps ? 'موقع GPS مباشر' : 'الموقع المحدد'})`,
+                icon: '/favicon.ico'
+              });
+            }
+          }
+        }
+      });
+    };
+
+    const interval = setInterval(checkPrayerAlert, 15000);
+    return () => clearInterval(interval);
+  }, [isNotificationsEnabled, prayerInfo, location]);
 
   // Update countdown & Cairo live time every second
   useEffect(() => {
@@ -441,7 +513,20 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
           <div />
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          <button
+            onClick={handleToggleNotifications}
+            className={`text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all active:scale-95 font-bold border ${
+              isNotificationsEnabled
+                ? 'bg-amber-400 text-[#0E4234] border-amber-300 shadow-sm'
+                : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+            }`}
+            title={isNotificationsEnabled ? 'الإشعارات مفعلة' : 'تفعيل إشعارات مواقيت الصلاة'}
+          >
+            <Bell className={`w-3.5 h-3.5 ${isNotificationsEnabled ? 'fill-current animate-bounce' : ''}`} />
+            <span>{isNotificationsEnabled ? 'التنبيهات مفعلة 🔔' : 'تفعيل التنبيهات'}</span>
+          </button>
+
           {onNavigateToQibla && (
             <button
               onClick={onNavigateToQibla}
@@ -713,6 +798,50 @@ export const PrayerTimesWidget: React.FC<PrayerTimesWidgetProps> = ({
                 إغلاق وحفظ
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Active Prayer Time Popup Notification Modal */}
+      {activePrayerPopup && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn" dir="rtl">
+          <div className="w-full max-w-sm bg-gradient-to-br from-[#0E4234] via-[#125B47] to-[#0A3327] text-white rounded-3xl p-6 shadow-2xl border-2 border-amber-300 text-center space-y-4 animate-scaleUp">
+            <div className="w-16 h-16 mx-auto rounded-full bg-amber-400 text-[#0E4234] flex items-center justify-center shadow-lg animate-bounce">
+              <Bell className="w-8 h-8 fill-current" />
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/40">
+                مواقيت الصلاة • {location.cityName} ({location.isGps ? 'تحديد GPS دقيق 📍' : 'الموقع المحدد'})
+              </span>
+              <h3 className="font-amiri text-2xl font-bold text-amber-300">
+                حان الآن موعد صلاة {activePrayerPopup.name}
+              </h3>
+              <p className="text-xs text-emerald-100">
+                وفقاً للتوقيت المحلي والإحداثيات الجغرافية لمدينتكم المباركة
+              </p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-black/25 border border-white/10 text-right">
+              <div className="flex items-center justify-between text-xs text-emerald-200">
+                <span>وقت الأذان</span>
+                <span className="font-bold text-amber-300 text-sm">{toArabicNumerals(activePrayerPopup.time)}</span>
+              </div>
+              <p className="text-[11px] text-emerald-100/80 mt-1">
+                "الصلاة كانت على المؤمنين كتاباً موقوتاً"
+              </p>
+            </div>
+
+            <button
+              onClick={() => {
+                setActivePrayerPopup(null);
+                playChime('click');
+                triggerHaptic(15);
+              }}
+              className="w-full py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-[#0E4234] font-bold text-xs shadow-lg transition-all active:scale-95"
+            >
+              تقبل الله طاعتكم 🤲 (إغلاق التنبيه)
+            </button>
           </div>
         </div>
       )}
