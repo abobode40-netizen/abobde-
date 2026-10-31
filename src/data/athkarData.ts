@@ -519,7 +519,7 @@ export const ATHKAR_CATEGORIES: AthkarCategory[] = [
     title: 'أذكار الصلاة والأذان',
     subtitle: 'إجابة الأذان وأدعية الاستفتاح والركوع والسجود وما بعد السلام كاملة من كتاب حصن المسلم',
     iconName: 'CheckCircle',
-    color: '#0F6B50',
+    color: '#0284C7',
     items: [
       {
         id: 'mq_adhan_repeat',

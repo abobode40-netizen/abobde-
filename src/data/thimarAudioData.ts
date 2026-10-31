@@ -48,7 +48,7 @@ export const SCHOLARS_METADATA: ScholarProfile[] = [
     shortName: 'ابن عثيمين',
     title: 'فقيه الزمان والمربي الجليل',
     era: 'أكابر مشايخ أهل السنة المعاصرين',
-    avatarGradient: 'from-emerald-700 to-teal-950',
+    avatarGradient: 'from-sky-700 to-blue-950',
     description: 'تميز بأسلوبه التربوي الفذ، وتقريبه لمسائل الفقه والعقيدة، ومخاطبته لقلوب الشباب وعقولهم بالدليل والحكمة.',
     topics: ['استغلال الشباب', 'علاج الوساوس', 'لذة الصلاة', 'التوبة من الذنب']
   },
@@ -68,7 +68,7 @@ export const SCHOLARS_METADATA: ScholarProfile[] = [
     shortName: 'الفوزان',
     title: 'عضو هيئة كبار العلماء وفقيه العصر',
     era: 'أكابر مشايخ أهل السنة المعاصرين',
-    avatarGradient: 'from-teal-600 to-emerald-950',
+    avatarGradient: 'from-cyan-600 to-sky-950',
     description: 'عالم رباني راسخ، يتميز بوضوح العبارة، والتمسك بمنهج السلف الصالح، والتحذير من الفتن ودعاة الضلالة.',
     topics: ['الحذر من الفتن', 'رفقاء السوء', 'بر الوالدين', 'العقيدة السلفية']
   },
@@ -78,7 +78,7 @@ export const SCHOLARS_METADATA: ScholarProfile[] = [
     shortName: 'عبد الرزاق البدر',
     title: 'أستاذ العقيدة ومدرس المسجد النبوي الشريف',
     era: 'أكابر مشايخ أهل السنة المعاصرين',
-    avatarGradient: 'from-emerald-600 to-green-950',
+    avatarGradient: 'from-sky-600 to-blue-950',
     description: 'دروسه ومواعظه غذاء للأرواح، يركز على صلاح القلوب، وأسماء الله الحسنى، ومعالجة آفات العصر والهواتف الذكية.',
     topics: ['مجاهدة الهواتف', 'صلاح القلوب', 'الصحبة الصالحة', 'أسماء الله']
   },

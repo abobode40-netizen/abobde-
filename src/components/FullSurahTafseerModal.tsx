@@ -39,7 +39,7 @@ export const TRUSTED_TAFSEER_SOURCES: TrustedSource[] = [
     description: 'التفسير المعتمد رسمياً والموثوق صادر عن نخبة من علماء القرآن في المدينة المنورة.',
     icon: '🏛️',
     badge: 'معتمد رسمياً',
-    color: '#0F6B50',
+    color: '#0284C7',
     getUrl: (sNum, aNum = 1) => `https://quran.ksu.edu.sa/tafseer/muyassar/sura${sNum}-aya${aNum}.html`
   },
   {
@@ -69,7 +69,7 @@ export const TRUSTED_TAFSEER_SOURCES: TrustedSource[] = [
     description: 'كتاب محرر صادر عن مركز تفسير يوضح معاني الآيات ومقاصد كل سورة بأسلوب ميسر.',
     icon: '💎',
     badge: 'مركز تفسير',
-    color: '#059669',
+    color: '#0284C7',
     getUrl: (sNum, aNum = 1) => `https://tafseer.app/almukhtasar/${sNum}/${aNum}`
   },
   {
@@ -247,7 +247,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center p-2.5 sm:p-4 pt-3 sm:pt-6 animate-fadeIn overflow-y-auto">
-      <div className="bg-white dark:bg-[#14221D] w-full max-w-3xl rounded-3xl border-2 border-[#0F6B50]/50 dark:border-[#2DD4BF]/40 shadow-2xl overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[91vh] my-0">
+      <div className="bg-white dark:bg-[#14221D] w-full max-w-3xl rounded-3xl border-2 border-[#0284C7]/50 dark:border-[#38BDF8]/40 shadow-2xl overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[91vh] my-0">
         
         {/* Modal Top Header Ribbon */}
         <div className="p-4 sm:p-5 border-b border-[#EAE3D2] dark:border-[#22362D] bg-[#FAF8F2] dark:bg-[#101B17] flex items-center justify-between shrink-0">
@@ -261,7 +261,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
 
           <div className="text-right">
             <div className="flex items-center gap-2 justify-end">
-              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] border border-emerald-300/40">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] border border-sky-300/40">
                 سورة رقم {toArabicNumerals(surahNumber)}
               </span>
               <h3 className="font-bold text-lg sm:text-xl text-[#19302A] dark:text-white font-amiri">
@@ -275,7 +275,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
         </div>
 
         {/* Trusted Source Selector Banner */}
-        <div className="p-3.5 sm:p-4 bg-gradient-to-r from-emerald-900 via-[#0F6B50] to-teal-800 text-white border-b border-[#0F6B50]/30 shrink-0 space-y-2.5">
+        <div className="p-3.5 sm:p-4 bg-gradient-to-r from-sky-900 via-[#0284C7] to-cyan-800 text-white border-b border-[#0284C7]/30 shrink-0 space-y-2.5">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2">
               <span className="text-2xl">{currentSourceObj.icon}</span>
@@ -286,7 +286,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                     {currentSourceObj.badge}
                   </span>
                 </div>
-                <p className="text-[11px] text-emerald-100/90">{currentSourceObj.author}</p>
+                <p className="text-[11px] text-sky-100/90">{currentSourceObj.author}</p>
               </div>
             </div>
 
@@ -330,7 +330,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                   }}
                   className={`p-2.5 rounded-xl cursor-pointer transition-all border text-right ${
                     selectedSource === src.id
-                      ? 'bg-white text-[#0F6B50] border-amber-300 font-bold shadow-md'
+                      ? 'bg-white text-[#0284C7] border-amber-300 font-bold shadow-md'
                       : 'bg-white/10 hover:bg-white/20 text-white border-white/15'
                   }`}
                 >
@@ -343,7 +343,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                       <span>{src.icon}</span>
                     </span>
                   </div>
-                  <p className={`text-[10px] mt-1 line-clamp-1 ${selectedSource === src.id ? 'text-gray-700' : 'text-emerald-100'}`}>
+                  <p className={`text-[10px] mt-1 line-clamp-1 ${selectedSource === src.id ? 'text-gray-700' : 'text-sky-100'}`}>
                     {src.author}
                   </p>
                 </div>
@@ -364,9 +364,9 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                   placeholder="ابحث عن كلمة أو موضوع محدد داخل تفسير السورة (مثال: الرحمة، التوحيد، الجنة)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white dark:bg-[#101A16] border-2 border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0F6B50] dark:focus:border-[#2DD4BF] rounded-2xl py-2 pr-10 pl-9 text-xs sm:text-sm text-right text-[#19302A] dark:text-white outline-none shadow-xs font-medium"
+                  className="w-full bg-white dark:bg-[#101A16] border-2 border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0284C7] dark:focus:border-[#38BDF8] rounded-2xl py-2 pr-10 pl-9 text-xs sm:text-sm text-right text-[#19302A] dark:text-white outline-none shadow-xs font-medium"
                 />
-                <Search className="w-4 h-4 text-emerald-600 dark:text-[#2DD4BF] absolute right-3.5 top-3" />
+                <Search className="w-4 h-4 text-sky-600 dark:text-[#38BDF8] absolute right-3.5 top-3" />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
@@ -399,14 +399,14 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
               <div className="flex items-center gap-1 bg-white dark:bg-[#101A16] p-1 rounded-2xl border-2 border-[#E5DDCF] dark:border-[#263D33] shrink-0">
                 <button
                   onClick={() => setFontSize(Math.min(36, fontSize + 2))}
-                  className="px-2 py-1 rounded-xl bg-[#F4F8F5] dark:bg-[#1C2C25] font-bold text-xs hover:text-[#0F6B50] shadow-xs"
+                  className="px-2 py-1 rounded-xl bg-[#F4F8F5] dark:bg-[#1C2C25] font-bold text-xs hover:text-[#0284C7] shadow-xs"
                   title="تكبير الخط"
                 >
                   أ+
                 </button>
                 <button
                   onClick={() => setFontSize(Math.max(14, fontSize - 2))}
-                  className="px-2 py-1 rounded-xl bg-[#F4F8F5] dark:bg-[#1C2C25] font-bold text-xs hover:text-[#0F6B50] shadow-xs"
+                  className="px-2 py-1 rounded-xl bg-[#F4F8F5] dark:bg-[#1C2C25] font-bold text-xs hover:text-[#0284C7] shadow-xs"
                   title="تصغير الخط"
                 >
                   أ-
@@ -427,8 +427,8 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                     }}
                     className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold transition-all border ${
                       searchQuery === kw
-                        ? 'bg-[#0F6B50] text-white border-[#0F6B50]'
-                        : 'bg-white dark:bg-[#16251F] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-[#0F6B50]'
+                        ? 'bg-[#0284C7] text-white border-[#0284C7]'
+                        : 'bg-white dark:bg-[#16251F] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-[#0284C7]'
                     }`}
                   >
                     {kw}
@@ -449,7 +449,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
         <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 text-right space-y-4 pb-8">
           {loading ? (
             <div className="p-12 text-center space-y-3">
-              <div className="w-8 h-8 border-3 border-[#0F6B50] border-t-transparent rounded-full animate-spin mx-auto" />
+              <div className="w-8 h-8 border-3 border-[#0284C7] border-t-transparent rounded-full animate-spin mx-auto" />
               <p className="text-xs font-bold text-gray-500">جاري تحميل التفسير الكامل لجميع آيات سورة {surahName}...</p>
             </div>
           ) : filteredAyahs.length === 0 ? (
@@ -465,17 +465,17 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                 <div
                   key={item.number}
                   id={`full-tafseer-ayah-${item.number}`}
-                  className="p-4 sm:p-5 rounded-3xl bg-[#FAF8F2] dark:bg-[#162720] border-2 border-[#E7DFC8] dark:border-[#273B32] shadow-xs space-y-3.5 transition-all hover:border-[#0F6B50]"
+                  className="p-4 sm:p-5 rounded-3xl bg-[#FAF8F2] dark:bg-[#162720] border-2 border-[#E7DFC8] dark:border-[#273B32] shadow-xs space-y-3.5 transition-all hover:border-[#0284C7]"
                 >
                   {/* Card Header Ribbon */}
                   <div className="flex items-center justify-between border-b border-[#EBE3D3] dark:border-[#24392F] pb-2.5 flex-wrap gap-2">
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => handleCopy(`﴿ ${item.text} ﴾\nالتفسير الميسر: ${item.tafseer}`, copyKey)}
-                        className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#101A16] text-gray-700 dark:text-gray-300 hover:text-[#0F6B50] text-xs font-bold flex items-center gap-1 transition-all border border-gray-200 dark:border-gray-800"
+                        className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#101A16] text-gray-700 dark:text-gray-300 hover:text-[#0284C7] text-xs font-bold flex items-center gap-1 transition-all border border-gray-200 dark:border-gray-800"
                         title="نسخ الآية والتفسير"
                       >
-                        {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        {isCopied ? <Check className="w-3.5 h-3.5 text-sky-600" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{isCopied ? 'تم النسخ' : 'نسخ'}</span>
                       </button>
 
@@ -485,7 +485,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                             onSelectAyahForDetails(surahNumber, surahName, item.number, item.text, item.tafseer);
                             playChime('click');
                           }}
-                          className="px-2.5 py-1 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center gap-1 shadow-xs transition-all"
+                          className="px-2.5 py-1 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center gap-1 shadow-xs transition-all"
                           title="تفاصيل الآية، أسباب النزول، وتصحيح التلاوة بالذكاء الاصطناعي"
                         >
                           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -495,7 +495,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] border border-emerald-300/40">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] border border-sky-300/40">
                         الآية {toArabicNumerals(item.number)}
                       </span>
                       <span className="font-bold text-xs text-[#7A877B] dark:text-gray-300">
@@ -516,7 +516,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
 
                   {/* Tafseer Content with Live Keyword Highlight */}
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#0284C7] dark:text-[#38BDF8]">
                       <span className="flex items-center gap-1.5">
                         <BookOpen className="w-4 h-4" />
                         <span>تفسير الآية ({currentSourceObj.name}):</span>
@@ -542,7 +542,7 @@ export const FullSurahTafseerModal: React.FC<FullSurahTafseerModalProps> = ({
         <div className="p-3.5 bg-[#FAF8F2] dark:bg-[#101B17] border-t border-[#EAE3D2] dark:border-[#22362D] flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 shrink-0">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white font-bold transition-all text-xs"
+            className="px-4 py-2 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white font-bold transition-all text-xs"
           >
             إغلاق
           </button>

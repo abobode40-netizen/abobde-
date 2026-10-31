@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   TreePine, 
   CheckCircle2, 
@@ -17,7 +17,8 @@ import {
   Heart,
   ChevronLeft,
   Calendar,
-  Share2
+  Share2,
+  Download
 } from 'lucide-react';
 import { DayTrackerData, PrayerStatus, OneMinuteDeed } from '../types';
 import { DAILY_HABITS_LIST, ONE_MINUTE_DEEDS, WORK_MODE_THOUGHTS } from '../data/prayersData';
@@ -27,17 +28,24 @@ import { CelebrationModal, CelebrationType } from './CelebrationModal';
 import { TreeShareModal } from './TreeShareModal';
 import { fireCelebrationConfetti } from '../utils/confetti';
 import { calculateTreePercentage } from '../utils/storage';
+import { DoorActionBar } from './DoorActionBar';
+import { UniversalExportModal } from './UniversalExportModal';
+import { generateTrackerExport } from '../utils/universalExport';
 
 interface TrackerViewProps {
   trackerData: DayTrackerData;
   onUpdateTracker: (updated: DayTrackerData) => void;
   onOpenSebha: () => void;
+  fontScale?: number;
+  onChangeFontScale?: (scale: number) => void;
 }
 
 export const TrackerView: React.FC<TrackerViewProps> = ({
   trackerData,
   onUpdateTracker,
-  onOpenSebha
+  onOpenSebha,
+  fontScale = 100,
+  onChangeFontScale
 }) => {
   // One-Minute Ward state
   const [selectedDeedIndex, setSelectedDeedIndex] = useState(0);
@@ -50,8 +58,12 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
   const [thoughtIndex, setThoughtIndex] = useState(0);
   const [showThoughtModal, setShowThoughtModal] = useState(false);
 
-  // Share Modal state
+  // Share & Export Modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
+
+  // Swipe gesture ref
+  const touchStartXRef = useRef<number | null>(null);
 
   // Celebration state
   const [celebrationState, setCelebrationState] = useState<{
@@ -94,7 +106,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     } else if (timeLeft === 0 && timerRunning) {
       setTimerRunning(false);
       playChime('milestone');
-      triggerHaptic(80);
+      triggerHaptic('heavy');
     }
     return () => clearInterval(interval);
   }, [timerRunning, timeLeft]);
@@ -107,7 +119,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
         setThoughtIndex((prev) => (prev + 1) % WORK_MODE_THOUGHTS.length);
         setShowThoughtModal(true);
         playChime('bell');
-      }, 90000); // Trigger peaceful thought every 90 seconds in active preview
+      }, 90000);
     }
     return () => clearInterval(interval);
   }, [workModeActive]);
@@ -130,7 +142,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     onUpdateTracker(updated);
     checkAndTriggerCelebration(trackerData, updated);
     playChime(next === 'congregation' ? 'milestone' : 'click');
-    triggerHaptic(30);
+    triggerHaptic('selection');
   };
 
   // Toggle habit
@@ -146,7 +158,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     onUpdateTracker(updated);
     checkAndTriggerCelebration(trackerData, updated);
     playChime(!current ? 'success' : 'click');
-    triggerHaptic(30);
+    triggerHaptic('selection');
   };
 
   // Adjust Quran Ward Pages
@@ -181,7 +193,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     }
     setMinuteCount((prev) => prev + 1);
     playChime('click');
-    triggerHaptic(20);
+    triggerHaptic('light');
   };
 
   const resetMinuteTimer = () => {
@@ -201,8 +213,43 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
     isha: 'العشاء'
   };
 
+  // Touch swipe to cycle through 1-minute deeds
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    touchStartXRef.current = null;
+    if (Math.abs(deltaX) > 50) {
+      if (deltaX < 0) {
+        setSelectedDeedIndex((prev) => (prev + 1) % ONE_MINUTE_DEEDS.length);
+        playChime('click');
+      } else {
+        setSelectedDeedIndex((prev) => (prev - 1 + ONE_MINUTE_DEEDS.length) % ONE_MINUTE_DEEDS.length);
+        playChime('click');
+      }
+    }
+  };
+
+  const exportData = generateTrackerExport(trackerData);
+
   return (
-    <div className="pb-24 pt-2 px-3 sm:px-4 max-w-lg mx-auto space-y-4 animate-fadeIn">
+    <div 
+      className="pb-24 pt-2 px-3 sm:px-4 max-w-lg mx-auto space-y-4 animate-fadeIn"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Universal Action Bar: Zoom, Swipe Guidance, and Export */}
+      <DoorActionBar
+        doorTitle="باب شجرة العبادات ومتابعة الطاعات"
+        fontScale={fontScale}
+        onChangeFontScale={onChangeFontScale}
+        onOpenExport={() => setIsExportOpen(true)}
+        swipeHint="اسحب يميناً ويساراً لتبديل ورد الدقيقة ⇆"
+      />
+
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <button
@@ -210,28 +257,28 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
             setIsShareModalOpen(true);
             playChime('click');
           }}
-          className="px-3.5 py-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-300/60 dark:border-emerald-800 text-[#0F6B50] dark:text-[#2DD4BF] hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer"
+          className="px-3.5 py-2 rounded-2xl bg-sky-50 dark:bg-sky-950/70 border border-sky-300/60 dark:border-sky-800 text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/60 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer"
           title="مشاركة صورة تقدم شجرة العبادات"
         >
-          <Share2 className="w-4 h-4 text-emerald-700 dark:text-[#2DD4BF]" />
+          <Share2 className="w-4 h-4 text-sky-600 dark:text-sky-300" />
           <span>مشاركة الشجرة</span>
         </button>
 
         <div className="text-right">
-          <div className="flex items-center gap-1.5 justify-end text-[#164C3E] dark:text-[#2DD4BF] font-bold text-base">
+          <div className="flex items-center gap-1.5 justify-end text-sky-800 dark:text-sky-300 font-bold text-base">
             <span>شجرة العبادات</span>
-            <TreePine className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <TreePine className="w-5 h-5 text-[#0284C7] dark:text-sky-400" />
           </div>
-          <p className="text-xs text-[#6F786E] dark:text-[#8E9B93]">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             خطوات صغيرة تثبت في يومك وتكبر مع الوقت
           </p>
         </div>
       </div>
 
       {/* Interactive Worship Tree Card */}
-      <div className="p-5 rounded-3xl bg-gradient-to-br from-[#0F6B50] to-[#178064] text-white shadow-md islamic-border relative overflow-hidden">
+      <div className="p-5 rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#103463] to-[#184882] text-white shadow-md border border-sky-400/30 relative overflow-hidden">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-amber-300">
+          <span className="text-xs font-bold text-sky-200">
             {toArabicNumerals(completedHabitsCount)} من {toArabicNumerals(10)}
           </span>
           <div className="text-right">
@@ -240,13 +287,13 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
         </div>
 
         {/* Tree Growth Progress Bar */}
-        <div className="mt-3 w-full h-2.5 bg-emerald-950/40 rounded-full overflow-hidden">
+        <div className="mt-3 w-full h-2.5 bg-black/30 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-l from-amber-300 to-amber-400 rounded-full transition-all duration-700"
+            className="h-full bg-gradient-to-l from-sky-400 to-cyan-300 rounded-full transition-all duration-700"
             style={{ width: `${treePct}%` }}
           />
         </div>
-        <p className="text-[11px] text-emerald-100 mt-2 text-right">
+        <p className="text-[11px] text-sky-100 mt-2 text-right">
           كل عمل صالح غصن يورق في شجرتك المباركة.
         </p>
 
@@ -258,13 +305,13 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
               <button
                 key={h.id}
                 onClick={() => toggleHabit(h.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 active:scale-95 ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 active:scale-95 cursor-pointer ${
                   isDone
-                    ? 'bg-amber-300 text-emerald-950 shadow-sm'
+                    ? 'bg-sky-300 text-slate-900 shadow-sm'
                     : 'bg-white/15 text-white/90 border border-white/20 hover:bg-white/25'
                 }`}
               >
-                {isDone ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-900" /> : <Circle className="w-3.5 h-3.5 opacity-60" />}
+                {isDone ? <CheckCircle2 className="w-3.5 h-3.5 text-slate-900" /> : <Circle className="w-3.5 h-3.5 opacity-60" />}
                 <span>{h.title}</span>
               </button>
             );
@@ -278,27 +325,27 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
               setIsShareModalOpen(true);
               playChime('click');
             }}
-            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-md cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-900 font-extrabold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-md cursor-pointer"
           >
-            <Share2 className="w-4 h-4 text-emerald-950" />
+            <Share2 className="w-4 h-4 text-slate-900" />
             <span>مشاركة الصورة عبر التواصل</span>
           </button>
-          <span className="text-[11px] text-amber-200/90 font-bold">
+          <span className="text-[11px] text-sky-200 font-bold">
             🌱 انشر الخير وشجّع أهلك وأصحابك
           </span>
         </div>
       </div>
 
       {/* 5 Prayers Tracker with 3 States */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3">
-        <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
+      <div className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 shadow-sm space-y-3">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
           <div className="text-right">
-            <h4 className="font-bold text-sm text-[#19302A] dark:text-white">متابعة الصلوات الخمس</h4>
-            <p className="text-[11px] text-gray-500">
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">متابعة الصلوات الخمس</h4>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
               اضغط لتبديل الحالة: لم تُؤدَّ ← منفرداً ← جماعة
             </p>
           </div>
-          <span className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 rounded-lg">
+          <span className="text-xs font-bold text-[#0284C7] dark:text-sky-300 bg-sky-50 dark:bg-sky-950 px-2.5 py-1 rounded-lg">
             اليوم
           </span>
         </div>
@@ -306,16 +353,16 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
         <div className="grid grid-cols-5 gap-2 text-center">
           {(['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as const).map((pkey) => {
             const status = trackerData.prayers[pkey];
-            let badgeColor = 'bg-[#FAF7F0] dark:bg-[#14201B] border-[#D7DFD5] text-[#19302A] dark:text-gray-300';
+            let badgeColor = 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300';
             let label = 'لم تُؤدَّ';
             let icon = <Circle className="w-3 h-3 opacity-40" />;
 
             if (status === 'alone') {
-              badgeColor = 'bg-amber-100 dark:bg-amber-950/70 border-amber-300 text-amber-900 dark:text-amber-200';
+              badgeColor = 'bg-sky-100/70 dark:bg-sky-950/70 border-sky-300 text-sky-900 dark:text-sky-200';
               label = 'منفرداً';
               icon = <User className="w-3 h-3" />;
             } else if (status === 'congregation') {
-              badgeColor = 'bg-emerald-100 dark:bg-emerald-950/70 border-emerald-400 text-emerald-900 dark:text-emerald-200';
+              badgeColor = 'bg-sky-200 dark:bg-sky-900 border-sky-400 text-sky-950 dark:text-sky-100 font-bold shadow-xs';
               label = 'جماعة';
               icon = <Users className="w-3 h-3" />;
             }
@@ -324,7 +371,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
               <button
                 key={pkey}
                 onClick={() => togglePrayer(pkey)}
-                className={`p-2.5 rounded-xl border flex flex-col items-center justify-center transition-all active:scale-95 shadow-xs ${badgeColor}`}
+                className={`p-2.5 rounded-xl border flex flex-col items-center justify-center transition-all active:scale-95 shadow-xs cursor-pointer ${badgeColor}`}
               >
                 <span className="font-bold text-xs">{prayerNames[pkey]}</span>
                 <span className="text-[10px] mt-1 flex items-center gap-0.5 font-medium">
@@ -340,12 +387,12 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
       {/* Quran & Athkar Daily Goals Section */}
       <div className="grid grid-cols-2 gap-3">
         {/* Quran Ward Card */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] text-right shadow-sm flex flex-col justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 text-right shadow-sm flex flex-col justify-between">
           <div>
-            <h4 className="font-bold text-xs text-[#0F6B50] dark:text-[#2DD4BF]">ورد القراءة اليومي</h4>
-            <div className="text-2xl font-bold font-amiri text-[#19302A] dark:text-white mt-1">
+            <h4 className="font-bold text-xs text-[#0284C7] dark:text-sky-300">ورد القراءة اليومي</h4>
+            <div className="text-2xl font-bold font-amiri text-slate-900 dark:text-white mt-1">
               {toArabicNumerals(trackerData.quranPagesRead)}{' '}
-              <span className="text-xs font-normal text-gray-500">صفحة</span>
+              <span className="text-xs font-normal text-slate-500">صفحة</span>
             </div>
           </div>
 
@@ -353,13 +400,13 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
             <div className="flex items-center justify-between gap-1">
               <button
                 onClick={() => updateQuranPages(-1)}
-                className="w-8 h-8 rounded-lg bg-[#FAF7F0] dark:bg-[#14201B] border flex items-center justify-center text-gray-600 hover:text-black dark:text-gray-300"
+                className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 hover:text-black dark:text-slate-300 cursor-pointer"
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => updateQuranPages(1)}
-                className="flex-1 py-1.5 rounded-lg bg-[#0F6B50] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs"
+                className="flex-1 py-1.5 rounded-lg bg-[#0284C7] hover:bg-sky-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>صفحة</span>
@@ -367,14 +414,14 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
             </div>
 
             {/* Target pills */}
-            <div className="flex justify-between text-[10px] font-bold text-gray-500 pt-1">
+            <div className="flex justify-between text-[10px] font-bold text-slate-500 pt-1">
               {[1, 2, 4, 10].map((t) => (
                 <button
                   key={t}
                   onClick={() => setQuranTarget(t)}
-                  className={`px-1.5 py-0.5 rounded ${
+                  className={`px-1.5 py-0.5 rounded cursor-pointer ${
                     trackerData.quranTargetPages === t
-                      ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold'
+                      ? 'bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 font-bold'
                       : 'hover:text-black'
                   }`}
                 >
@@ -388,47 +435,47 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
         {/* Athkar Live Progress Card */}
         <div 
           onClick={onOpenSebha}
-          className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] text-right shadow-sm flex flex-col justify-between cursor-pointer hover:border-[#0F6B50] transition-all group"
+          className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 text-right shadow-sm flex flex-col justify-between cursor-pointer hover:border-[#0284C7] transition-all group"
         >
           <div>
             <div className="flex items-center justify-between">
-              <Flame className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
-              <h4 className="font-bold text-xs text-[#0F6B50] dark:text-[#2DD4BF]">المسبحة والذكر</h4>
+              <Flame className="w-4 h-4 text-sky-500 group-hover:scale-110 transition-transform" />
+              <h4 className="font-bold text-xs text-[#0284C7] dark:text-sky-300">المسبحة والذكر</h4>
             </div>
-            <div className="text-xl font-bold font-amiri text-[#19302A] dark:text-white mt-1">
+            <div className="text-xl font-bold font-amiri text-slate-900 dark:text-white mt-1">
               غراس الأذكار
             </div>
           </div>
 
-          <div className="mt-3 p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200/50 text-center">
-            <span className="text-xs font-bold text-[#B45309] dark:text-amber-300 block">
+          <div className="mt-3 p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200/50 text-center">
+            <span className="text-xs font-bold text-sky-800 dark:text-sky-300 block">
               افتح المسبحة الذكية
             </span>
-            <span className="text-[10px] text-gray-500">تسبيح واستغفار بنقرة واحدة</span>
+            <span className="text-[10px] text-slate-500">تسبيح واستغفار بنقرة واحدة</span>
           </div>
         </div>
       </div>
 
       {/* One-Minute Remembrance Ward (ورد الدقيقة الواحدة) */}
-      <div className="p-5 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3 text-right">
-        <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
+      <div className="p-5 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 shadow-sm space-y-3 text-right">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
           <button
             onClick={() => setSelectedDeedIndex((prev) => (prev + 1) % ONE_MINUTE_DEEDS.length)}
-            className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] hover:underline"
+            className="text-xs font-bold text-[#0284C7] dark:text-sky-300 hover:underline cursor-pointer"
           >
             ورد آخر
           </button>
-          <div className="flex items-center gap-1.5 font-bold text-sm text-[#19302A] dark:text-white">
+          <div className="flex items-center gap-1.5 font-bold text-sm text-slate-900 dark:text-white">
             <span>ورد الدقيقة الواحدة</span>
-            <Clock className="w-4 h-4 text-[#B45309]" />
+            <Clock className="w-4 h-4 text-sky-600 dark:text-sky-400" />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[#FFF9EB] dark:bg-[#232015] border border-[#E8DAB7] dark:border-[#4B3E1F] text-center space-y-1">
-          <h4 className="font-amiri text-lg font-bold text-[#234335] dark:text-amber-100">
+        <div className="p-3.5 rounded-xl bg-sky-50/60 dark:bg-[#0c2448]/50 border border-sky-200 dark:border-sky-800 text-center space-y-1">
+          <h4 className="font-amiri text-lg font-bold text-slate-900 dark:text-sky-100">
             {activeDeed.title}
           </h4>
-          <p className="text-[11px] text-[#758176] dark:text-[#A0A59B]">
+          <p className="text-[11px] text-slate-600 dark:text-slate-300">
             {activeDeed.rewardFadl}
           </p>
         </div>
@@ -438,12 +485,12 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={resetMinuteTimer}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 hover:text-black dark:text-gray-300"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 hover:text-black dark:text-slate-300 cursor-pointer"
               title="إعادة ضبط الدقيقة"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
-            <div className="text-center font-mono font-bold text-sm text-[#0F6B50] dark:text-[#2DD4BF] bg-emerald-50 dark:bg-emerald-950 px-3 py-1.5 rounded-xl">
+            <div className="text-center font-mono font-bold text-sm text-[#0284C7] dark:text-sky-300 bg-sky-50 dark:bg-sky-950 px-3 py-1.5 rounded-xl">
               00:{String(timeLeft).padStart(2, '0')}
             </div>
           </div>
@@ -451,7 +498,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
           {/* Interactive Tap Button */}
           <button
             onClick={handleMinuteTap}
-            className="flex-1 py-3 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all"
+            className="flex-1 py-3 rounded-xl bg-[#0284C7] hover:bg-sky-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
           >
             <span>{timerRunning ? 'اضغط للذكر' : 'ابدأ الدقيقة'}</span>
             <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
@@ -462,7 +509,7 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
       </div>
 
       {/* Work Mode Toggle (وضع العمل والخواطر الهادئة) */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm flex items-center justify-between text-right">
+      <div className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 shadow-sm flex items-center justify-between text-right">
         <div className="flex items-center gap-3">
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -474,13 +521,13 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
               }}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F6B50]" />
+            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0284C7]" />
           </label>
         </div>
 
         <div>
-          <h4 className="font-bold text-sm text-[#19302A] dark:text-white">وضع العمل والخواطر الهادئة</h4>
-          <p className="text-[11px] text-gray-500">
+          <h4 className="font-bold text-sm text-slate-900 dark:text-white">وضع العمل والخواطر الهادئة</h4>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">
             تنبيهات هادئة دورية بخواطر إيمانية تعينك على ذكر الله أثناء الانشغال
           </p>
         </div>
@@ -489,15 +536,15 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
       {/* Work Mode Thought Modal */}
       {showThoughtModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white dark:bg-[#16241E] rounded-3xl p-6 max-w-sm w-full border border-amber-300/40 shadow-2xl space-y-4 text-center">
-            <Sparkles className="w-8 h-8 text-amber-500 mx-auto" />
-            <h3 className="text-sm font-bold text-[#0F6B50] dark:text-[#2DD4BF]">خاطرة إيمانية هادئة</h3>
-            <p className="font-amiri text-lg leading-relaxed text-[#19302A] dark:text-amber-100">
+          <div className="bg-white dark:bg-[#0A192F] rounded-3xl p-6 max-w-sm w-full border border-sky-400/40 shadow-2xl space-y-4 text-center">
+            <Sparkles className="w-8 h-8 text-sky-400 mx-auto" />
+            <h3 className="text-sm font-bold text-[#0284C7] dark:text-sky-300">خاطرة إيمانية هادئة</h3>
+            <p className="font-amiri text-lg leading-relaxed text-slate-900 dark:text-sky-100">
               «{WORK_MODE_THOUGHTS[thoughtIndex]}»
             </p>
             <button
               onClick={() => setShowThoughtModal(false)}
-              className="w-full py-2.5 rounded-xl bg-[#0F6B50] text-white text-xs font-bold"
+              className="w-full py-2.5 rounded-xl bg-[#0284C7] text-white text-xs font-bold cursor-pointer"
             >
               جزاك الله خيراً (متابعة)
             </button>
@@ -521,6 +568,17 @@ export const TrackerView: React.FC<TrackerViewProps> = ({
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         trackerData={trackerData}
+      />
+
+      {/* Universal Export Modal */}
+      <UniversalExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        title={exportData.title}
+        subtitle={exportData.subtitle}
+        textToCopy={exportData.textToCopy}
+        fileName={exportData.fileName}
+        jsonData={exportData.jsonData}
       />
     </div>
   );

@@ -184,7 +184,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
 
       <div className="bg-[#FAF7F0] dark:bg-[#15231D] w-full max-w-lg rounded-3xl border border-[#E5DDCF] dark:border-[#273D33] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[88vh] text-right my-0">
         {/* Header */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#0F6B50] to-[#158064] text-white flex items-center justify-between shadow-sm">
+        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#0284C7] to-[#158064] text-white flex items-center justify-between shadow-sm">
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-transform active:scale-95"
@@ -201,12 +201,12 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
 
         {/* Feedback Alert if any */}
         {feedbackMessage && (
-          <div className="mx-4 mt-3 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300/40 text-emerald-800 dark:text-emerald-200 text-xs font-bold flex items-center justify-between animate-fadeIn">
+          <div className="mx-4 mt-3 p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/80 border border-sky-300/40 text-sky-800 dark:text-sky-200 text-xs font-bold flex items-center justify-between animate-fadeIn">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{feedbackMessage}</span>
             </div>
-            <button onClick={() => setFeedbackMessage(null)} className="text-emerald-600 hover:text-emerald-800">
+            <button onClick={() => setFeedbackMessage(null)} className="text-sky-600 hover:text-sky-800">
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -221,8 +221,8 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
               activeTab === 'reciters'
-                ? 'bg-[#0F6B50] text-white shadow-xs'
-                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0F6B50] dark:hover:text-white'
+                ? 'bg-[#0284C7] text-white shadow-xs'
+                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0284C7] dark:hover:text-white'
             }`}
           >
             <Headphones className="w-3.5 h-3.5" />
@@ -236,8 +236,8 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
               activeTab === 'download_surahs'
-                ? 'bg-[#0F6B50] text-white shadow-xs'
-                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0F6B50] dark:hover:text-white'
+                ? 'bg-[#0284C7] text-white shadow-xs'
+                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0284C7] dark:hover:text-white'
             }`}
           >
             <Download className="w-3.5 h-3.5" />
@@ -251,14 +251,14 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             }}
             className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all relative ${
               activeTab === 'saved_library'
-                ? 'bg-[#0F6B50] text-white shadow-xs'
-                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0F6B50] dark:hover:text-white'
+                ? 'bg-[#0284C7] text-white shadow-xs'
+                : 'text-[#566B60] dark:text-gray-400 hover:text-[#0284C7] dark:hover:text-white'
             }`}
           >
             <HardDrive className="w-3.5 h-3.5" />
             <span>المحمّلة</span>
             {downloadedList.length > 0 && (
-              <span className="w-4 h-4 rounded-full bg-amber-400 text-[#0F6B50] text-[10px] flex items-center justify-center font-bold">
+              <span className="w-4 h-4 rounded-full bg-amber-400 text-[#0284C7] text-[10px] flex items-center justify-center font-bold">
                 {downloadedList.length}
               </span>
             )}
@@ -276,7 +276,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                   placeholder="ابحث عن اسم القارئ (مثال: العفاسي، السديس، الحصري)..."
                   value={searchReciter}
                   onChange={(e) => setSearchReciter(e.target.value)}
-                  className="w-full py-2.5 pl-4 pr-10 text-xs rounded-2xl bg-white dark:bg-[#1B2B24] border border-[#E5DDCF] dark:border-[#2A4035] text-[#19302A] dark:text-white focus:outline-none focus:border-[#0F6B50]"
+                  className="w-full py-2.5 pl-4 pr-10 text-xs rounded-2xl bg-white dark:bg-[#1B2B24] border border-[#E5DDCF] dark:border-[#2A4035] text-[#19302A] dark:text-white focus:outline-none focus:border-[#0284C7]"
                 />
                 <Search className="w-4 h-4 text-gray-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
               </div>
@@ -291,7 +291,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                     }}
                     className={`px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                       selectedCategory === cat
-                        ? 'bg-[#0F6B50] text-white'
+                        ? 'bg-[#0284C7] text-white'
                         : 'bg-white dark:bg-[#1B2B24] border border-[#E5DDCF] dark:border-[#2A4035] text-[#5A6D62] dark:text-gray-300'
                     }`}
                   >
@@ -319,8 +319,8 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                     }}
                     className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between cursor-pointer active:scale-[0.99] ${
                       isCurrentActive
-                        ? 'bg-emerald-50/90 dark:bg-emerald-950/40 border-[#0F6B50] dark:border-[#2DD4BF] ring-2 ring-[#0F6B50]/20'
-                        : 'bg-white dark:bg-[#1A2A23] border-[#E7DFC5] dark:border-[#283E34] hover:border-[#0F6B50]'
+                        ? 'bg-sky-50/90 dark:bg-sky-950/40 border-[#0284C7] dark:border-[#38BDF8] ring-2 ring-[#0284C7]/20'
+                        : 'bg-white dark:bg-[#1A2A23] border-[#E7DFC5] dark:border-[#283E34] hover:border-[#0284C7]'
                     }`}
                   >
                     {/* Left Actions: Select / Preview */}
@@ -329,8 +329,8 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                         onClick={(e) => handleTogglePreview(r, e)}
                         className={`p-2 rounded-xl transition-all ${
                           isPreviewing
-                            ? 'bg-amber-400 text-[#0F6B50] animate-pulse'
-                            : 'bg-gray-100 dark:bg-[#14201B] text-gray-600 dark:text-gray-300 hover:text-[#0F6B50]'
+                            ? 'bg-amber-400 text-[#0284C7] animate-pulse'
+                            : 'bg-gray-100 dark:bg-[#14201B] text-gray-600 dark:text-gray-300 hover:text-[#0284C7]'
                         }`}
                         title="استماع لعينة صوتية من التلاوة"
                       >
@@ -354,7 +354,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                         </button>
 
                         {isCurrentActive ? (
-                          <div className="flex items-center gap-1 text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] bg-emerald-100 dark:bg-emerald-900/60 px-2.5 py-1 rounded-xl">
+                          <div className="flex items-center gap-1 text-xs font-bold text-[#0284C7] dark:text-[#38BDF8] bg-sky-100 dark:bg-sky-900/60 px-2.5 py-1 rounded-xl">
                             <Check className="w-3.5 h-3.5" />
                             <span>القارئ المعتمد</span>
                           </div>
@@ -365,7 +365,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                               playChime('success');
                               triggerHaptic(30);
                             }}
-                            className="px-3 py-1 rounded-xl text-xs font-bold bg-[#EBF3EE] dark:bg-[#152720] text-[#0F6B50] dark:text-[#2DD4BF] hover:bg-[#0F6B50] hover:text-white transition-all"
+                            className="px-3 py-1 rounded-xl text-xs font-bold bg-[#EBF3EE] dark:bg-[#152720] text-[#0284C7] dark:text-[#38BDF8] hover:bg-[#0284C7] hover:text-white transition-all"
                           >
                             اختيار
                           </button>
@@ -385,7 +385,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                       </div>
                       <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{r.subname}</p>
                       {countDownloadedForReciter > 0 && (
-                        <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 font-bold">
+                        <span className="inline-flex items-center gap-1 text-[10px] text-sky-600 dark:text-sky-400 mt-1 font-bold">
                           <CheckCircle2 className="w-3 h-3" />
                           <span>{countDownloadedForReciter} سور متوفرة بدون إنترنت</span>
                         </span>
@@ -405,7 +405,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-500 font-medium">اختر الشيخ لتحميل سور خاصة به:</span>
-                <span className="font-bold text-[#0F6B50] dark:text-[#2DD4BF]">{targetDownloadReciterObj.name}</span>
+                <span className="font-bold text-[#0284C7] dark:text-[#38BDF8]">{targetDownloadReciterObj.name}</span>
               </div>
               <div className="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar">
                 {RECITERS_LIST.map((r) => {
@@ -420,15 +420,15 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                       }}
                       className={`shrink-0 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border ${
                         isSelectedForDownload
-                          ? 'bg-[#0F6B50] text-white border-[#0F6B50] shadow-sm'
-                          : 'bg-white dark:bg-[#1A2621] text-[#2B3E35] dark:text-gray-300 border-[#E5DDCF] dark:border-[#283E34] hover:border-[#0F6B50]'
+                          ? 'bg-[#0284C7] text-white border-[#0284C7] shadow-sm'
+                          : 'bg-white dark:bg-[#1A2621] text-[#2B3E35] dark:text-gray-300 border-[#E5DDCF] dark:border-[#283E34] hover:border-[#0284C7]'
                       }`}
                     >
                       <UserCheck className="w-3.5 h-3.5" />
                       <span>{r.name.split(' ')[0]} {r.name.split(' ')[1] || ''}</span>
                       {downloadedCount > 0 && (
                         <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                          isSelectedForDownload ? 'bg-amber-300 text-emerald-900' : 'bg-emerald-100 text-emerald-800'
+                          isSelectedForDownload ? 'bg-amber-300 text-sky-900' : 'bg-sky-100 text-sky-800'
                         }`}>
                           {toArabicNumerals(downloadedCount)}
                         </span>
@@ -440,9 +440,9 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             </div>
 
             {/* Fast Quick Download for Current Surah with Selected Target Sheikh */}
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F6B50] to-[#125B44] text-white space-y-2 shadow-sm">
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0284C7] to-[#125B44] text-white space-y-2 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-emerald-200 font-bold">السورة الحالية المفتوحة في المصحف</span>
+                <span className="text-[11px] text-sky-200 font-bold">السورة الحالية المفتوحة في المصحف</span>
                 <Sparkles className="w-4 h-4 text-amber-300" />
               </div>
               <div className="flex items-center justify-between pt-1">
@@ -465,7 +465,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                         juz: 1
                       })}
                       disabled={downloadingId === `${downloadTargetReciter}_${currentSurahNumber}`}
-                      className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#0F6B50] text-xs font-bold flex items-center gap-1.5 shadow-md active:scale-95 disabled:opacity-50"
+                      className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#0284C7] text-xs font-bold flex items-center gap-1.5 shadow-md active:scale-95 disabled:opacity-50"
                     >
                       <Download className="w-4 h-4" />
                       <span>{downloadingId === `${downloadTargetReciter}_${currentSurahNumber}` ? `${downloadProgress}% جارٍ التحميل...` : 'تحميل السورة الآن'}</span>
@@ -475,7 +475,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
 
                 <div className="text-right">
                   <h4 className="font-bold text-base font-amiri">سورة {currentSurahName}</h4>
-                  <span className="text-xs text-emerald-100">بصوت فضيلة الشيخ {targetDownloadReciterObj.name}</span>
+                  <span className="text-xs text-sky-100">بصوت فضيلة الشيخ {targetDownloadReciterObj.name}</span>
                 </div>
               </div>
 
@@ -487,7 +487,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                       style={{ width: `${downloadProgress}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-emerald-200 block text-left font-mono">{downloadProgress}%</span>
+                  <span className="text-[10px] text-sky-200 block text-left font-mono">{downloadProgress}%</span>
                 </div>
               )}
             </div>
@@ -500,7 +500,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                   placeholder={`ابحث عن سورة لتحميلها بصوت ${targetDownloadReciterObj.name}...`}
                   value={searchSurah}
                   onChange={(e) => setSearchSurah(e.target.value)}
-                  className="w-full py-2.5 pl-4 pr-10 text-xs rounded-2xl bg-white dark:bg-[#1B2B24] border border-[#E5DDCF] dark:border-[#2A4035] text-[#19302A] dark:text-white focus:outline-none focus:border-[#0F6B50]"
+                  className="w-full py-2.5 pl-4 pr-10 text-xs rounded-2xl bg-white dark:bg-[#1B2B24] border border-[#E5DDCF] dark:border-[#2A4035] text-[#19302A] dark:text-white focus:outline-none focus:border-[#0284C7]"
                 />
                 <Search className="w-4 h-4 text-gray-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
               </div>
@@ -521,14 +521,14 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                         {/* Direct File Save to Device Storage button */}
                         <button
                           onClick={() => triggerDirectFileDownload(downloadTargetReciter, surah.number, surah.name)}
-                          className="p-2 rounded-xl bg-gray-100 dark:bg-[#14201B] text-gray-500 hover:text-[#0F6B50] dark:hover:text-emerald-300"
+                          className="p-2 rounded-xl bg-gray-100 dark:bg-[#14201B] text-gray-500 hover:text-[#0284C7] dark:hover:text-sky-300"
                           title="حفظ ملف MP3 مباشرة في هاتفك/جهازك"
                         >
                           <FolderDown className="w-4 h-4" />
                         </button>
 
                         {isDownloaded ? (
-                          <div className="flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-300/40">
+                          <div className="flex items-center gap-1 text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-3 py-1.5 rounded-xl border border-sky-300/40">
                             <CheckCircle2 className="w-4 h-4" />
                             <span>محمّلة للاستماع أوفلاين</span>
                           </div>
@@ -536,7 +536,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                           <button
                             onClick={(e) => handleDownloadSurah(surah, e)}
                             disabled={isCurrentlyDownloading}
-                            className="px-3.5 py-1.5 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs disabled:opacity-50 active:scale-95"
+                            className="px-3.5 py-1.5 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs disabled:opacity-50 active:scale-95"
                           >
                             <Download className="w-3.5 h-3.5" />
                             <span>{isCurrentlyDownloading ? `${downloadProgress}%` : 'تحميل'}</span>
@@ -571,7 +571,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
             <div className="space-y-2 pb-1">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-500">التلاوات المحفوظة على جهازك للاستماع بدون نت</span>
-                <span className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                <span className="text-xs font-bold text-[#0284C7] dark:text-[#38BDF8]">
                   {downloadedList.length} سور محفوظة
                 </span>
               </div>
@@ -583,7 +583,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                     onClick={() => setSavedLibraryFilterReciter('all')}
                     className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
                       savedLibraryFilterReciter === 'all'
-                        ? 'bg-[#0F6B50] text-white shadow-xs'
+                        ? 'bg-[#0284C7] text-white shadow-xs'
                         : 'bg-white dark:bg-[#1A2621] text-gray-600 dark:text-gray-300 border border-[#E5DDCF] dark:border-[#283E34]'
                     }`}
                   >
@@ -598,7 +598,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                         onClick={() => setSavedLibraryFilterReciter(rId)}
                         className={`shrink-0 px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
                           savedLibraryFilterReciter === rId
-                            ? 'bg-[#0F6B50] text-white shadow-xs'
+                            ? 'bg-[#0284C7] text-white shadow-xs'
                             : 'bg-white dark:bg-[#1A2621] text-gray-600 dark:text-gray-300 border border-[#E5DDCF] dark:border-[#283E34]'
                         }`}
                       >
@@ -621,7 +621,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                 </p>
                 <button
                   onClick={() => setActiveTab('download_surahs')}
-                  className="px-5 py-2.5 rounded-xl bg-[#0F6B50] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-[#0284C7] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm active:scale-95"
                 >
                   <Download className="w-4 h-4" />
                   <span>تصفح وتحميل السور</span>
@@ -654,7 +654,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                           }
                           onClose();
                         }}
-                        className="px-3.5 py-1.5 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
                       >
                         <Play className="w-3.5 h-3.5 fill-current" />
                         <span>استماع أوفلاين</span>
@@ -664,7 +664,7 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
                     {/* Surah Details */}
                     <div className="text-right">
                       <h4 className="font-bold text-sm text-[#19302A] dark:text-white">سورة {item.surahName}</h4>
-                      <p className="text-xs text-[#0F6B50] dark:text-emerald-300 font-semibold">{item.reciterName}</p>
+                      <p className="text-xs text-[#0284C7] dark:text-sky-300 font-semibold">{item.reciterName}</p>
                       <span className="text-[10px] text-gray-400 font-mono">
                         الحجم: {item.sizeEstimate || 'متاح بدون نت'}
                       </span>
@@ -678,10 +678,10 @@ export const RecitersModal: React.FC<RecitersModalProps> = ({
 
         {/* Footer info */}
         <div className="p-3 bg-[#EFE9DC] dark:bg-[#13201A] border-t border-[#E5DDCF] dark:border-[#263D32] flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
-          <span>القارئ الحالي: <strong className="text-[#0F6B50] dark:text-emerald-300">{activeReciterObj.name}</strong></span>
+          <span>القارئ الحالي: <strong className="text-[#0284C7] dark:text-sky-300">{activeReciterObj.name}</strong></span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-[#0F6B50] text-white font-bold text-xs hover:bg-[#127e5f]"
+            className="px-4 py-1.5 rounded-xl bg-[#0284C7] text-white font-bold text-xs hover:bg-[#127e5f]"
           >
             تم
           </button>

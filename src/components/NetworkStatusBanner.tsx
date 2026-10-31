@@ -38,14 +38,14 @@ export const NetworkStatusBanner: React.FC = () => {
   if (showReconnectedToast) {
     return (
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 max-w-sm w-[92%] transition-all animate-bounce">
-        <div className="p-3 rounded-2xl bg-[#0F6B50] text-white shadow-xl flex items-center justify-between border border-emerald-400/40 text-xs font-bold">
+        <div className="p-3 rounded-2xl bg-[#0284C7] text-white shadow-xl flex items-center justify-between border border-sky-400/40 text-xs font-bold">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-sky-300 shrink-0" />
             <span>تم استعادة الاتصال بالإنترنت بنجاح (أونلاين) 🌐</span>
           </div>
           <button 
             onClick={() => setShowReconnectedToast(false)}
-            className="text-emerald-200 hover:text-white px-1.5 py-0.5"
+            className="text-sky-200 hover:text-white px-1.5 py-0.5"
             aria-label="إغلاق التنبيه"
           >
             ✕
@@ -86,7 +86,7 @@ export const NetworkStatusBanner: React.FC = () => {
         {isDetailsOpen && (
           <div className="px-4 pb-3 pt-1 text-[11px] text-amber-50 border-t border-white/20 space-y-1.5 bg-black/10">
             <div className="flex items-center gap-1.5 font-bold text-white">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+              <ShieldCheck className="w-3.5 h-3.5 text-sky-300" />
               <span>الميزات المتاحة معك بدون نت:</span>
             </div>
             <ul className="list-disc list-inside space-y-0.5 text-[10.5px] opacity-95 pr-1">

@@ -2,8 +2,9 @@ import confetti from 'canvas-confetti';
 import { playChime, triggerHaptic } from './audio';
 
 /**
- * Fires a celebratory golden & emerald confetti burst with sparkles
+ * Fires a celebratory golden & sky blue confetti burst with sparkles
  * for Khatma (Quran completion) or Tree / Habit milestones.
+ * Strictly uses celestial light blues, cyan, and royal gold (no green).
  */
 export function fireCelebrationConfetti(type: 'khatma' | 'tree_full' | 'milestone' = 'milestone') {
   playChime('milestone');
@@ -12,9 +13,9 @@ export function fireCelebrationConfetti(type: 'khatma' | 'tree_full' | 'mileston
   if (typeof window === 'undefined') return;
 
   if (type === 'khatma') {
-    // Grand celebratory fireworks & double cannons
+    // Grand celebratory fireworks & double cannons in sky blue & gold
     const end = Date.now() + 2.5 * 1000;
-    const colors = ['#0F6B50', '#C19E2B', '#2DD4BF', '#F59E0B', '#E5DDCF', '#10B981'];
+    const colors = ['#38BDF8', '#C19E2B', '#0284C7', '#F59E0B', '#BAE6FD', '#7DD3FC'];
 
     (function frame() {
       confetti({
@@ -37,12 +38,12 @@ export function fireCelebrationConfetti(type: 'khatma' | 'tree_full' | 'mileston
       }
     })();
   } else if (type === 'tree_full') {
-    // Joyful golden burst from center
+    // Joyful golden & azure burst from center
     confetti({
       particleCount: 80,
       spread: 100,
       origin: { y: 0.6 },
-      colors: ['#C19E2B', '#0F6B50', '#FCD34D', '#10B981', '#34D399'],
+      colors: ['#C19E2B', '#38BDF8', '#FCD34D', '#0284C7', '#7DD3FC'],
       shapes: ['circle', 'square'],
       ticks: 200,
       gravity: 0.8
@@ -53,7 +54,7 @@ export function fireCelebrationConfetti(type: 'khatma' | 'tree_full' | 'mileston
       particleCount: 50,
       spread: 70,
       origin: { y: 0.65 },
-      colors: ['#0F6B50', '#C19E2B', '#34D399', '#FBBF24'],
+      colors: ['#38BDF8', '#C19E2B', '#7DD3FC', '#FBBF24'],
       ticks: 160
     });
   }

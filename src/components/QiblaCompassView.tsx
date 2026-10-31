@@ -257,10 +257,10 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
       )}
 
       {/* Top Header Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#0E4D3C] via-[#12644F] to-[#0D4435] text-white shadow-lg relative overflow-hidden">
+      <div className="p-4 rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#103463] to-[#184882] text-white shadow-lg relative overflow-hidden border border-sky-400/30">
         {/* Subtle background Islamic decorative pattern */}
-        <div className="absolute -left-10 -bottom-10 w-44 h-44 rounded-full bg-emerald-400/10 blur-2xl pointer-events-none" />
-        <div className="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-amber-400/10 blur-xl pointer-events-none" />
+        <div className="absolute -left-10 -bottom-10 w-44 h-44 rounded-full bg-sky-400/10 blur-2xl pointer-events-none" />
+        <div className="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-blue-400/10 blur-xl pointer-events-none" />
 
         <div className="flex items-center justify-between relative z-10">
           <button
@@ -279,11 +279,11 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
           <div className="text-right">
             <div className="flex items-center gap-2 justify-end">
               <span className="text-base font-extrabold tracking-wide">بوصلة القبلة المشرفة</span>
-              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300">
+              <div className="w-8 h-8 rounded-xl bg-sky-400/20 border border-sky-300/30 flex items-center justify-center text-sky-200">
                 <Compass className="w-4 h-4" />
               </div>
             </div>
-            <p className="text-[11px] text-emerald-100/90 mt-0.5 font-medium">
+            <p className="text-[11px] text-sky-100/90 mt-0.5 font-medium">
               تحديد دقيق لاتجاه الكعبة المشرفة بمستشعر الجيروسكوب
             </p>
           </div>
@@ -297,7 +297,7 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
             className="px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all flex items-center gap-1.5 active:scale-95 text-[11px] font-bold"
             title="تحديث الموقع عبر GPS"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingGps ? 'animate-spin text-amber-300' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingGps ? 'animate-spin text-sky-200' : ''}`} />
             <span>{isRefreshingGps ? 'جاري التحديد...' : 'موقعي GPS'}</span>
           </button>
 
@@ -307,12 +307,12 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
               playChime('click');
               setShowLocationModal(true);
             }}
-            className="flex items-center gap-1.5 text-emerald-100 hover:text-white font-bold transition-colors"
+            className="flex items-center gap-1.5 text-sky-100 hover:text-white font-bold transition-colors"
           >
-            <span className="underline decoration-emerald-400/50 underline-offset-4">
+            <span className="underline decoration-sky-400/50 underline-offset-4">
               {location.cityName} {location.countryName ? `(${location.countryName})` : ''}
             </span>
-            <MapPin className="w-3.5 h-3.5 text-amber-300" />
+            <MapPin className="w-3.5 h-3.5 text-sky-300" />
           </button>
         </div>
       </div>
@@ -335,10 +335,10 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
 
       {/* Manual mode indicator banner */}
       {manualHeading !== null && (
-        <div className="p-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-between gap-2 text-xs">
+        <div className="p-2.5 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-[#0284C7] dark:text-sky-300 flex items-center justify-between gap-2 text-xs">
           <button
             onClick={handleResetToSensor}
-            className="px-2.5 py-1 rounded-xl bg-[#0F6B50] text-white text-[11px] font-bold hover:bg-[#0c5741] transition-all"
+            className="px-2.5 py-1 rounded-xl bg-[#0284C7] text-white text-[11px] font-bold hover:bg-sky-500 transition-all"
           >
             العودة للمستشعر التلقائي
           </button>
@@ -350,19 +350,19 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
       <div 
         className={`p-6 rounded-3xl border transition-all duration-500 relative flex flex-col items-center justify-center min-h-[380px] shadow-sm overflow-hidden ${
           isAligned
-            ? 'bg-gradient-to-b from-emerald-500/20 via-[#0F6B50]/15 to-emerald-900/20 border-emerald-500/60 shadow-emerald-500/20 shadow-xl dark:border-emerald-400/70'
-            : 'bg-white dark:bg-[#16231E] border-[#E5DDCF] dark:border-[#283C33]'
+            ? 'bg-gradient-to-b from-sky-500/20 via-[#0284C7]/15 to-blue-900/20 border-sky-500/60 shadow-sky-500/20 shadow-xl dark:border-sky-400/70'
+            : 'bg-white dark:bg-[#0A192F] border-sky-100 dark:border-sky-950'
         }`}
       >
         {/* Alignment Glow Aura */}
         {isAligned && (
-          <div className="absolute inset-0 bg-radial from-emerald-400/20 via-transparent to-transparent pointer-events-none animate-pulse" />
+          <div className="absolute inset-0 bg-radial from-sky-400/20 via-transparent to-transparent pointer-events-none animate-pulse" />
         )}
 
         {/* Alignment Status Banner */}
         <div className="w-full text-center mb-4 relative z-10">
           {isAligned ? (
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-600 text-white font-bold text-xs sm:text-sm shadow-lg animate-bounce">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0284C7] text-white font-bold text-xs sm:text-sm shadow-lg animate-bounce">
               <Sparkles className="w-4 h-4 text-amber-300" />
               <span>أنت تتجه نحو الكعبة المشرفة الآن 🕋 ✨</span>
             </div>
@@ -405,7 +405,7 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
             }}
           >
             {/* Outer Dial Circle with Degree Rings */}
-            <div className="absolute inset-0 rounded-full border-4 border-[#0F6B50]/30 dark:border-emerald-500/30 bg-gradient-to-b from-gray-50/90 to-emerald-50/30 dark:from-[#1A2A24] dark:to-[#121E1A] shadow-inner flex items-center justify-center">
+            <div className="absolute inset-0 rounded-full border-4 border-sky-400/30 dark:border-sky-500/30 bg-gradient-to-b from-slate-50/90 to-sky-50/30 dark:from-[#0C1A30] dark:to-[#081426] shadow-inner flex items-center justify-center">
               {/* Dial Tick marks (every 30 degrees) */}
               {[...Array(12)].map((_, i) => {
                 const deg = i * 30;
@@ -419,7 +419,7 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
                     <div
                       className={`w-0.5 rounded-full ${
                         isCardinal
-                          ? 'h-3.5 bg-[#0F6B50] dark:bg-emerald-400 font-bold'
+                          ? 'h-3.5 bg-[#0284C7] dark:bg-sky-400 font-bold'
                           : 'h-2 bg-gray-400/60 dark:bg-gray-600'
                       }`}
                     />
@@ -478,25 +478,25 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
               -٥°
             </button>
 
-            <div className="text-center px-3 py-1 rounded-2xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 min-w-[120px]">
-              <div className="text-xl font-black text-[#0F6B50] dark:text-[#2DD4BF] font-mono">
+            <div className="text-center px-3 py-1 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 min-w-[120px]">
+              <div className="text-xl font-black text-[#0284C7] dark:text-sky-300 font-mono">
                 {toArabicNumerals(Math.round(currentEffectiveHeading))}°
               </div>
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold">
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
                 {getBearingCardinalArabic(currentEffectiveHeading)}
               </div>
             </div>
 
             <button
               onClick={() => handleStepManualAngle(5)}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all active:scale-95"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all active:scale-95"
               title="تدوير البوصلة 5 درجات يميناً"
             >
               +٥°
             </button>
           </div>
 
-          <p className="text-[11px] text-gray-500 dark:text-gray-400">
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">
             {isSensorActive
               ? 'المستشعر يعمل تلقائياً مع حركة الهاتف (أو اسحب القرص للتدوير)'
               : 'يمكنك لمس وتدوير القرص يدوياً لتوجيه البوصلة بدقة'}
@@ -507,29 +507,29 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
       {/* Metrics & Calculations Card */}
       <div className="grid grid-cols-2 gap-3">
         {/* Metric 1: Qibla Bearing Angle */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16231E] border border-[#E5DDCF] dark:border-[#283C33] text-right space-y-1 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-semibold">
-            <Compass className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 text-right space-y-1 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-semibold">
+            <Compass className="w-4 h-4 text-[#0284C7] dark:text-sky-400" />
             <span>زاوية القبلة الدقيقة</span>
           </div>
-          <p className="text-xl font-black text-[#143128] dark:text-white font-mono">
+          <p className="text-xl font-black text-slate-900 dark:text-white font-mono">
             {toArabicNumerals(qiblaBearing)}°
           </p>
-          <span className="text-[11px] text-emerald-700 dark:text-emerald-300 font-bold block">
+          <span className="text-[11px] text-sky-700 dark:text-sky-300 font-bold block">
             {cardinalText}
           </span>
         </div>
 
         {/* Metric 2: Distance to Kaaba */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#16231E] border border-[#E5DDCF] dark:border-[#283C33] text-right space-y-1 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-semibold">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 text-right space-y-1 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-semibold">
             <span className="text-base">🕋</span>
             <span>المسافة إلى الكعبة</span>
           </div>
-          <p className="text-xl font-black text-[#143128] dark:text-white font-mono">
+          <p className="text-xl font-black text-slate-900 dark:text-white font-mono">
             {toArabicNumerals(distanceToKaaba.toLocaleString('ar-EG'))}
           </p>
-          <span className="text-[11px] text-gray-500 dark:text-gray-400 font-bold block">
+          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold block">
             كيلومتر (خط مستقيم)
           </span>
         </div>
@@ -543,14 +543,14 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
             playChime('click');
             setShowCalibrationHelp(true);
           }}
-          className="p-3 rounded-2xl bg-white dark:bg-[#16231E] border border-[#E5DDCF] dark:border-[#283C33] hover:border-amber-400 text-right flex items-center justify-between transition-all active:scale-98 shadow-sm group"
+          className="p-3 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 hover:border-sky-400 text-right flex items-center justify-between transition-all active:scale-98 shadow-sm group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-[#0284C7] dark:text-sky-300 flex items-center justify-center">
             <RotateCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </div>
           <div className="text-right">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white">معايرة الهاتف</h4>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400">حركة رقم 8 لدقة المغناطيس</p>
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white">معايرة الهاتف</h4>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400">حركة رقم 8 لدقة المغناطيس</p>
           </div>
         </button>
 
@@ -560,14 +560,14 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
             playChime('click');
             setShowEtiquetteModal(true);
           }}
-          className="p-3 rounded-2xl bg-white dark:bg-[#16231E] border border-[#E5DDCF] dark:border-[#283C33] hover:border-emerald-500 text-right flex items-center justify-between transition-all active:scale-98 shadow-sm group"
+          className="p-3 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 hover:border-sky-400 text-right flex items-center justify-between transition-all active:scale-98 shadow-sm group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-[#0284C7] dark:text-sky-300 flex items-center justify-center">
             <Info className="w-4 h-4" />
           </div>
           <div className="text-right">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white">سنن استقبال القبلة</h4>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400">في الصلاة والدعاء والذكر</p>
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white">سنن استقبال القبلة</h4>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400">في الصلاة والدعاء والذكر</p>
           </div>
         </button>
       </div>
@@ -612,7 +612,7 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
 
             <button
               onClick={() => setShowCalibrationHelp(false)}
-              className="w-full py-2.5 rounded-2xl bg-[#0F6B50] hover:bg-[#0c5741] text-white font-bold text-xs shadow transition-all active:scale-95"
+              className="w-full py-2.5 rounded-2xl bg-[#0284C7] hover:bg-sky-500 text-white font-bold text-xs shadow transition-all active:scale-95 cursor-pointer"
             >
               فهمت ذلك، شكراً
             </button>
@@ -623,42 +623,42 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
       {/* Sunnah & Etiquette Modal */}
       {showEtiquetteModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="w-full max-w-sm bg-white dark:bg-[#15231D] rounded-3xl p-5 border border-[#E5DDCF] dark:border-[#2A3C34] shadow-2xl space-y-4 animate-scaleUp text-right max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div className="w-full max-w-sm bg-white dark:bg-[#0A192F] rounded-3xl p-5 border border-sky-100 dark:border-sky-950 shadow-2xl space-y-4 animate-scaleUp text-right max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <button
                 onClick={() => setShowEtiquetteModal(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
-              <h3 className="text-sm font-bold text-[#143128] dark:text-white flex items-center gap-1.5">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                 <span>سنن وآداب استقبال القبلة</span>
-                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-[#0284C7] dark:text-sky-300" />
               </h3>
             </div>
 
-            <div className="space-y-3 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
-              <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-center">
-                <p className="font-amiri text-sm font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+            <div className="space-y-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+              <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/40 text-center">
+                <p className="font-amiri text-sm font-bold text-[#0284C7] dark:text-sky-300">
                   «فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ ۚ وَحَيْثُ مَا كُنتُمْ فَوَلُّوا وُجُوهَكُمْ شَطْرَهُ»
                 </p>
-                <span className="text-[10px] text-gray-500 dark:text-gray-400 block mt-1">سورة البقرة: ١٤٤</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1">سورة البقرة: ١٤٤</span>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 dark:text-white">مواضع يستحب فيها استقبال القبلة:</h4>
+                <h4 className="font-bold text-slate-900 dark:text-white">مواضع يستحب فيها استقبال القبلة:</h4>
                 <ul className="space-y-1.5 list-disc list-inside text-[11px]">
-                  <li><strong className="text-gray-800 dark:text-gray-100">الصلاة المفروضة والنافلة:</strong> استقبال عين الكعبة للقريب، واستقبال جهتها للبعيد شرط لصحة الصلاة.</li>
-                  <li><strong className="text-gray-800 dark:text-gray-100">الدعاء والتضرع:</strong> كان النبي ﷺ يستقبل القبلة إذا اجتهد في الدعاء كما في يوم عرفة والاستسقاء.</li>
-                  <li><strong className="text-gray-800 dark:text-gray-100">قراءة القرآن والأذكار:</strong> يستحب للقارئ والذاكر أن يجلس مستقبلاً القبلة بخشوع ووقار.</li>
-                  <li><strong className="text-gray-800 dark:text-gray-100">الأذان والإقامة:</strong> من سنن المؤذن استقبال القبلة عند النداء للصلاة.</li>
+                  <li><strong className="text-slate-800 dark:text-slate-100">الصلاة المفروضة والنافلة:</strong> استقبال عين الكعبة للقريب، واستقبال جهتها للبعيد شرط لصحة الصلاة.</li>
+                  <li><strong className="text-slate-800 dark:text-slate-100">الدعاء والتضرع:</strong> كان النبي ﷺ يستقبل القبلة إذا اجتهد في الدعاء كما في يوم عرفة والاستسقاء.</li>
+                  <li><strong className="text-slate-800 dark:text-slate-100">قراءة القرآن والأذكار:</strong> يستحب للقارئ والذاكر أن يجلس مستقبلاً القبلة بخشوع ووقار.</li>
+                  <li><strong className="text-slate-800 dark:text-slate-100">الأذان والإقامة:</strong> من سنن المؤذن استقبال القبلة عند النداء للصلاة.</li>
                 </ul>
               </div>
             </div>
 
             <button
               onClick={() => setShowEtiquetteModal(false)}
-              className="w-full py-2.5 rounded-2xl bg-[#0F6B50] hover:bg-[#0c5741] text-white font-bold text-xs shadow transition-all active:scale-95"
+              className="w-full py-2.5 rounded-2xl bg-[#0284C7] hover:bg-sky-500 text-white font-bold text-xs shadow transition-all active:scale-95 cursor-pointer"
             >
               جزاكم الله خيراً
             </button>
@@ -669,17 +669,17 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
       {/* Location Picker Modal */}
       {showLocationModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-          <div className="w-full max-w-md bg-white dark:bg-[#15231D] rounded-t-3xl sm:rounded-3xl p-5 border border-[#E5DDCF] dark:border-[#2A3C34] shadow-2xl space-y-4 max-h-[80vh] flex flex-col text-right animate-slideUp">
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div className="w-full max-w-md bg-white dark:bg-[#0A192F] rounded-t-3xl sm:rounded-3xl p-5 border border-sky-100 dark:border-sky-950 shadow-2xl space-y-4 max-h-[80vh] flex flex-col text-right animate-slideUp">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <button
                 onClick={() => setShowLocationModal(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
-              <h3 className="text-sm font-bold text-[#143128] dark:text-white flex items-center gap-1.5">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                 <span>تحديد موقعك الجغرافي</span>
-                <MapPin className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF]" />
+                <MapPin className="w-4 h-4 text-[#0284C7] dark:text-sky-300" />
               </h3>
             </div>
 
@@ -689,21 +689,21 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
                 handleRefreshGps();
                 setShowLocationModal(false);
               }}
-              className="w-full py-2.5 px-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 text-[#0F6B50] dark:text-[#2DD4BF] font-bold text-xs flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-all active:scale-98"
+              className="w-full py-2.5 px-3 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800/60 text-[#0284C7] dark:text-sky-300 font-bold text-xs flex items-center justify-center gap-2 hover:bg-sky-100 dark:hover:bg-sky-900/60 transition-all active:scale-98 cursor-pointer"
             >
-              <Locate className="w-4 h-4 text-emerald-600" />
+              <Locate className="w-4 h-4 text-[#0284C7]" />
               <span>تحديد موقعي التلقائي عبر الـ GPS</span>
             </button>
 
             {/* Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
               <input
                 type="text"
                 value={searchCityQuery}
                 onChange={(e) => setSearchCityQuery(e.target.value)}
                 placeholder="ابحث عن مدينتك أو دولتك..."
-                className="w-full pl-3 pr-9 py-2 rounded-2xl bg-gray-50 dark:bg-[#1B2C24] border border-gray-200 dark:border-[#2A3C34] text-xs focus:outline-none focus:ring-2 focus:ring-[#0F6B50] text-gray-900 dark:text-white placeholder-gray-400 text-right"
+                className="w-full pl-3 pr-9 py-2 rounded-2xl bg-slate-50 dark:bg-[#0C1A30] border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-[#0284C7] text-slate-900 dark:text-white placeholder-slate-400 text-right"
               />
             </div>
 
@@ -719,27 +719,27 @@ export const QiblaCompassView: React.FC<QiblaCompassViewProps> = ({ onBackToHome
                   <button
                     key={`${city.cityName}-${idx}`}
                     onClick={() => handleSelectCity(city)}
-                    className={`w-full p-2.5 rounded-2xl border text-right flex items-center justify-between transition-all text-xs active:scale-98 ${
+                    className={`w-full p-2.5 rounded-2xl border text-right flex items-center justify-between transition-all text-xs active:scale-98 cursor-pointer ${
                       isCurrent
-                        ? 'bg-emerald-50 dark:bg-emerald-950/60 border-[#0F6B50] dark:border-[#2DD4BF] text-[#0F6B50] dark:text-[#2DD4BF] font-bold'
-                        : 'bg-white dark:bg-[#16231E] border-gray-100 dark:border-[#253930] hover:border-gray-300 dark:hover:border-gray-700 text-gray-800 dark:text-gray-200'
+                        ? 'bg-sky-50 dark:bg-sky-950/60 border-[#0284C7] dark:border-sky-400 text-[#0284C7] dark:text-sky-300 font-bold'
+                        : 'bg-white dark:bg-[#0A192F] border-slate-100 dark:border-slate-800 hover:border-slate-300 text-slate-800 dark:text-slate-200'
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 font-mono">
+                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-mono">
                       <span>{toArabicNumerals(cityQibla)}°</span>
-                      <Compass className="w-3 h-3 text-amber-500" />
+                      <Compass className="w-3 h-3 text-sky-500" />
                     </div>
 
                     <div className="flex items-center gap-2">
                       <div>
                         <p className="font-bold text-xs">{city.cityName}</p>
                         {city.countryName && (
-                          <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                          <span className="text-[10px] text-slate-400 dark:text-slate-500">
                             {city.countryName}
                           </span>
                         )}
                       </div>
-                      {isCurrent && <CheckCircle2 className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF]" />}
+                      {isCurrent && <CheckCircle2 className="w-4 h-4 text-[#0284C7] dark:text-sky-300" />}
                     </div>
                   </button>
                 );

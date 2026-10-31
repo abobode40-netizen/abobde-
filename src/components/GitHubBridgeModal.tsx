@@ -62,7 +62,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
         className="w-full max-w-lg bg-white dark:bg-[#14221D] rounded-3xl border border-[#E5DDCF] dark:border-[#2A3C34] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-scaleUp"
       >
         {/* Header */}
-        <div className="bg-gradient-to-l from-[#0F6B50] to-[#178564] text-white p-5 flex items-center justify-between relative">
+        <div className="bg-gradient-to-l from-[#0284C7] to-[#178564] text-white p-5 flex items-center justify-between relative">
           <button
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all cursor-pointer active:scale-95"
@@ -83,12 +83,12 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
         {/* Content */}
         <div className="p-5 space-y-4 overflow-y-auto text-right">
           {/* Primary Live App Link */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FAF7F0] to-[#F1ECE1] dark:from-[#182B24] dark:to-[#12201B] border-2 border-[#0F6B50]/30 dark:border-[#2DD4BF]/30 shadow-sm space-y-3">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FAF7F0] to-[#F1ECE1] dark:from-[#182B24] dark:to-[#12201B] border-2 border-[#0284C7]/30 dark:border-[#38BDF8]/30 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold">
+              <span className="px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 text-[11px] font-bold">
                 الرابط العام الشامل المباشر
               </span>
-              <div className="flex items-center gap-1.5 text-[#0F6B50] dark:text-[#2DD4BF] font-bold text-sm">
+              <div className="flex items-center gap-1.5 text-[#0284C7] dark:text-[#38BDF8] font-bold text-sm">
                 <span>Google AI Studio Live</span>
                 <Globe className="w-4 h-4" />
               </div>
@@ -98,7 +98,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
               هذا الرابط السحابي مفتوح ومتاح للجميع في أي وقت، يعمل بكامل الميزات المتقدمة (تلاوات صوتية، تفاسير، ذكاء اصطناعي، حفظ سحابي):
             </p>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#0E1A15] border border-gray-200 dark:border-gray-800 dir-ltr text-left font-mono text-xs text-emerald-800 dark:text-emerald-400 overflow-x-auto">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-[#0E1A15] border border-gray-200 dark:border-gray-800 dir-ltr text-left font-mono text-xs text-sky-800 dark:text-sky-400 overflow-x-auto">
               <span className="truncate select-all">{publicLiveUrl}</span>
             </div>
 
@@ -107,7 +107,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
                 href={publicLiveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-2 px-3 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
+                className="py-2 px-3 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>فتح الموقع</span>
@@ -119,8 +119,8 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
               >
                 {copiedType === 'ai-studio' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-600 font-bold">تم النسخ!</span>
+                    <Check className="w-3.5 h-3.5 text-sky-600" />
+                    <span className="text-sky-600 font-bold">تم النسخ!</span>
                   </>
                 ) : (
                   <>
@@ -173,7 +173,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
               >
                 {copiedType === 'github' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <Check className="w-3.5 h-3.5 text-sky-600" />
                     <span>تم النسخ!</span>
                   </>
                 ) : (
@@ -192,7 +192,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
               <span className="text-[11px] text-gray-500 font-mono">github.io</span>
               <div className="flex items-center gap-1.5 text-gray-800 dark:text-white font-bold text-sm">
                 <span>رابط GitHub Pages</span>
-                <Globe className="w-4 h-4 text-emerald-600" />
+                <Globe className="w-4 h-4 text-sky-600" />
               </div>
             </div>
 
@@ -205,7 +205,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
                 href={githubPagesUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-2 px-3 rounded-xl bg-[#0F6B50] text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#138061] active:scale-95 transition-all"
+                className="py-2 px-3 rounded-xl bg-[#0284C7] text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#0EA5E9] active:scale-95 transition-all"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>فتح GitHub Pages</span>
@@ -217,7 +217,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
               >
                 {copiedType === 'gh-pages' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <Check className="w-3.5 h-3.5 text-sky-600" />
                     <span>تم النسخ!</span>
                   </>
                 ) : (
@@ -248,7 +248,7 @@ export const GitHubBridgeModal: React.FC<GitHubBridgeModalProps> = ({
         {/* Footer */}
         <div className="p-4 bg-gray-50 dark:bg-[#101B17] border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
           <div className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <ShieldCheck className="w-3.5 h-3.5 text-sky-600" />
             <span>نشر عام مجاني 100% مفتوح المصدر</span>
           </div>
 

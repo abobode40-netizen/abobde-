@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { 
   BookCheck, 
   BookOpen, 
@@ -8,33 +8,79 @@ import {
   Copy, 
   Check, 
   Share2, 
-  Bookmark as BookmarkIcon, 
-  BookmarkCheck,
-  ChevronLeft,
-  RotateCcw,
-  CheckCircle2,
-  Heart,
-  Flame,
-  ArrowRight
+  ChevronLeft, 
+  RotateCcw, 
+  CheckCircle2, 
+  Heart, 
+  Flame, 
+  ArrowRight,
+  Download
 } from 'lucide-react';
 import { DuaItem, DuaCategoryType, Bookmark } from '../types';
 import { DUA_CATEGORIES, DUAS_LIST } from '../data/duasData';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { loadBookmarks, saveBookmarks } from '../utils/storage';
 import { toArabicNumerals } from '../data/quranData';
+import { DoorActionBar } from './DoorActionBar';
+import { UniversalExportModal } from './UniversalExportModal';
+import { generateDuasExport } from '../utils/universalExport';
 
 interface DuasViewProps {
   onBack?: () => void;
   onOpenMushafPage?: (page: number) => void;
+  fontScale?: number;
+  onChangeFontScale?: (scale: number) => void;
 }
 
-export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) => {
+export const DuasView: React.FC<DuasViewProps> = ({ 
+  onBack, 
+  onOpenMushafPage,
+  fontScale = 100,
+  onChangeFontScale
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<DuaCategoryType | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [counters, setCounters] = useState<Record<string, number>>({});
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => loadBookmarks());
   const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
+
+  // Swipe handling
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+
+  const categoriesList: (DuaCategoryType | 'all')[] = ['all', ...DUA_CATEGORIES.map(c => c.id)];
+  const currentCatIndex = categoriesList.indexOf(selectedCategory);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null || touchStartYRef.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartYRef.current;
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      if (deltaX < 0) {
+        // Swipe left -> next category
+        const nextIdx = (currentCatIndex + 1) % categoriesList.length;
+        setSelectedCategory(categoriesList[nextIdx]);
+        playChime('click');
+        triggerHaptic('light');
+      } else {
+        // Swipe right -> prev category
+        const prevIdx = (currentCatIndex - 1 + categoriesList.length) % categoriesList.length;
+        setSelectedCategory(categoriesList[prevIdx]);
+        playChime('click');
+        triggerHaptic('light');
+      }
+    }
+  };
 
   const favoriteIds = useMemo(() => {
     return new Set(
@@ -97,9 +143,9 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
       setCounters((prev) => ({ ...prev, [dua.id]: next }));
       triggerHaptic('selection');
       if (next === max) {
-        playChime('streak');
+        playChime('success');
       } else {
-        playChime('pop');
+        playChime('click');
       }
     }
   };
@@ -126,21 +172,40 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
     });
   }, [selectedCategory, searchQuery, onlyFavorites, favoriteIds]);
 
-  return (
-    <div className="pb-24 pt-3 px-4 max-w-lg mx-auto space-y-5 animate-fadeIn">
-      {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0D5944] via-[#126A52] to-[#1E7D63] text-white p-6 shadow-md islamic-border">
-        <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-amber-400/10 border-[24px] border-amber-300/15 pointer-events-none" />
+  const selectedCatTitle = selectedCategory === 'all' 
+    ? 'جميع الأدعية المأثورة' 
+    : (DUA_CATEGORIES.find(c => c.id === selectedCategory)?.title || 'الأدعية المأثورة');
 
-        <div className="flex items-center justify-between relative z-10 mb-4">
+  const exportData = generateDuasExport(selectedCatTitle, filteredDuas);
+
+  return (
+    <div 
+      className="pb-24 pt-2 px-3 sm:px-4 max-w-lg mx-auto space-y-4 animate-fadeIn"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Universal Action Bar: Zoom, Swipe Guidance, and Export */}
+      <DoorActionBar
+        doorTitle="باب الأدعية المأثورة ونصح الشباب"
+        fontScale={fontScale}
+        onChangeFontScale={onChangeFontScale}
+        onOpenExport={() => setIsExportOpen(true)}
+        swipeHint="اسحب يميناً ويساراً للتنقل بين الأبواب ⇆"
+      />
+
+      {/* Header Banner with Islamic Blue Ambiance */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#10335e] to-[#184882] text-white p-5 sm:p-6 shadow-md border border-sky-400/30">
+        <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-sky-400/15 border-[24px] border-sky-300/10 pointer-events-none" />
+
+        <div className="flex items-center justify-between relative z-10 mb-3">
           <div className="flex items-center gap-2">
             {onBack && (
               <button
                 onClick={onBack}
                 aria-label="رجوع"
-                className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center transition-all active:scale-95 text-white"
+                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center transition-all active:scale-95 text-white"
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             )}
             <button
@@ -151,11 +216,11 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
               aria-label="عرض المفضلة"
               className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
                 onlyFavorites
-                  ? 'bg-amber-400 text-emerald-950 border-amber-300 shadow-sm'
+                  ? 'bg-sky-400 text-slate-900 border-sky-300 shadow-sm'
                   : 'bg-white/10 hover:bg-white/20 text-white border-white/15'
               }`}
             >
-              <Heart className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-emerald-950' : ''}`} />
+              <Heart className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-slate-900' : ''}`} />
               <span>المفضلة</span>
               {favoriteIds.size > 0 && (
                 <span className="w-4 h-4 rounded-full bg-white/20 text-[10px] flex items-center justify-center font-bold">
@@ -166,15 +231,15 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
           </div>
 
           <div className="text-right">
-            <span className="inline-block text-amber-200 text-xs font-semibold bg-white/10 px-2.5 py-0.5 rounded-full mb-1">
-              محققة وموثقة
+            <span className="inline-block text-sky-200 text-xs font-semibold bg-white/10 px-2.5 py-0.5 rounded-full mb-1">
+              مُحقّقة • أدعية وهمّة الشباب
             </span>
-            <h1 className="text-xl font-bold font-amiri leading-tight">باب الأدعية المأثورة</h1>
+            <h1 className="text-xl font-bold font-amiri leading-tight">الأدعية المأثورة ونصح الشباب</h1>
           </div>
         </div>
 
-        <p className="text-xs text-emerald-100 text-right leading-relaxed relative z-10">
-          دعاء ختم القرآن المبارك، وجوامع التضرع من آيات التنزيل وأصح ما ثبت عن النبي ﷺ مع التخريج والبيان.
+        <p className="text-xs text-sky-100/90 text-right leading-relaxed relative z-10">
+          أدعية نبوية للشباب في التوفيق والعفة وتفريج الهموم، ودعاء ختم القرآن، والرقية الشرعية المحققة من الصحاح والسنن.
         </p>
 
         {/* Quick Search Bar */}
@@ -185,13 +250,13 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث عن دعاء، سورة، أو كلمة..."
-              className="w-full h-11 pr-10 pl-4 rounded-2xl bg-white/15 dark:bg-black/25 text-white placeholder-emerald-100/70 text-xs text-right border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300/60 transition-all backdrop-blur-sm"
+              className="w-full h-11 pr-10 pl-4 rounded-2xl bg-white/15 dark:bg-black/30 text-white placeholder-sky-200/70 text-xs text-right border border-white/20 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all backdrop-blur-sm"
             />
-            <Search className="w-4 h-4 text-emerald-100 absolute right-3.5 pointer-events-none" />
+            <Search className="w-4 h-4 text-sky-200 absolute right-3.5 pointer-events-none" />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute left-3 text-xs text-emerald-200 hover:text-white px-1.5 py-0.5"
+                className="absolute left-3 text-xs text-sky-200 hover:text-white px-1.5 py-0.5"
               >
                 مسح
               </button>
@@ -209,8 +274,8 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
           }}
           className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
             selectedCategory === 'all'
-              ? 'bg-[#0F6B50] text-white shadow-sm'
-              : 'bg-white dark:bg-[#1A2621] text-[#4A5568] dark:text-[#CBD5E1] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50]'
+              ? 'bg-[#0284C7] text-white shadow-sm'
+              : 'bg-white dark:bg-[#0A192F] text-slate-700 dark:text-slate-300 border border-sky-100 dark:border-sky-950 hover:border-sky-400'
           }`}
         >
           <span>الكل ({toArabicNumerals(DUAS_LIST.length)})</span>
@@ -228,13 +293,13 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
               }}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
                 isActive
-                  ? 'bg-[#0F6B50] text-white shadow-sm'
-                  : 'bg-white dark:bg-[#1A2621] text-[#4A5568] dark:text-[#CBD5E1] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50]'
+                  ? 'bg-[#0284C7] text-white shadow-sm'
+                  : 'bg-white dark:bg-[#0A192F] text-slate-700 dark:text-slate-300 border border-sky-100 dark:border-sky-950 hover:border-sky-400'
               }`}
             >
               <span>{cat.title}</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                isActive ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-[#23312B] text-gray-500 dark:text-gray-400'
+                isActive ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
               }`}>
                 {toArabicNumerals(count)}
               </span>
@@ -245,15 +310,15 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
 
       {/* Category Overview Card (When a specific category is selected) */}
       {selectedCategory !== 'all' && (
-        <div className="p-3.5 rounded-2xl bg-[#F0FDF4] dark:bg-[#132B22] border border-[#BBF7D0] dark:border-[#1E4E3B] text-right flex items-center justify-between">
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#0F6B50] text-white">
+        <div className="p-3.5 rounded-2xl bg-sky-50 dark:bg-[#0c2448] border border-sky-200 dark:border-sky-800 text-right flex items-center justify-between">
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#0284C7] text-white">
             {DUA_CATEGORIES.find((c) => c.id === selectedCategory)?.badge}
           </span>
           <div className="text-right">
-            <h3 className="text-xs font-bold text-[#0F6B50] dark:text-[#34D399]">
+            <h3 className="text-xs font-bold text-sky-800 dark:text-sky-300">
               {DUA_CATEGORIES.find((c) => c.id === selectedCategory)?.title}
             </h3>
-            <p className="text-[11px] text-[#4B5563] dark:text-[#9CA3AF]">
+            <p className="text-[11px] text-slate-600 dark:text-slate-400">
               {DUA_CATEGORIES.find((c) => c.id === selectedCategory)?.subtitle}
             </p>
           </div>
@@ -263,10 +328,10 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
       {/* Duas List */}
       <div className="space-y-4">
         {filteredDuas.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-[#1A2621] rounded-3xl border border-[#E5DDCF] dark:border-[#2A3C34] p-6 space-y-3">
-            <BookCheck className="w-12 h-12 text-[#94A3B8] mx-auto opacity-50" />
-            <h3 className="font-bold text-sm text-[#1F2937] dark:text-white">لم يتم العثور على أدعية</h3>
-            <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF]">
+          <div className="text-center py-12 bg-white dark:bg-[#0A192F] rounded-3xl border border-sky-100 dark:border-sky-950 p-6 space-y-3">
+            <BookCheck className="w-12 h-12 text-slate-400 mx-auto opacity-50" />
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">لم يتم العثور على أدعية</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {onlyFavorites
                 ? 'لم تقم بحفظ أي دعاء في المفضلة بعد. اضغط على أيقونة الحفظ بجانب أي دعاء لإضافته هنا.'
                 : 'جرب البحث بكلمات أخرى أو اختر قسماً مختلفاً.'}
@@ -274,7 +339,7 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
             {onlyFavorites && (
               <button
                 onClick={() => setOnlyFavorites(false)}
-                className="mt-2 text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] underline"
+                className="mt-2 text-xs font-bold text-[#0284C7] dark:text-sky-400 underline cursor-pointer"
               >
                 عرض كل الأدعية
               </button>
@@ -291,20 +356,20 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
             return (
               <div
                 key={dua.id}
-                className="p-5 rounded-3xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm hover:shadow transition-all space-y-3.5 relative overflow-hidden"
+                className="p-5 rounded-3xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 shadow-sm hover:shadow transition-all space-y-3.5 relative overflow-hidden text-right"
               >
                 {/* Top Card Meta Bar */}
-                <div className="flex items-center justify-between gap-2 border-b border-gray-100 dark:border-gray-800/60 pb-3">
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                   {/* Action Icons */}
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => toggleFavorite(dua)}
                       aria-label="حفظ في المفضلة"
                       title="حفظ في المفضلة"
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
                         isFav
                           ? 'text-rose-500 bg-rose-50 dark:bg-rose-950/40'
-                          : 'text-gray-400 hover:text-rose-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                          : 'text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
                       <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500' : ''}`} />
@@ -314,16 +379,16 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
                       onClick={() => handleCopy(dua)}
                       aria-label="نسخ الدعاء"
                       title="نسخ الدعاء"
-                      className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg text-slate-400 hover:text-[#0284C7] hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-all cursor-pointer"
                     >
-                      {isCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                      {isCopied ? <Check className="w-4 h-4 text-sky-600" /> : <Copy className="w-4 h-4" />}
                     </button>
 
                     <button
                       onClick={() => handleShare(dua)}
                       aria-label="مشاركة الدعاء"
                       title="مشاركة الدعاء"
-                      className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#0F6B50] hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center transition-all"
+                      className="w-8 h-8 rounded-lg text-slate-400 hover:text-[#0284C7] hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-all cursor-pointer"
                     >
                       <Share2 className="w-4 h-4" />
                     </button>
@@ -332,11 +397,11 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
                   {/* Title & Badge */}
                   <div className="text-right flex items-center gap-2">
                     {dua.grade && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-[#0F6B50] dark:text-[#34D399] border border-emerald-200/60 dark:border-emerald-800/60">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
                         {dua.grade}
                       </span>
                     )}
-                    <h2 className="text-xs font-bold text-[#1E293B] dark:text-white line-clamp-1">
+                    <h2 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1">
                       {dua.title}
                     </h2>
                   </div>
@@ -344,21 +409,21 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
 
                 {/* Dua Arabic Text */}
                 <div className="text-right py-1">
-                  <p className="text-base sm:text-lg font-amiri font-bold leading-loose text-[#0F291E] dark:text-[#E2E8F0] select-text">
+                  <p className="text-base sm:text-lg font-amiri font-bold leading-loose text-slate-900 dark:text-sky-50 select-text">
                     {dua.arabicText}
                   </p>
                 </div>
 
                 {/* Verification & Source */}
-                <div className="p-3 rounded-2xl bg-[#F8FAFC] dark:bg-[#14201A] border border-[#E2E8F0] dark:border-[#22332A] text-right space-y-1.5">
-                  <div className="flex items-center justify-end gap-1.5 text-xs text-[#0F6B50] dark:text-[#34D399] font-bold">
+                <div className="p-3 rounded-2xl bg-sky-50/50 dark:bg-[#07172C] border border-sky-100 dark:border-sky-900/60 text-right space-y-1.5">
+                  <div className="flex items-center justify-end gap-1.5 text-xs text-[#0284C7] dark:text-sky-300 font-bold">
                     <span>{dua.source}</span>
                     <ShieldCheck className="w-3.5 h-3.5" />
                   </div>
 
                   {dua.benefit && (
-                    <p className="text-[11px] text-[#475569] dark:text-[#94A3B8] leading-relaxed">
-                      <span className="font-semibold text-[#1E293B] dark:text-gray-200">الفضل والمناسبة: </span>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                      <span className="font-semibold text-slate-900 dark:text-white">الفضل والمناسبة: </span>
                       {dua.benefit}
                     </p>
                   )}
@@ -368,54 +433,41 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
                       <button
                         onClick={() => {
                           playChime('click');
-                          // Calculate approximate page or navigate to Quran
-                          onOpenMushafPage(dua.surahInfo?.ayahNumber ? Math.max(1, Math.min(604, Math.ceil(dua.surahInfo.surahNumber * 5))) : 1);
+                          onOpenMushafPage(dua.surahInfo!.page);
                         }}
-                        className="text-[11px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] hover:underline flex items-center gap-1"
+                        className="text-[11px] font-bold text-[#0284C7] dark:text-sky-300 hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>فتح سورة {dua.surahInfo.surahName} في المصحف</span>
-                        <ChevronLeft className="w-3 h-3" />
+                        <span>تلاوة في المصحف ({dua.surahInfo.name} - صفحة {toArabicNumerals(dua.surahInfo.page)})</span>
+                        <ChevronLeft className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Interactive Counter (If repeatCount > 1 or for habit tracking) */}
+                {/* Repeat Counter Button */}
                 {maxRepeat > 1 && (
-                  <div className="flex items-center justify-between pt-1">
+                  <div className="pt-1 flex items-center justify-between">
                     <button
                       onClick={() => resetCounter(dua.id)}
-                      title="إعادة ضبط العداد"
-                      className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1.5"
+                      className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center gap-1 cursor-pointer"
                     >
-                      <RotateCcw className="w-3.5 h-3.5" />
+                      <RotateCcw className="w-3 h-3" />
+                      <span>إعادة</span>
                     </button>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => incrementCounter(dua)}
-                        disabled={isCompleted}
-                        className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                          isCompleted
-                            ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700'
-                            : 'bg-[#0F6B50] text-white hover:bg-[#128162] active:scale-95 shadow-sm'
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <>
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>اكتمل التكرار</span>
-                          </>
-                        ) : (
-                          <>
-                            <Flame className="w-3.5 h-3.5 text-amber-300" />
-                            <span>
-                              التكرار ({toArabicNumerals(currentCount)} / {toArabicNumerals(maxRepeat)})
-                            </span>
-                          </>
-                        )}
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => incrementCounter(dua)}
+                      className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-xs cursor-pointer ${
+                        isCompleted
+                          ? 'bg-sky-700 text-white cursor-default'
+                          : 'bg-[#0284C7] hover:bg-sky-500 text-white'
+                      }`}
+                    >
+                      <span>{isCompleted ? 'تم بحمد الله' : 'كرّر الدعاء'}</span>
+                      <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
+                        {toArabicNumerals(currentCount)}/{toArabicNumerals(maxRepeat)}
+                      </span>
+                    </button>
                   </div>
                 )}
               </div>
@@ -423,6 +475,17 @@ export const DuasView: React.FC<DuasViewProps> = ({ onBack, onOpenMushafPage }) 
           })
         )}
       </div>
+
+      {/* Universal Export Modal */}
+      <UniversalExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
+        title={exportData.title}
+        subtitle={exportData.subtitle}
+        textToCopy={exportData.textToCopy}
+        fileName={exportData.fileName}
+        jsonData={exportData.jsonData}
+      />
     </div>
   );
 };

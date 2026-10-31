@@ -5,20 +5,30 @@
     --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
     --font-amiri: 'Amiri', 'Noto Naskh Arabic', serif;
     --font-quran: 'Amiri Quran', 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+    --app-font-scale: 1;
   }
 
   body {
     font-family: var(--font-cairo);
-    background-color: #FAF7F0;
-    color: #1A2E26;
+    background-color: #0d1e38;
+    color: #eaf1fa;
     user-select: text;
     -webkit-tap-highlight-color: transparent;
+    font-size: calc(1rem * var(--app-font-scale));
   }
 
-  .dark body,
-  body.dark {
-    background-color: #0F1715;
-    color: #E6F0EC;
+  /* Font scale modifications across the DOM */
+  html.font-scale-100 {
+    --app-font-scale: 1;
+  }
+  html.font-scale-115 {
+    --app-font-scale: 1.15;
+  }
+  html.font-scale-130 {
+    --app-font-scale: 1.30;
+  }
+  html.font-scale-145 {
+    --app-font-scale: 1.45;
   }
 }
 
@@ -34,34 +44,75 @@
   font-family: var(--font-cairo);
 }
 
-/* Custom smooth scrollbar */
+/* Dynamic font scaling helper classes */
+.app-scale-text {
+  font-size: calc(1em * var(--app-font-scale));
+}
+.app-scale-lead {
+  font-size: calc(1.125em * var(--app-font-scale));
+}
+.app-scale-quran {
+  font-size: calc(1.25em * var(--app-font-scale));
+}
+
+/* Custom smooth scrollbar with spiritual sapphire tone */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 107, 80, 0.05);
+  background: rgba(14, 43, 78, 0.2);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(15, 107, 80, 0.25);
+  background: rgba(43, 114, 186, 0.45);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 107, 80, 0.45);
+  background: rgba(73, 154, 236, 0.7);
 }
 
-/* Islamic Geometric & Border Accents */
+/* Islamic Geometric & Border Accents with Royal Gold & Sapphire */
 .islamic-border {
-  border: 1px solid rgba(193, 163, 88, 0.35);
-  box-shadow: 0 4px 20px -2px rgba(15, 107, 80, 0.06);
+  border: 1px solid rgba(229, 193, 88, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.25);
 }
 
-.islamic-gradient {
-  background: linear-gradient(135deg, #0B5C46 0%, #0F6B50 50%, #178064 100%);
+.islamic-blue-gradient {
+  background: linear-gradient(135deg, #091a30 0%, #0d294d 50%, #153c6c 100%);
+}
+
+.islamic-sapphire-card {
+  background: linear-gradient(145deg, rgba(16, 37, 66, 0.88) 0%, rgba(10, 24, 45, 0.94) 100%);
+  border: 1px solid rgba(64, 126, 196, 0.22);
 }
 
 .islamic-gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #E5C158 50%, #C19E2B 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #e5c158 50%, #c19e2b 100%);
+}
+
+/* Islamic Geometric Arabesque Watermark Pattern (خلفية إسلامية خافتة تحت الكلام) */
+.islamic-blue-pattern {
+  background-color: #0b1a2f;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(29, 78, 137, 0.25) 0%, transparent 70%),
+    radial-gradient(ellipse at 50% 100%, rgba(13, 40, 77, 0.3) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%236495ed' fill-opacity='0.045' fill-rule='evenodd'%3E%3Cpath d='M36 0l9 9-9 9-9-9 9-9zm0 36l9 9-9 9-9-9 9-9zM0 36l9-9 9 9-9 9-9-9zm72 0l-9-9-9 9 9 9 9-9zm-18-18l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zm36 36l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zM36 18a18 18 0 1 0 0 36 18 18 0 0 0 0-36zm0 4a14 14 0 1 1 0 28 14 14 0 0 1 0-28zm0 5a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3a6 6 0 1 1 0 12 6 6 0 0 1 0-12z'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* Arabesque card overlay watermark beneath text */
+.arabesque-watermark {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.035' fill-rule='evenodd'%3E%3Cpath d='M40 0L48 20L68 20L52 32L58 52L40 40L22 52L28 32L12 20L32 20Z'/%3E%3Cpath d='M40 80L48 60L68 60L52 48L58 28L40 40L22 28L28 48L12 60L32 60Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Light theme with celestial blue hue & arabesque watermark */
+.light-blue-theme {
+  background-color: #f1f6fc;
+  color: #0f243e;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(200, 222, 245, 0.45) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23194576' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M36 0l9 9-9 9-9-9 9-9zm0 36l9 9-9 9-9-9 9-9zM0 36l9-9 9 9-9 9-9-9zm72 0l-9-9-9 9 9 9 9-9zm-18-18l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zm36 36l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zM36 18a18 18 0 1 0 0 36 18 18 0 0 0 0-36zm0 4a14 14 0 1 1 0 28 14 14 0 0 1 0-28zm0 5a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3a6 6 0 1 1 0 12 6 6 0 0 1 0-12z'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
 }
 
 .quran-page-bg {
@@ -71,8 +122,8 @@
 }
 
 .dark .quran-page-bg {
-  background-color: #141F1B;
-  background-image: radial-gradient(#2A3C34 0.75px, transparent 0.75px);
+  background-color: #0b1a2d;
+  background-image: radial-gradient(#1e385c 0.75px, transparent 0.75px);
 }
 
 /* Eye Comfort / Sepia Warm Tone for Quranic Pages */
@@ -84,7 +135,7 @@
 }
 
 .dark .quran-page-sepia {
-  background-color: #241E17 !important;
-  background-image: radial-gradient(#3D3225 0.85px, transparent 0.85px) !important;
-  color: #EFE4D2 !important;
+  background-color: #172435 !important;
+  background-image: radial-gradient(#264060 0.85px, transparent 0.85px) !important;
+  color: #E6F0FA !important;
 }

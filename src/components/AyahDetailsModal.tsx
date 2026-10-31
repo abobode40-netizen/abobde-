@@ -173,7 +173,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
 
           <div className="text-right">
             <div className="flex items-center gap-1.5 justify-end">
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF]">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8]">
                 الآية {toArabicNumerals(ayahNumber)}
               </span>
               <h3 className="font-bold text-base text-[#19302A] dark:text-white font-amiri">
@@ -196,7 +196,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             }}
             className={`px-3 py-2.5 text-xs font-bold whitespace-nowrap transition-all border-b-2 flex items-center gap-1.5 ${
               activeTab === 'ibn_kathir'
-                ? 'border-[#0F6B50] text-[#0F6B50] dark:border-[#2DD4BF] dark:text-[#2DD4BF] bg-white dark:bg-[#14221D] rounded-t-xl'
+                ? 'border-[#0284C7] text-[#0284C7] dark:border-[#38BDF8] dark:text-[#38BDF8] bg-white dark:bg-[#14221D] rounded-t-xl'
                 : 'border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400'
             }`}
           >
@@ -212,7 +212,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             }}
             className={`px-3 py-2.5 text-xs font-bold whitespace-nowrap transition-all border-b-2 flex items-center gap-1.5 ${
               activeTab === 'word_meanings'
-                ? 'border-[#0F6B50] text-[#0F6B50] dark:border-[#2DD4BF] dark:text-[#2DD4BF] bg-white dark:bg-[#14221D] rounded-t-xl'
+                ? 'border-[#0284C7] text-[#0284C7] dark:border-[#38BDF8] dark:text-[#38BDF8] bg-white dark:bg-[#14221D] rounded-t-xl'
                 : 'border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400'
             }`}
           >
@@ -228,7 +228,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             }}
             className={`px-3 py-2.5 text-xs font-bold whitespace-nowrap transition-all border-b-2 flex items-center gap-1.5 ${
               activeTab === 'asbab_nuzul'
-                ? 'border-[#0F6B50] text-[#0F6B50] dark:border-[#2DD4BF] dark:text-[#2DD4BF] bg-white dark:bg-[#14221D] rounded-t-xl'
+                ? 'border-[#0284C7] text-[#0284C7] dark:border-[#38BDF8] dark:text-[#38BDF8] bg-white dark:bg-[#14221D] rounded-t-xl'
                 : 'border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400'
             }`}
           >
@@ -244,7 +244,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             }}
             className={`px-3 py-2.5 text-xs font-bold whitespace-nowrap transition-all border-b-2 flex items-center gap-1.5 ${
               activeTab === 'tadabbur'
-                ? 'border-[#0F6B50] text-[#0F6B50] dark:border-[#2DD4BF] dark:text-[#2DD4BF] bg-white dark:bg-[#14221D] rounded-t-xl'
+                ? 'border-[#0284C7] text-[#0284C7] dark:border-[#38BDF8] dark:text-[#38BDF8] bg-white dark:bg-[#14221D] rounded-t-xl'
                 : 'border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400'
             }`}
           >
@@ -270,7 +270,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             </div>
 
             {/* Sheikh Audio Controls & Reciter Selector */}
-            <div className="p-2.5 rounded-2xl bg-[#F8FAF9] dark:bg-[#15231D] border border-emerald-500/20 space-y-2">
+            <div className="p-2.5 rounded-2xl bg-[#F8FAF9] dark:bg-[#15231D] border border-sky-500/20 space-y-2">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {/* Listen to Ayah Audio */}
@@ -279,7 +279,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs active:scale-95 ${
                       isPlayingAyah
                         ? 'bg-amber-500 text-white ring-2 ring-amber-400/50 animate-pulse'
-                        : 'bg-[#0F6B50] hover:bg-[#138061] text-white'
+                        : 'bg-[#0284C7] hover:bg-[#0EA5E9] text-white'
                     }`}
                   >
                     {isPlayingAyah ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
@@ -289,7 +289,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   {/* Playback Speed */}
                   <button
                     onClick={handleSpeedToggle}
-                    className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#1B2D26] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold hover:border-emerald-500 transition-all"
+                    className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#1B2D26] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold hover:border-sky-500 transition-all"
                     title="سرعة التلاوة"
                   >
                     {ayahPlaybackSpeed}x
@@ -303,7 +303,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                     }}
                     className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 border transition-all ${
                       isRepeatAyah
-                        ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-500'
+                        ? 'bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 border-sky-500'
                         : 'bg-white dark:bg-[#1B2D26] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700'
                     }`}
                     title="تكرار الآية للحفظ والتدبر"
@@ -329,10 +329,10 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   {/* Copy Ayah */}
                   <button
                     onClick={handleCopyAyah}
-                    className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#1B2D26] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:text-[#0F6B50] dark:hover:text-[#2DD4BF] text-xs font-bold flex items-center gap-1 transition-all"
+                    className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#1B2D26] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:text-[#0284C7] dark:hover:text-[#38BDF8] text-xs font-bold flex items-center gap-1 transition-all"
                     title="نسخ الآية الكريمة"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-sky-600" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? 'تم النسخ' : 'نسخ'}</span>
                   </button>
                 </div>
@@ -342,14 +342,14 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   <span className="text-[10px] text-gray-500 font-bold px-1">الخط:</span>
                   <button
                     onClick={() => setModalFontSize(Math.min(34, modalFontSize + 2))}
-                    className="w-6 h-6 rounded-lg bg-gray-100 dark:bg-[#13201B] font-bold text-xs hover:text-[#0F6B50] flex items-center justify-center"
+                    className="w-6 h-6 rounded-lg bg-gray-100 dark:bg-[#13201B] font-bold text-xs hover:text-[#0284C7] flex items-center justify-center"
                     title="تكبير الخط"
                   >
                     +
                   </button>
                   <button
                     onClick={() => setModalFontSize(Math.max(14, modalFontSize - 2))}
-                    className="w-6 h-6 rounded-lg bg-gray-100 dark:bg-[#13201B] font-bold text-xs hover:text-[#0F6B50] flex items-center justify-center"
+                    className="w-6 h-6 rounded-lg bg-gray-100 dark:bg-[#13201B] font-bold text-xs hover:text-[#0284C7] flex items-center justify-center"
                     title="تصغير الخط"
                   >
                     -
@@ -377,8 +377,8 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                     }}
                     className={`px-2.5 py-1 rounded-lg font-bold shrink-0 transition-all ${
                       selectedAyahReciter === rec.id
-                        ? 'bg-[#0F6B50] text-white shadow-xs'
-                        : 'bg-white dark:bg-[#1A2C25] text-gray-600 dark:text-gray-400 hover:text-emerald-600 border border-gray-200/70 dark:border-gray-700/70'
+                        ? 'bg-[#0284C7] text-white shadow-xs'
+                        : 'bg-white dark:bg-[#1A2C25] text-gray-600 dark:text-gray-400 hover:text-sky-600 border border-gray-200/70 dark:border-gray-700/70'
                     }`}
                   >
                     {rec.name}
@@ -392,13 +392,13 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
           {activeTab === 'ibn_kathir' && (
             <div className="space-y-3.5 animate-fadeIn">
               {/* Full Surah Tafsir Interactive Card */}
-              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#0F6B50] via-[#128061] to-teal-800 text-white space-y-2.5 shadow-md border border-[#0F6B50]/30">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#0284C7] via-[#128061] to-cyan-800 text-white space-y-2.5 shadow-md border border-[#0284C7]/30">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2">
                     <BookMarked className="w-5 h-5 text-amber-300 shrink-0" />
                     <div>
                       <h4 className="font-bold text-xs sm:text-sm">تفسير سورة {surahName} كاملة</h4>
-                      <p className="text-[10px] text-emerald-100/90">تصفح التفسير المباشر والمصادر الموثوقة لجميع آيات السورة</p>
+                      <p className="text-[10px] text-sky-100/90">تصفح التفسير المباشر والمصادر الموثوقة لجميع آيات السورة</p>
                     </div>
                   </div>
 
@@ -455,9 +455,9 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                       placeholder="البحث عن كلمة معينة داخل التفسير الحالي (مثال: الرحمة، التوحيد)..."
                       value={tafseerSearchQuery}
                       onChange={(e) => setTafseerSearchQuery(e.target.value)}
-                      className="w-full bg-white dark:bg-[#101A16] border border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0F6B50] rounded-xl py-1.5 pr-8 pl-7 text-xs text-right text-[#19302A] dark:text-white outline-none font-medium"
+                      className="w-full bg-white dark:bg-[#101A16] border border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0284C7] rounded-xl py-1.5 pr-8 pl-7 text-xs text-right text-[#19302A] dark:text-white outline-none font-medium"
                     />
-                    <Search className="w-3.5 h-3.5 text-emerald-600 dark:text-[#2DD4BF] absolute right-2.5 top-2.5" />
+                    <Search className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8] absolute right-2.5 top-2.5" />
                     {tafseerSearchQuery && (
                       <button
                         onClick={() => setTafseerSearchQuery('')}
@@ -482,7 +482,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                         }}
                         className={`px-2 py-0.5 rounded-full text-[10px] font-bold border transition-all ${
                           tafseerSearchQuery === kw
-                            ? 'bg-[#0F6B50] text-white border-[#0F6B50]'
+                            ? 'bg-[#0284C7] text-white border-[#0284C7]'
                             : 'bg-white dark:bg-[#101A16] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800'
                         }`}
                       >
@@ -492,7 +492,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   </div>
 
                   {tafseerSearchQuery && (
-                    <span className="font-bold text-[10px] text-[#0F6B50] dark:text-[#2DD4BF]">
+                    <span className="font-bold text-[10px] text-[#0284C7] dark:text-[#38BDF8]">
                       {insights.ibnKathirTafseer.includes(tafseerSearchQuery)
                         ? `وردت كلمة "${tafseerSearchQuery}" في التفسير`
                         : 'لم تظهر الكلمة في نص التفسير'}
@@ -504,7 +504,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
               {/* Tafseer Source Picker (Ibn Kathir, Al-Muyassar, Saadi, Mukhtasar) */}
               <div className="p-3 rounded-2xl bg-[#F4EFE6] dark:bg-[#121E19] border border-[#E0D5C1] dark:border-[#22362C] space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#19302A] dark:text-emerald-300 flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-[#19302A] dark:text-sky-300 flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     <span>اختر كتاب التفسير:</span>
                   </span>
@@ -526,8 +526,8 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                         }}
                         className={`px-2.5 py-2 rounded-xl text-xs font-bold text-center transition-all flex flex-col items-center justify-center gap-0.5 border shadow-xs active:scale-95 ${
                           isSelected
-                            ? 'bg-[#0F6B50] text-white border-[#0F6B50] ring-2 ring-[#0F6B50]/30 shadow-md'
-                            : 'bg-white dark:bg-[#1A2A23] text-[#2C4A3E] dark:text-gray-300 border-[#E2DAC9] dark:border-[#2C4137] hover:border-[#0F6B50]'
+                            ? 'bg-[#0284C7] text-white border-[#0284C7] ring-2 ring-[#0284C7]/30 shadow-md'
+                            : 'bg-white dark:bg-[#1A2A23] text-[#2C4A3E] dark:text-gray-300 border-[#E2DAC9] dark:border-[#2C4137] hover:border-[#0284C7]'
                         }`}
                       >
                         <span className="leading-tight">{source.shortName}</span>
@@ -542,7 +542,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   <span>{TAFSEER_SOURCES.find(s => s.id === selectedTafseerSource)?.name}</span>
                 </span>
                 {isLoadingTafseer && (
-                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                  <span className="text-[11px] text-sky-600 dark:text-sky-400 font-bold flex items-center gap-1">
                     <Loader2 className="w-3 h-3 animate-spin" />
                     <span>جارٍ تحميل التفسير...</span>
                   </span>
@@ -556,7 +556,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
               >
                 {isLoadingTafseer && !currentTafseerContent ? (
                   <div className="py-8 text-center space-y-2 text-gray-400">
-                    <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#0F6B50]" />
+                    <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#0284C7]" />
                     <p className="text-xs font-medium">جارٍ استحضار نص التفسير الموثوق...</p>
                   </div>
                 ) : (
@@ -566,8 +566,8 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 )}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 flex items-start gap-2.5 text-xs text-[#0F6B50] dark:text-emerald-300">
-                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
+              <div className="p-3.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/40 flex items-start gap-2.5 text-xs text-[#0284C7] dark:text-sky-300">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-sky-600 dark:text-sky-400" />
                 <p className="leading-relaxed">
                   {TAFSEER_SOURCES.find(s => s.id === selectedTafseerSource)?.description || 'تفسير معتمد وموثوق لبيان معاني كلام الله عز وجل.'}
                 </p>
@@ -579,7 +579,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
           {activeTab === 'word_meanings' && (
             <div className="space-y-3.5 animate-fadeIn">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                <span className="text-xs font-bold text-[#0284C7] dark:text-[#38BDF8]">
                   بيان مفردات الآية وغريب الألفاظ ({insights.wordMeanings.length} كلمات)
                 </span>
                 <span className="text-[11px] text-gray-500">قاموس مفردات القرآن</span>
@@ -589,14 +589,14 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 {insights.wordMeanings.map((item, idx) => (
                   <div 
                     key={idx}
-                    className="p-4 rounded-2xl bg-[#FAF7F0] dark:bg-[#162720] border border-[#E5DDCF] dark:border-[#263D33] space-y-2 hover:border-[#0F6B50] transition-colors"
+                    className="p-4 rounded-2xl bg-[#FAF7F0] dark:bg-[#162720] border border-[#E5DDCF] dark:border-[#263D33] space-y-2 hover:border-[#0284C7] transition-colors"
                   >
                     <div className="flex items-center justify-between border-b border-[#EBE3D3] dark:border-[#253930] pb-2">
                       <span className="text-[11px] font-bold text-[#8A743F] dark:text-amber-300">
                         مفردة #{toArabicNumerals(idx + 1)}
                       </span>
                       <span 
-                        className="font-quran font-bold text-[#0F6B50] dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-lg border border-amber-200/50"
+                        className="font-quran font-bold text-[#0284C7] dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-lg border border-amber-200/50"
                         style={{ fontSize: `${modalFontSize + 2}px` }}
                       >
                         {item.word}
@@ -641,7 +641,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
           {activeTab === 'tadabbur' && (
             <div className="space-y-3.5 animate-fadeIn">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                <span className="text-xs font-bold text-[#0284C7] dark:text-[#38BDF8]">
                   وقفات تدبرية وثمار العمل بالآية
                 </span>
                 <span className="text-[11px] text-gray-500">هدايات القرآن</span>
@@ -663,7 +663,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 ))}
               </div>
 
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800/30 space-y-1.5 text-xs text-[#0F6B50] dark:text-emerald-300">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30 border border-sky-200 dark:border-sky-800/30 space-y-1.5 text-xs text-[#0284C7] dark:text-sky-300">
                 <span className="font-bold flex items-center gap-1.5">
                   <Lightbulb className="w-4 h-4 text-amber-500" />
                   <span>سؤال اليوم للتدبر الشخصي:</span>

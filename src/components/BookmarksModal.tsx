@@ -70,9 +70,9 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white dark:bg-[#15231D] rounded-3xl max-w-md w-full border-2 border-[#0F6B50] dark:border-[#2DD4BF] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] text-right">
+      <div className="bg-white dark:bg-[#15231D] rounded-3xl max-w-md w-full border-2 border-[#0284C7] dark:border-[#38BDF8] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] text-right">
         {/* Header */}
-        <div className="p-4 bg-gradient-to-r from-[#0F6B50] to-[#138061] text-white flex items-center justify-between">
+        <div className="p-4 bg-gradient-to-r from-[#0284C7] to-[#0EA5E9] text-white flex items-center justify-between">
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
@@ -86,7 +86,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
               <span className="font-bold text-sm">العلامات المرجعية والفواصل</span>
               <BookmarkCheck className="w-5 h-5 text-amber-300" />
             </div>
-            <p className="text-[11px] text-emerald-100 font-medium mt-0.5">
+            <p className="text-[11px] text-sky-100 font-medium mt-0.5">
               سجل مواضع القراءة والصفحات المحفوظة
             </p>
           </div>
@@ -103,7 +103,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
               className={`px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all active:scale-95 ${
                 isCurrentBookmarked
                   ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-200 border border-amber-300'
-                  : 'bg-[#0F6B50] text-white hover:bg-[#138061]'
+                  : 'bg-[#0284C7] text-white hover:bg-[#0EA5E9]'
               }`}
             >
               <BookmarkIcon className={`w-4 h-4 ${isCurrentBookmarked ? 'fill-amber-500 text-amber-600' : ''}`} />
@@ -123,7 +123,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
         <div className="p-4 overflow-y-auto flex-1 space-y-2.5">
           {bookmarks.length === 0 ? (
             <div className="py-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-full bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center mx-auto">
                 <BookmarkIcon className="w-6 h-6" />
               </div>
               <h4 className="font-bold text-sm text-[#19302A] dark:text-white">لا توجد علامات مرجعية محفوظة بعد</h4>
@@ -152,8 +152,8 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                   }}
                   className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer transition-all active:scale-[0.99] ${
                     isSelected
-                      ? 'bg-emerald-50 dark:bg-emerald-950/80 border-[#0F6B50] dark:border-[#2DD4BF] shadow-xs'
-                      : 'bg-[#FAF8F2] dark:bg-[#182620] border-[#E8DFD0] dark:border-[#283C32] hover:border-[#0F6B50]'
+                      ? 'bg-sky-50 dark:bg-sky-950/80 border-[#0284C7] dark:border-[#38BDF8] shadow-xs'
+                      : 'bg-[#FAF8F2] dark:bg-[#182620] border-[#E8DFD0] dark:border-[#283C32] hover:border-[#0284C7]'
                   }`}
                 >
                   <div className="flex items-center gap-1.5 shrink-0">
@@ -171,7 +171,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                     {!isEditingThis && onUpdateBookmarkTitle && (
                       <button
                         onClick={(e) => startEditing(e, bm)}
-                        className="p-2 rounded-xl text-[#0F6B50] dark:text-[#2DD4BF] hover:bg-emerald-100/60 dark:hover:bg-emerald-950/50 transition-colors"
+                        className="p-2 rounded-xl text-[#0284C7] dark:text-[#38BDF8] hover:bg-sky-100/60 dark:hover:bg-sky-950/50 transition-colors"
                         title="تعديل مسمى الفاصلة"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -186,7 +186,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                           playChime('click');
                         }
                       }}
-                      className="px-3 py-1.5 rounded-xl bg-[#0F6B50] text-white text-xs font-bold flex items-center gap-1 shadow-xs hover:bg-[#138061]"
+                      className="px-3 py-1.5 rounded-xl bg-[#0284C7] text-white text-xs font-bold flex items-center gap-1 shadow-xs hover:bg-[#0EA5E9]"
                     >
                       <span>انتقال</span>
                       <ArrowLeft className="w-3.5 h-3.5" />
@@ -210,7 +210,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                         </button>
                         <button
                           type="submit"
-                          className="p-1.5 rounded-lg bg-[#0F6B50] text-white hover:bg-[#138061] transition-colors shadow-xs"
+                          className="p-1.5 rounded-lg bg-[#0284C7] text-white hover:bg-[#0EA5E9] transition-colors shadow-xs"
                           title="حفظ المسمى"
                         >
                           <Check className="w-3.5 h-3.5" />
@@ -221,7 +221,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                           onChange={(e) => setEditTitleInput(e.target.value)}
                           autoFocus
                           placeholder="اكتب اسم الفاصلة المخصصة..."
-                          className="w-full max-w-[200px] text-xs font-bold text-right px-2.5 py-1.5 rounded-xl border-2 border-[#0F6B50] dark:border-[#2DD4BF] bg-white dark:bg-[#101A16] text-[#19302A] dark:text-white outline-none"
+                          className="w-full max-w-[200px] text-xs font-bold text-right px-2.5 py-1.5 rounded-xl border-2 border-[#0284C7] dark:border-[#38BDF8] bg-white dark:bg-[#101A16] text-[#19302A] dark:text-white outline-none"
                           onKeyDown={(e) => {
                             if (e.key === 'Escape') cancelEditing();
                           }}
@@ -243,7 +243,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                         <div className="flex items-center justify-end gap-2 text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                           {dateStr && <span>{dateStr}</span>}
                           {dateStr && <span>•</span>}
-                          <span className="font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                          <span className="font-bold text-[#0284C7] dark:text-[#38BDF8]">
                             صفحة {toArabicNumerals(pageNum)}
                           </span>
                         </div>

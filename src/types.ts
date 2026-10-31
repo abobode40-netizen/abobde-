@@ -163,7 +163,7 @@ export interface Bookmark {
   pageNumber?: number;
 }
 
-export type DuaCategoryType = 'khatm' | 'quran' | 'sunnah' | 'ruqyah' | 'magic_jinn' | 'kuroob' | 'hidayah' | 'jawami';
+export type DuaCategoryType = 'youth_guidance' | 'khatm' | 'quran' | 'sunnah' | 'ruqyah' | 'magic_jinn' | 'kuroob' | 'hidayah' | 'jawami';
 
 export interface DuaItem {
   id: string;
@@ -199,7 +199,8 @@ export interface MishkatLesson {
 
 export type QuranThemeId = 
   | 'royal_gold'       // مصحف المدينة الملكي (الذهبي الكلاسيكي)
-  | 'emerald_rawdah'   // الروضة الشريفة (الزمردي النبوي)
+  | 'azure_sky'        // السماء الصافية (الأزرق الفاتح السماوي)
+  | 'emerald_rawdah'   // التوافق القديم (يُوجه للأزرق الفاتح)
   | 'heritage_sepia'   // المخطوطة التراثية (ورق البردي الأثري)
   | 'night_tahajjud'   // ليل التهجد (الكحلي الملكي المذهب)
   | 'pure_dark'        // العتمة الفاحمة (Dark OLED المريح)
@@ -238,6 +239,7 @@ export interface QuranThemeConfig {
 export interface AppSettings {
   isDarkMode: boolean;
   enableEyeComfortMode?: boolean; // Warm sepia / eye comfort tone
+  appFontScale?: 100 | 115 | 130 | 145; // Global font zoom scale for all data and doors (100% to 145%)
   selectedReciter: ReciterId;
   quranTheme?: QuranThemeId;
   quranFontSize: number; // 18 to 36

@@ -34,7 +34,7 @@ export function generateStandaloneHTML(backupDataJson?: string): string {
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0F6B50;
+      --primary: #0284C7;
       --primary-dark: #094735;
       --gold: #C19E2B;
       --bg: #FAF7F0;
@@ -65,7 +65,7 @@ export function generateStandaloneHTML(backupDataJson?: string): string {
       margin: 0 auto;
     }
     .header {
-      background: linear-gradient(135deg, #0B5C46, #168064, #276D5A);
+      background: linear-gradient(135deg, #0369A1, #0284C7, #276D5A);
       color: white;
       padding: 24px 20px;
       border-radius: 24px;
@@ -105,7 +105,7 @@ export function generateStandaloneHTML(backupDataJson?: string): string {
       font-size: 20px;
       text-align: center;
       line-height: 2.2;
-      color: #0F6B50;
+      color: #0284C7;
       padding: 16px;
       background: #F4EFE6;
       border-radius: 16px;
@@ -161,7 +161,7 @@ export function generateStandaloneHTML(backupDataJson?: string): string {
     }
     .code-box {
       background: #111A16;
-      color: #2DD4BF;
+      color: #38BDF8;
       padding: 12px;
       border-radius: 12px;
       font-family: monospace;
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
   const voiceSearchSnippet = `<!-- ===== كود البحث الصوتي باللغة العربية والتعرف على الصوت (SpeechRecognition) ===== -->
 <div style="display: flex; gap: 8px; max-width: 400px; margin: 20px auto; font-family: sans-serif;" dir="rtl">
     <input id="searchInput" type="text" placeholder="اكتب أو انطق كلمة للبحث..." style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ccc; font-size: 14px;">
-    <button id="micBtn" type="button" style="padding: 12px 16px; background: #0F6B50; color: #fff; border-radius: 10px; border:none; font-weight: bold; cursor: pointer;">
+    <button id="micBtn" type="button" style="padding: 12px 16px; background: #0284C7; color: #fff; border-radius: 10px; border:none; font-weight: bold; cursor: pointer;">
         🎤
     </button>
 </div>

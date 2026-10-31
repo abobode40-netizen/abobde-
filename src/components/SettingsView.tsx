@@ -547,7 +547,7 @@ async function startMic() {
     <div className="pb-24 pt-2 px-3 sm:px-4 max-w-lg mx-auto space-y-4 animate-fadeIn">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-5 inset-x-4 max-w-md mx-auto z-50 bg-[#0F6B50] text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-400/40 text-center text-sm font-bold flex items-center justify-center gap-2 animate-bounce">
+        <div className="fixed top-5 inset-x-4 max-w-md mx-auto z-50 bg-[#0284C7] text-white px-4 py-3 rounded-2xl shadow-xl border border-sky-400/40 text-center text-sm font-bold flex items-center justify-center gap-2 animate-bounce">
           <Sparkles className="w-4 h-4 text-amber-300" />
           <span>{toastMessage}</span>
         </div>
@@ -557,7 +557,7 @@ async function startMic() {
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="w-10 h-10 rounded-xl bg-[#E8F3ED] dark:bg-[#162D24] text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+          className="w-10 h-10 rounded-xl bg-[#E8F3ED] dark:bg-[#162D24] text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
           title="العودة"
         >
           <ArrowRight className="w-5 h-5" />
@@ -569,13 +569,13 @@ async function startMic() {
       </div>
 
       {/* App Branding Info Card */}
-      <div className="p-5 rounded-3xl bg-[#0F6B50] text-white text-center space-y-2 shadow-md relative overflow-hidden">
+      <div className="p-5 rounded-3xl bg-[#0284C7] text-white text-center space-y-2 shadow-md relative overflow-hidden">
         <div className="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 mx-auto flex items-center justify-center shadow-sm">
           <img src="/jannat-icon.png" alt="جنّة الرحمن" className="w-full h-full object-cover rounded-2xl" onError={(e) => (e.target as HTMLElement).style.display = 'none'} />
           <Sparkles className="w-7 h-7 text-amber-300" />
         </div>
         <h3 className="text-lg font-bold font-amiri">جنّة الرحمن</h3>
-        <p className="text-xs text-emerald-100/90 leading-relaxed max-w-xs mx-auto">
+        <p className="text-xs text-sky-100/90 leading-relaxed max-w-xs mx-auto">
           خصوصيتك محفوظة؛ التقدم والعلامات تُخزّن محلياً على جهازك دون الحاجة لحساب أو اتصال مستمر.
         </p>
       </div>
@@ -583,7 +583,7 @@ async function startMic() {
       {/* Appearance & Dark Mode */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
             {settings.isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </div>
           <h4 className="font-bold text-sm text-[#19302A] dark:text-white">المظهر والألوان</h4>
@@ -600,7 +600,7 @@ async function startMic() {
               }}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F6B50]" />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0284C7]" />
           </label>
           <div className="text-right">
             <span className="text-sm font-bold text-[#19302A] dark:text-white block">الوضع الليلي</span>
@@ -637,7 +637,7 @@ async function startMic() {
         {/* Quran Page Visual Themes Picker */}
         <div className="pt-3 border-t border-gray-100 dark:border-gray-800/60 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[#0F6B50] dark:text-[#2DD4BF] font-bold">
+            <span className="text-[11px] text-[#0284C7] dark:text-[#38BDF8] font-bold">
               {QURAN_THEMES.find(t => t.id === (settings.quranTheme || 'royal_gold'))?.name}
             </span>
             <div className="text-right">
@@ -666,12 +666,12 @@ async function startMic() {
                   }}
                   className={`p-2.5 rounded-xl border text-right transition-all flex items-center justify-between gap-2 ${
                     isSelected
-                      ? 'border-[#0F6B50] dark:border-[#2DD4BF] bg-emerald-50/60 dark:bg-[#1C3328] ring-1 ring-[#0F6B50]'
+                      ? 'border-[#0284C7] dark:border-[#38BDF8] bg-sky-50/60 dark:bg-[#1C3328] ring-1 ring-[#0284C7]'
                       : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 bg-white/50 dark:bg-black/20'
                   }`}
                 >
                   {isSelected ? (
-                    <Check className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF] shrink-0" />
+                    <Check className="w-4 h-4 text-[#0284C7] dark:text-[#38BDF8] shrink-0" />
                   ) : (
                     <span 
                       className="w-3 h-3 rounded-full shrink-0 border border-black/20" 
@@ -697,7 +697,7 @@ async function startMic() {
       <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-4 text-right">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100/80 dark:bg-amber-950/80 text-[#0F6B50] dark:text-[#2DD4BF] border border-amber-300/40 dark:border-amber-800/40">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100/80 dark:bg-amber-950/80 text-[#0284C7] dark:text-[#38BDF8] border border-amber-300/40 dark:border-amber-800/40">
             {prayerMethod === 'egypt' ? 'المساحة المصرية 🇪🇬' : PRAYER_CALC_METHODS.find(m => m.id === prayerMethod)?.badge}
           </span>
           <div className="flex items-center gap-2">
@@ -705,21 +705,21 @@ async function startMic() {
               <h4 className="font-bold text-sm text-[#19302A] dark:text-white">ضبط مواقيت الصلاة والحساب الفلكي</h4>
               <p className="text-[11px] text-gray-500 dark:text-gray-400">طريقة الحساب، تحديد المدينة، والضبط الدقيق للأذان بالدقائق</p>
             </div>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center shrink-0">
               <Clock className="w-5 h-5" />
             </div>
           </div>
         </div>
 
         {/* Featured Banner: Cairo & Egyptian Survey Quick Pin */}
-        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50/90 via-emerald-50/70 to-amber-50/90 dark:from-amber-950/30 dark:via-emerald-950/30 dark:to-amber-950/30 border border-amber-300/60 dark:border-amber-800/50 shadow-xs">
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50/90 via-sky-50/70 to-amber-50/90 dark:from-amber-950/30 dark:via-sky-950/30 dark:to-amber-950/30 border border-amber-300/60 dark:border-amber-800/50 shadow-xs">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <button
               onClick={handlePinCairoMethod}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm ${
                 prayerMethod === 'egypt' && prayerLocation.cityName === 'القاهرة'
                   ? 'bg-amber-400 hover:bg-amber-500 text-[#0F4234] ring-2 ring-amber-300'
-                  : 'bg-[#0F6B50] hover:bg-[#168064] text-white'
+                  : 'bg-[#0284C7] hover:bg-[#0284C7] text-white'
               }`}
             >
               <Pin className="w-4 h-4" />
@@ -739,7 +739,7 @@ async function startMic() {
                   19.5° / 17.5°
                 </span>
               </div>
-              <span className="text-[11px] text-[#0F6B50] dark:text-[#2DD4BF] font-mono block mt-0.5">
+              <span className="text-[11px] text-[#0284C7] dark:text-[#38BDF8] font-mono block mt-0.5">
                 توقيت القاهرة الآن: {toArabicNumerals(cairoClock)}
               </span>
             </div>
@@ -752,7 +752,7 @@ async function startMic() {
             onClick={() => setPrayerSettingsTab('methods')}
             className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
               prayerSettingsTab === 'methods'
-                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0284C7] dark:text-[#38BDF8] shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -762,7 +762,7 @@ async function startMic() {
             onClick={() => setPrayerSettingsTab('location')}
             className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
               prayerSettingsTab === 'location'
-                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0284C7] dark:text-[#38BDF8] shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -772,7 +772,7 @@ async function startMic() {
             onClick={() => setPrayerSettingsTab('offsets')}
             className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
               prayerSettingsTab === 'offsets'
-                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0284C7] dark:text-[#38BDF8] shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -782,7 +782,7 @@ async function startMic() {
             onClick={() => setPrayerSettingsTab('preview')}
             className={`py-2 px-1.5 rounded-lg transition-all text-center truncate ${
               prayerSettingsTab === 'preview'
-                ? 'bg-white dark:bg-[#1A2621] text-[#0F6B50] dark:text-[#2DD4BF] shadow-xs'
+                ? 'bg-white dark:bg-[#1A2621] text-[#0284C7] dark:text-[#38BDF8] shadow-xs'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
             }`}
           >
@@ -809,12 +809,12 @@ async function startMic() {
                     onClick={() => handleChangePrayerMethod(m.id)}
                     className={`w-full p-3 rounded-xl text-right transition-all border flex items-center justify-between ${
                       isSelected
-                        ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0F6B50] dark:text-[#2DD4BF] border-[#0F6B50] font-bold shadow-xs'
-                        : 'bg-[#FAF7F0] dark:bg-[#15231E] hover:bg-emerald-50/40 dark:hover:bg-[#1D2E27] border-[#E5DDCF] dark:border-[#2A3C34] text-gray-700 dark:text-gray-300'
+                        ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0284C7] dark:text-[#38BDF8] border-[#0284C7] font-bold shadow-xs'
+                        : 'bg-[#FAF7F0] dark:bg-[#15231E] hover:bg-sky-50/40 dark:hover:bg-[#1D2E27] border-[#E5DDCF] dark:border-[#2A3C34] text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     <div className="flex items-center gap-2 shrink-0">
-                      {isSelected && <CheckCheck className="w-4 h-4 text-[#0F6B50] dark:text-[#2DD4BF]" />}
+                      {isSelected && <CheckCheck className="w-4 h-4 text-[#0284C7] dark:text-[#38BDF8]" />}
                       <span className="text-[11px] bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-md font-normal">
                         {m.badge}
                       </span>
@@ -879,7 +879,7 @@ async function startMic() {
                 <button
                   onClick={handleRequestGpsLocation}
                   disabled={isGpsLoading}
-                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center gap-1.5 active:scale-95 transition-all text-xs"
+                  className="px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold flex items-center gap-1.5 active:scale-95 transition-all text-xs"
                 >
                   <Navigation className={`w-3.5 h-3.5 ${isGpsLoading ? 'animate-spin' : ''}`} />
                   <span>{isGpsLoading ? 'جاري التحديد...' : 'موقعي الحالي (GPS)'}</span>
@@ -907,7 +907,7 @@ async function startMic() {
                 value={citySearchQuery}
                 onChange={(e) => setCitySearchQuery(e.target.value)}
                 placeholder="ابحث عن اسم مدينة أو محافظة..."
-                className="w-full pr-9 pl-3 py-2 text-xs rounded-xl bg-white dark:bg-[#15231E] border border-gray-200 dark:border-gray-700 text-right placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F6B50]"
+                className="w-full pr-9 pl-3 py-2 text-xs rounded-xl bg-white dark:bg-[#15231E] border border-gray-200 dark:border-gray-700 text-right placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
               />
               <Search className="w-4 h-4 text-gray-400 absolute right-3 top-2.5 pointer-events-none" />
             </div>
@@ -926,11 +926,11 @@ async function startMic() {
                       onClick={() => handleSelectCity(c)}
                       className={`w-full p-2 rounded-lg text-right text-xs flex items-center justify-between border ${
                         isSelected
-                          ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0F6B50] dark:text-[#2DD4BF] border-[#0F6B50] font-bold'
+                          ? 'bg-[#EBF5F1] dark:bg-[#1B362E] text-[#0284C7] dark:text-[#38BDF8] border-[#0284C7] font-bold'
                           : 'bg-white dark:bg-[#15231E] hover:bg-gray-50 border-gray-100 dark:border-gray-800 text-gray-700 dark:text-gray-300'
                       }`}
                     >
-                      {isSelected ? <Check className="w-3.5 h-3.5 text-[#0F6B50]" /> : <span className="text-[10px] text-gray-400">{c.countryName}</span>}
+                      {isSelected ? <Check className="w-3.5 h-3.5 text-[#0284C7]" /> : <span className="text-[10px] text-gray-400">{c.countryName}</span>}
                       <span>{c.cityName}</span>
                     </button>
                   );
@@ -957,7 +957,7 @@ async function startMic() {
                           onClick={() => handleSelectCity(c)}
                           className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-center border truncate active:scale-95 ${
                             isSelected
-                              ? 'bg-[#0F6B50] text-white border-[#0F6B50] shadow-xs'
+                              ? 'bg-[#0284C7] text-white border-[#0284C7] shadow-xs'
                               : 'bg-gray-50 dark:bg-gray-800/70 hover:bg-amber-50/50 border-gray-200/80 dark:border-gray-700/80 text-gray-700 dark:text-gray-300'
                           }`}
                         >
@@ -972,7 +972,7 @@ async function startMic() {
                 <div className="space-y-1.5 pt-1 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-end text-[11px] font-bold text-gray-700 dark:text-gray-300 gap-1">
                     <span>العواصم والمدن الإسلامية والعربية</span>
-                    <MapPin className="w-3 h-3 text-emerald-600" />
+                    <MapPin className="w-3 h-3 text-sky-600" />
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                     {POPULAR_CITIES.filter(c => c.countryName !== 'مصر').slice(0, 9).map((c, i) => {
@@ -983,8 +983,8 @@ async function startMic() {
                           onClick={() => handleSelectCity(c)}
                           className={`px-2 py-1.5 rounded-lg text-xs transition-all text-center border truncate active:scale-95 ${
                             isSelected
-                              ? 'bg-[#0F6B50] text-white border-[#0F6B50] font-bold shadow-xs'
-                              : 'bg-gray-50 dark:bg-gray-800/70 hover:bg-emerald-50/50 border-gray-200/80 dark:border-gray-700/80 text-gray-700 dark:text-gray-300'
+                              ? 'bg-[#0284C7] text-white border-[#0284C7] font-bold shadow-xs'
+                              : 'bg-gray-50 dark:bg-gray-800/70 hover:bg-sky-50/50 border-gray-200/80 dark:border-gray-700/80 text-gray-700 dark:text-gray-300'
                           }`}
                         >
                           {c.cityName}
@@ -1043,7 +1043,7 @@ async function startMic() {
                       <span
                         className={`min-w-16 text-center font-mono text-xs font-bold px-2 py-1 rounded-md ${
                           val > 0
-                            ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
+                            ? 'bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300'
                             : val < 0
                             ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
@@ -1101,7 +1101,7 @@ async function startMic() {
                   key={item.id}
                   className={`p-2.5 rounded-xl border text-center transition-all ${
                     item.isNext
-                      ? 'bg-emerald-50 dark:bg-emerald-950/50 border-[#0F6B50] dark:border-[#2DD4BF] ring-1 ring-[#0F6B50]'
+                      ? 'bg-sky-50 dark:bg-sky-950/50 border-[#0284C7] dark:border-[#38BDF8] ring-1 ring-[#0284C7]'
                       : item.isPassed
                       ? 'bg-gray-50/70 dark:bg-gray-800/30 border-gray-100 dark:border-gray-800 text-gray-400 opacity-80'
                       : 'bg-white dark:bg-gray-800/70 border-gray-200/80 dark:border-gray-700/80'
@@ -1109,13 +1109,13 @@ async function startMic() {
                 >
                   <div className="flex items-center justify-between text-[11px] font-bold text-gray-700 dark:text-gray-300 mb-1">
                     {item.isNext && (
-                      <span className="text-[9px] bg-emerald-600 text-white px-1.5 py-0.2 rounded">
+                      <span className="text-[9px] bg-sky-600 text-white px-1.5 py-0.2 rounded">
                         القادمة
                       </span>
                     )}
                     <span className="mr-auto">{item.name}</span>
                   </div>
-                  <div className="font-mono text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] dir-rtl">
+                  <div className="font-mono text-xs font-bold text-[#0284C7] dark:text-[#38BDF8] dir-rtl">
                     {toArabicNumerals(item.formattedTime)}
                   </div>
                 </div>
@@ -1132,12 +1132,12 @@ async function startMic() {
       {/* Quran Font Size Slider Section */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3.5 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/80 text-[#0F6B50] dark:text-[#2DD4BF] border border-emerald-300/40 dark:border-emerald-800/40">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-sky-100/80 dark:bg-sky-950/80 text-[#0284C7] dark:text-[#38BDF8] border border-sky-300/40 dark:border-sky-800/40">
             {toArabicNumerals(settings.quranFontSize || 26)} بكسل
           </span>
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-sm text-[#19302A] dark:text-white">حجم خط المصحف الشريف</h4>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
               <Type className="w-4 h-4" />
             </div>
           </div>
@@ -1159,7 +1159,7 @@ async function startMic() {
               const newSize = Number(e.target.value);
               onUpdateSettings({ ...settings, quranFontSize: newSize });
             }}
-            className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#0F6B50] dark:accent-[#2DD4BF] focus:outline-none"
+            className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#0284C7] dark:accent-[#38BDF8] focus:outline-none"
             aria-label="حجم خط المصحف"
           />
 
@@ -1180,8 +1180,8 @@ async function startMic() {
                   }}
                   className={`px-2 py-1 rounded-lg font-bold transition-all ${
                     isActive
-                      ? 'bg-[#0F6B50] text-white shadow-xs'
-                      : 'bg-[#FAF7F0] dark:bg-[#14201B] text-gray-600 dark:text-gray-400 hover:text-[#0F6B50]'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
+                      : 'bg-[#FAF7F0] dark:bg-[#14201B] text-gray-600 dark:text-gray-400 hover:text-[#0284C7]'
                   }`}
                 >
                   {preset.label} ({toArabicNumerals(preset.size)})
@@ -1195,7 +1195,7 @@ async function startMic() {
         <div className="p-3.5 rounded-2xl bg-[#FAF7F0] dark:bg-[#121E19] border border-[#E5DDCF] dark:border-[#22362D] text-center space-y-1 shadow-inner overflow-hidden transition-all duration-200">
           <span className="text-[10px] font-bold text-[#8A743F] dark:text-amber-400 block">معاينة مباشرة لنص المصحف</span>
           <p
-            className="font-quran font-bold text-[#0F6B50] dark:text-emerald-300 leading-relaxed transition-all duration-150 py-1"
+            className="font-quran font-bold text-[#0284C7] dark:text-sky-300 leading-relaxed transition-all duration-150 py-1"
             style={{ fontSize: `${settings.quranFontSize || 26}px` }}
           >
             ﴿ بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ﴾
@@ -1206,7 +1206,7 @@ async function startMic() {
       {/* Reciter Default Selection */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
             <Headphones className="w-4 h-4" />
           </div>
           <h4 className="font-bold text-sm text-[#19302A] dark:text-white">القارئ الافتراضي للتلاوة</h4>
@@ -1224,11 +1224,11 @@ async function startMic() {
                 }}
                 className={`p-2.5 rounded-xl border text-right flex items-center justify-between text-xs transition-all ${
                   isSelected
-                    ? 'bg-[#E8F3ED] dark:bg-[#162D24] border-[#0F6B50] text-[#0F6B50] dark:text-[#2DD4BF] font-bold'
+                    ? 'bg-[#E8F3ED] dark:bg-[#162D24] border-[#0284C7] text-[#0284C7] dark:text-[#38BDF8] font-bold'
                     : 'bg-[#FAF7F0] dark:bg-[#14201B] border-transparent text-[#19302A] dark:text-white'
                 }`}
               >
-                {isSelected && <Check className="w-4 h-4 text-[#0F6B50]" />}
+                {isSelected && <Check className="w-4 h-4 text-[#0284C7]" />}
                 <div>
                   <div className="font-bold">{r.name}</div>
                   <div className="text-[10px] text-gray-500">{r.subname}</div>
@@ -1242,7 +1242,7 @@ async function startMic() {
       {/* Audio & Haptic Cues */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
             <Volume2 className="w-4 h-4" />
           </div>
           <h4 className="font-bold text-sm text-[#19302A] dark:text-white">الأصوات والتنبيهات</h4>
@@ -1259,7 +1259,7 @@ async function startMic() {
               }}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F6B50]" />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0284C7]" />
           </label>
           <div className="text-right">
             <span className="text-sm font-bold text-[#19302A] dark:text-white block">نغمات التسبيح والإنجاز</span>
@@ -1278,7 +1278,7 @@ async function startMic() {
               }}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0F6B50]" />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0284C7]" />
           </label>
           <div className="text-right">
             <span className="text-sm font-bold text-[#19302A] dark:text-white block">تذكيرات أذكار الصباح والمساء</span>
@@ -1292,7 +1292,7 @@ async function startMic() {
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
           <span className={`text-[11px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${
             isOnline 
-              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+              ? 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300'
               : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
           }`}>
             {isOnline ? (
@@ -1309,7 +1309,7 @@ async function startMic() {
           </span>
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-sm text-[#19302A] dark:text-white">العمل بدون إنترنت (أوفلاين وأونلاين)</h4>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
               <HardDrive className="w-4 h-4" />
             </div>
           </div>
@@ -1322,7 +1322,7 @@ async function startMic() {
         {/* Offline Quran Storage Card */}
         <div className="p-3.5 rounded-xl bg-[#FAF7F0] dark:bg-[#14201B] border border-[#E5DDCF] dark:border-[#2A3C34] space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[#0F6B50] dark:text-emerald-300 px-2.5 py-1 rounded-lg bg-emerald-100/80 dark:bg-emerald-950/80 border border-emerald-300/40 dark:border-emerald-800/40">
+            <span className="text-xs font-bold text-[#0284C7] dark:text-sky-300 px-2.5 py-1 rounded-lg bg-sky-100/80 dark:bg-sky-950/80 border border-sky-300/40 dark:border-sky-800/40">
               {toArabicNumerals(cachedQuranPagesCount)} / {toArabicNumerals(604)} صفحة
             </span>
             <div className="text-right">
@@ -1340,7 +1340,7 @@ async function startMic() {
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
                 <div 
-                  className="bg-[#0F6B50] dark:bg-[#2DD4BF] h-full transition-all duration-300 rounded-full"
+                  className="bg-[#0284C7] dark:bg-[#38BDF8] h-full transition-all duration-300 rounded-full"
                   style={{ width: `${downloadProgress.percent}%` }}
                 />
               </div>
@@ -1360,7 +1360,7 @@ async function startMic() {
             ) : (
               <button
                 onClick={handleDownloadAllQuran}
-                className="flex-1 py-2.5 px-3 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95"
+                className="flex-1 py-2.5 px-3 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95"
               >
                 <CloudDownload className="w-4 h-4" />
                 <span>{cachedQuranPagesCount >= 604 ? 'تحديث صفحات المصحف أوفلاين' : 'تحميل صفحات المصحف أوفلاين'}</span>
@@ -1385,7 +1385,7 @@ async function startMic() {
               playChime('click');
               setShowInstallModal(true);
             }}
-            className="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 text-[#0F6B50] dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-all border border-emerald-300/60 dark:border-emerald-800/60 cursor-pointer"
+            className="w-full py-2.5 px-3 rounded-xl bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/60 dark:hover:bg-sky-900/60 text-[#0284C7] dark:text-sky-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-all border border-sky-300/60 dark:border-sky-800/60 cursor-pointer"
           >
             <Smartphone className="w-4 h-4" />
             <span>كيف تجعل التطبيق يفتح معك بدون نت في أي وقت؟ (طريقة التثبيت)</span>
@@ -1405,7 +1405,7 @@ async function startMic() {
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
           <span className={`text-xs font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${
             micStatusType === 'success'
-              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+              ? 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300'
               : micStatusType === 'error'
               ? 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300'
               : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
@@ -1414,7 +1414,7 @@ async function startMic() {
           </span>
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-sm text-[#19302A] dark:text-white">الميكروفون والتلاوة الصوتية (APK)</h4>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
               <Mic className="w-4 h-4" />
             </div>
           </div>
@@ -1427,7 +1427,7 @@ async function startMic() {
         {/* Live Status Display */}
         <div className={`p-3 rounded-2xl border text-xs font-bold leading-relaxed transition-all ${
           micStatusType === 'success'
-            ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-300 text-emerald-900 dark:text-emerald-200'
+            ? 'bg-sky-50 dark:bg-sky-950/70 border-sky-300 text-sky-900 dark:text-sky-200'
             : micStatusType === 'error'
             ? 'bg-red-50 dark:bg-red-950/70 border-red-300 text-red-900 dark:text-red-200'
             : micStatusType === 'testing'
@@ -1436,11 +1436,11 @@ async function startMic() {
         }`}>
           <div className="flex items-start gap-2">
             {micStatusType === 'success' ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
             ) : micStatusType === 'error' ? (
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             ) : (
-              <Info className="w-4 h-4 text-[#0F6B50] shrink-0 mt-0.5" />
+              <Info className="w-4 h-4 text-[#0284C7] shrink-0 mt-0.5" />
             )}
             <span className="flex-1">{micStatusMsg}</span>
           </div>
@@ -1450,12 +1450,12 @@ async function startMic() {
         {isMicTesting && (
           <div className="p-3 rounded-2xl bg-[#FAF7F0] dark:bg-[#111C17] border border-[#E5DDCF] dark:border-[#243A30] space-y-2">
             <div className="flex items-center justify-between text-[11px] font-bold text-gray-600 dark:text-gray-300">
-              <span className="text-[#0F6B50] dark:text-[#2DD4BF]">مستوى التقاط الصوت: {toArabicNumerals(diagnosticAudioLevel)}%</span>
+              <span className="text-[#0284C7] dark:text-[#38BDF8]">مستوى التقاط الصوت: {toArabicNumerals(diagnosticAudioLevel)}%</span>
               <span>تحدث الآن لتجربة التقاط الميكروفون 🎙️</span>
             </div>
             <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 transition-all duration-75"
+                className="h-full bg-gradient-to-r from-sky-500 via-cyan-500 to-amber-500 transition-all duration-75"
                 style={{ width: `${Math.max(4, diagnosticAudioLevel)}%` }}
               />
             </div>
@@ -1468,7 +1468,7 @@ async function startMic() {
           className={`w-full py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95 ${
             isMicTesting
               ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
-              : 'bg-[#0F6B50] hover:bg-[#138061] text-white'
+              : 'bg-[#0284C7] hover:bg-[#0EA5E9] text-white'
           }`}
         >
           {isMicTesting ? (
@@ -1488,7 +1488,7 @@ async function startMic() {
         <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
           <button
             onClick={() => setShowApkGuide(!showApkGuide)}
-            className="w-full flex items-center justify-between text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] hover:underline py-1 cursor-pointer"
+            className="w-full flex items-center justify-between text-xs font-bold text-[#0284C7] dark:text-[#38BDF8] hover:underline py-1 cursor-pointer"
           >
             <div className="flex items-center gap-1.5">
               <Smartphone className="w-3.5 h-3.5 text-amber-500" />
@@ -1499,7 +1499,7 @@ async function startMic() {
 
           {showApkGuide && (
             <div className="mt-2.5 p-3.5 rounded-2xl bg-[#FAF7F0] dark:bg-[#121E19] border border-[#E5DDCF] dark:border-[#22362D] text-xs text-gray-700 dark:text-gray-300 space-y-2.5 leading-relaxed">
-              <p className="font-bold text-[#0F6B50] dark:text-emerald-400">
+              <p className="font-bold text-[#0284C7] dark:text-sky-400">
                 إذا قمت بتحويل الموقع إلى تطبيق أندرويد (APK) ولم يعمل الميكروفون، إليك أسباب ذلك وكيفية حلها:
               </p>
 
@@ -1511,14 +1511,14 @@ async function startMic() {
                 <li>
                   <strong className="text-[#19302A] dark:text-white">إذن AndroidManifest.xml:</strong>
                   {' '}يجب أن يحتوي ملف الـ Manifest على:
-                  <code className="block mt-1 p-1.5 rounded-lg bg-gray-900 text-emerald-300 font-mono text-[10px] text-left dir-ltr">
+                  <code className="block mt-1 p-1.5 rounded-lg bg-gray-900 text-sky-300 font-mono text-[10px] text-left dir-ltr">
                     &lt;uses-permission android:name="android.permission.RECORD_AUDIO" /&gt;
                   </code>
                 </li>
                 <li>
                   <strong className="text-[#19302A] dark:text-white">تفعيل WebView WebChromeClient:</strong>
                   {' '}متصفح WebView في أندرويد يحتاج كود السماح بالـ WebRTC Audio:
-                  <code className="block mt-1 p-1.5 rounded-lg bg-gray-900 text-emerald-300 font-mono text-[10px] text-left dir-ltr">
+                  <code className="block mt-1 p-1.5 rounded-lg bg-gray-900 text-sky-300 font-mono text-[10px] text-left dir-ltr">
                     webView.setWebChromeClient(new WebChromeClient() &#123;<br/>
                     &nbsp;&nbsp;@Override<br/>
                     &nbsp;&nbsp;public void onPermissionRequest(PermissionRequest request) &#123;<br/>
@@ -1538,14 +1538,14 @@ async function startMic() {
       </div>
 
       {/* GitHub & Google AI Studio Bridge Card */}
-      <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-amber-500/10 to-emerald-500/10 dark:from-emerald-950/40 dark:via-amber-950/30 dark:to-emerald-950/40 border-2 border-emerald-600/30 dark:border-emerald-500/30 shadow-sm space-y-3 text-right">
+      <div className="p-4 rounded-2xl bg-gradient-to-br from-sky-500/10 via-amber-500/10 to-sky-500/10 dark:from-sky-950/40 dark:via-amber-950/30 dark:to-sky-950/40 border-2 border-sky-600/30 dark:border-sky-500/30 shadow-sm space-y-3 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-200/60 dark:border-gray-800">
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-600 text-white shadow-xs">
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-600 text-white shadow-xs">
             عام ومفتوح للجميع
           </span>
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-sm text-[#19302A] dark:text-white">جسر النشر السحابي و GitHub</h4>
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-amber-500" />
             </div>
           </div>
@@ -1560,7 +1560,7 @@ async function startMic() {
             playChime('click');
             setIsGitHubBridgeOpen(true);
           }}
-          className="w-full py-2.5 px-4 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
+          className="w-full py-2.5 px-4 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
         >
           <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
@@ -1572,12 +1572,12 @@ async function startMic() {
       {/* Multi-Format Export Center & Offline HTML / ZIP Pack */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-4 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300">
             تصدير متقدم
           </span>
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-sm text-[#19302A] dark:text-white">مركز تصدير الصفحة والحزم</h4>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
               <Download className="w-4 h-4" />
             </div>
           </div>
@@ -1592,7 +1592,7 @@ async function startMic() {
           {/* Export Standalone HTML Page */}
           <button
             onClick={handleExportHtmlPage}
-            className="p-3 rounded-xl bg-gradient-to-r from-emerald-700 to-[#0F6B50] hover:from-emerald-800 hover:to-[#0B5C46] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
+            className="p-3 rounded-xl bg-gradient-to-r from-sky-700 to-[#0284C7] hover:from-sky-800 hover:to-[#0369A1] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
           >
             <FileCode className="w-4 h-4 text-amber-300" />
             <span>تصدير صفحة HTML المستقلة</span>
@@ -1615,7 +1615,7 @@ async function startMic() {
             <span className="text-[11px] text-gray-400">انقر للتبديل والنسخ</span>
             <div className="flex items-center gap-1.5 text-xs font-bold text-[#19302A] dark:text-white">
               <span>أكواد التطبيق والأذونات (Manifest / Java / JS / HTML)</span>
-              <Code2 className="w-3.5 h-3.5 text-[#0F6B50] dark:text-[#2DD4BF]" />
+              <Code2 className="w-3.5 h-3.5 text-[#0284C7] dark:text-[#38BDF8]" />
             </div>
           </div>
 
@@ -1630,7 +1630,7 @@ async function startMic() {
                   onClick={() => setSelectedCodeTab(key)}
                   className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-[#0F6B50] text-white shadow-xs'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
                   }`}
                 >
@@ -1645,11 +1645,11 @@ async function startMic() {
             <div className="flex items-center justify-between text-[11px] text-gray-400 pb-1.5 border-b border-gray-800">
               <button
                 onClick={() => handleCopyCode(selectedCodeTab)}
-                className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-bold px-2 py-1 rounded bg-emerald-950/60 hover:bg-emerald-900/80 cursor-pointer active:scale-95 transition-all"
+                className="flex items-center gap-1 text-sky-400 hover:text-sky-300 font-bold px-2 py-1 rounded bg-sky-950/60 hover:bg-sky-900/80 cursor-pointer active:scale-95 transition-all"
               >
                 {copiedCodeType === selectedCodeTab ? (
                   <>
-                    <Check className="w-3 h-3 text-emerald-300" />
+                    <Check className="w-3 h-3 text-sky-300" />
                     <span>تم النسخ!</span>
                   </>
                 ) : (
@@ -1659,7 +1659,7 @@ async function startMic() {
                   </>
                 )}
               </button>
-              <span className="font-mono text-emerald-300 text-[10px]">
+              <span className="font-mono text-sky-300 text-[10px]">
                 {codeSnippets[selectedCodeTab].lang.toUpperCase()}
               </span>
             </div>
@@ -1668,7 +1668,7 @@ async function startMic() {
               {codeSnippets[selectedCodeTab].desc}
             </p>
 
-            <pre className="text-[10px] font-mono text-emerald-300/90 overflow-x-auto max-h-36 p-2 rounded bg-black/40 text-left dir-ltr whitespace-pre">
+            <pre className="text-[10px] font-mono text-sky-300/90 overflow-x-auto max-h-36 p-2 rounded bg-black/40 text-left dir-ltr whitespace-pre">
               {codeSnippets[selectedCodeTab].code}
             </pre>
           </div>
@@ -1678,7 +1678,7 @@ async function startMic() {
       {/* Local Backup & Restore */}
       <div className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] shadow-sm space-y-3 text-right">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] flex items-center justify-center">
             <ShieldCheck className="w-4 h-4" />
           </div>
           <h4 className="font-bold text-sm text-[#19302A] dark:text-white">النسخ الاحتياطي ونقل البيانات</h4>
@@ -1689,7 +1689,7 @@ async function startMic() {
         </p>
 
         <div className="grid grid-cols-2 gap-2 pt-1">
-          <label className="py-2.5 px-3 rounded-xl bg-[#FAF7F0] dark:bg-[#14201B] border border-[#E5DDCF] dark:border-[#2A3C34] text-[#0F6B50] dark:text-[#2DD4BF] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer hover:bg-gray-100 active:scale-95 transition-all text-center">
+          <label className="py-2.5 px-3 rounded-xl bg-[#FAF7F0] dark:bg-[#14201B] border border-[#E5DDCF] dark:border-[#2A3C34] text-[#0284C7] dark:text-[#38BDF8] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer hover:bg-gray-100 active:scale-95 transition-all text-center">
             <Upload className="w-4 h-4" />
             <span>استيراد نسخة</span>
             <input type="file" accept=".json" onChange={handleImportBackup} className="hidden" />
@@ -1697,7 +1697,7 @@ async function startMic() {
 
           <button
             onClick={handleExportBackup}
-            className="py-2.5 px-3 rounded-xl bg-[#0F6B50] text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#138061] active:scale-95 transition-all shadow-xs cursor-pointer"
+            className="py-2.5 px-3 rounded-xl bg-[#0284C7] text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#0EA5E9] active:scale-95 transition-all shadow-xs cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>تصدير نسخة JSON</span>

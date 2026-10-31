@@ -166,7 +166,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
   return (
     <>
       <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-start justify-center p-2.5 sm:p-4 pt-3 sm:pt-6 animate-fadeIn overflow-y-auto">
-        <div className="bg-white dark:bg-[#14221D] w-full max-w-2xl rounded-3xl border-2 border-[#0F6B50]/40 dark:border-[#2DD4BF]/40 shadow-2xl overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[90vh] my-0">
+        <div className="bg-white dark:bg-[#14221D] w-full max-w-2xl rounded-3xl border-2 border-[#0284C7]/40 dark:border-[#38BDF8]/40 shadow-2xl overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[90vh] my-0">
           
           {/* Top Header Ribbon */}
           <div className="p-4 sm:p-5 border-b border-[#EAE3D2] dark:border-[#22362D] bg-[#FAF8F2] dark:bg-[#101B17] flex items-center justify-between shrink-0">
@@ -180,7 +180,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
 
             <div className="text-right">
               <div className="flex items-center gap-2 justify-end">
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] border border-emerald-300/40">
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] border border-sky-300/40">
                   صفحة {toArabicNumerals(pageNumber)} • الجزء {toArabicNumerals(juzNumber)}
                 </span>
                 <h3 className="font-bold text-base sm:text-lg text-[#19302A] dark:text-white font-amiri">
@@ -194,12 +194,12 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
           </div>
 
           {/* Interactive Banner: Navigate Directly to Full Surah Tafsir */}
-          <div className="p-3 bg-gradient-to-r from-[#0F6B50] via-teal-700 to-[#125A44] text-white flex items-center justify-between flex-wrap gap-2 shrink-0 border-b border-[#0F6B50]/30 shadow-xs">
+          <div className="p-3 bg-gradient-to-r from-[#0284C7] via-cyan-700 to-[#125A44] text-white flex items-center justify-between flex-wrap gap-2 shrink-0 border-b border-[#0284C7]/30 shadow-xs">
             <div className="flex items-center gap-2">
               <BookMarked className="w-5 h-5 text-amber-300 shrink-0" />
               <div className="text-right">
                 <span className="font-bold text-xs sm:text-sm block">الانتقال لتفسير سورة {primarySurahName} كاملة</span>
-                <span className="text-[10px] text-emerald-100/90">تصفح التفسير الشامل والمصادر الموثوقة للسورة كاملة</span>
+                <span className="text-[10px] text-sky-100/90">تصفح التفسير الشامل والمصادر الموثوقة للسورة كاملة</span>
               </div>
             </div>
 
@@ -243,8 +243,8 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                   }}
                   className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                     activeTab === 'combined'
-                      ? 'bg-[#0F6B50] text-white shadow-xs'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0F6B50]'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0284C7]'
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
@@ -258,8 +258,8 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                   }}
                   className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                     activeTab === 'meanings'
-                      ? 'bg-[#0F6B50] text-white shadow-xs'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0F6B50]'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0284C7]'
                   }`}
                 >
                   <Layers className="w-3.5 h-3.5" />
@@ -273,8 +273,8 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                   }}
                   className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                     activeTab === 'tafseer'
-                      ? 'bg-[#0F6B50] text-white shadow-xs'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0F6B50]'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-[#0284C7]'
                   }`}
                 >
                   <FileText className="w-3.5 h-3.5" />
@@ -287,17 +287,17 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                 <span className="text-xs font-bold text-gray-500 dark:text-gray-400 px-1">حجم الخط:</span>
                 <button
                   onClick={() => setFontSize(Math.min(36, fontSize + 2))}
-                  className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#13201B] font-bold text-xs hover:text-[#0F6B50] dark:hover:text-[#2DD4BF] flex items-center justify-center shadow-xs border border-gray-200 dark:border-gray-800"
+                  className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#13201B] font-bold text-xs hover:text-[#0284C7] dark:hover:text-[#38BDF8] flex items-center justify-center shadow-xs border border-gray-200 dark:border-gray-800"
                   title="تكبير الخط"
                 >
                   أ+
                 </button>
-                <span className="text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF] min-w-[20px] text-center">
+                <span className="text-xs font-bold text-[#0284C7] dark:text-[#38BDF8] min-w-[20px] text-center">
                   {toArabicNumerals(fontSize)}
                 </span>
                 <button
                   onClick={() => setFontSize(Math.max(14, fontSize - 2))}
-                  className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#13201B] font-bold text-xs hover:text-[#0F6B50] dark:hover:text-[#2DD4BF] flex items-center justify-center shadow-xs border border-gray-200 dark:border-gray-800"
+                  className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#13201B] font-bold text-xs hover:text-[#0284C7] dark:hover:text-[#38BDF8] flex items-center justify-center shadow-xs border border-gray-200 dark:border-gray-800"
                   title="تصغير الخط"
                 >
                   أ-
@@ -309,7 +309,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
             <div className="p-2.5 rounded-2xl bg-[#FAF8F2] dark:bg-[#101A16] border border-[#E5DDCF] dark:border-[#263D33] flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span className="text-xs font-bold text-[#19302A] dark:text-emerald-300">كتاب التفسير:</span>
+                <span className="text-xs font-bold text-[#19302A] dark:text-sky-300">كتاب التفسير:</span>
               </div>
               <div className="flex items-center gap-1 overflow-x-auto pb-0.5 max-w-full">
                 {TAFSEER_SOURCES.map(source => (
@@ -322,8 +322,8 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                     }}
                     className={`px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
                       selectedTafseerSource === source.id
-                        ? 'bg-[#0F6B50] text-white border-[#0F6B50] shadow-xs'
-                        : 'bg-white dark:bg-[#15231D] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-emerald-500'
+                        ? 'bg-[#0284C7] text-white border-[#0284C7] shadow-xs'
+                        : 'bg-white dark:bg-[#15231D] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-sky-500'
                     }`}
                   >
                     {source.shortName}
@@ -341,9 +341,9 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                     placeholder="ابحث عن كلمة معينة داخل التفسير الحالي (مثال: الرحمة، الصلاة)..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-[#FAF8F2] dark:bg-[#101A16] border-2 border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0F6B50] rounded-xl py-2 pr-9 pl-8 text-xs text-right text-[#19302A] dark:text-white outline-none font-medium"
+                    className="w-full bg-[#FAF8F2] dark:bg-[#101A16] border-2 border-[#E5DDCF] dark:border-[#263D33] focus:border-[#0284C7] rounded-xl py-2 pr-9 pl-8 text-xs text-right text-[#19302A] dark:text-white outline-none font-medium"
                   />
-                  <Search className="w-4 h-4 text-emerald-600 dark:text-[#2DD4BF] absolute right-3 top-2.5" />
+                  <Search className="w-4 h-4 text-sky-600 dark:text-[#38BDF8] absolute right-3 top-2.5" />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
@@ -375,7 +375,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
 
               {searchQuery && (
                 <div className="flex items-center justify-between text-xs px-1">
-                  <span className="font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                  <span className="font-bold text-[#0284C7] dark:text-[#38BDF8]">
                     {matchesCount > 0
                       ? `تم العثور على (${toArabicNumerals(matchesCount)}) تكرار لكلمة "${searchQuery}" داخل النص والتفسير`
                       : `لا توجد نتائج تطابق "${searchQuery}"`}
@@ -401,17 +401,17 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                   <div
                     key={ayah.number}
                     id={`modal-ayah-${ayah.number}`}
-                    className="p-4 sm:p-5 rounded-3xl bg-[#FAF8F2] dark:bg-[#162720] border-2 border-[#E7DFC8] dark:border-[#273B32] shadow-xs space-y-3.5 transition-all hover:border-[#0F6B50]/60"
+                    className="p-4 sm:p-5 rounded-3xl bg-[#FAF8F2] dark:bg-[#162720] border-2 border-[#E7DFC8] dark:border-[#273B32] shadow-xs space-y-3.5 transition-all hover:border-[#0284C7]/60"
                   >
                     {/* Card Top Ribbon */}
                     <div className="flex items-center justify-between border-b border-[#EBE3D3] dark:border-[#24392F] pb-2.5 flex-wrap gap-2">
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => handleCopy(`﴿ ${ayah.text} ﴾\nالتفسير الميسر: ${ayah.tafseer}`, copyKey)}
-                          className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#101A16] text-gray-700 dark:text-gray-300 hover:text-[#0F6B50] text-xs font-bold flex items-center gap-1 transition-all border border-gray-200 dark:border-gray-800"
+                          className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#101A16] text-gray-700 dark:text-gray-300 hover:text-[#0284C7] text-xs font-bold flex items-center gap-1 transition-all border border-gray-200 dark:border-gray-800"
                           title="نسخ الآية والتفسير"
                         >
-                          {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                          {isCopied ? <Check className="w-3.5 h-3.5 text-sky-600" /> : <Copy className="w-3.5 h-3.5" />}
                           <span>{isCopied ? 'تم النسخ' : 'نسخ'}</span>
                         </button>
 
@@ -420,7 +420,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                             onSelectAyahForDetails(sNum, sName, ayah.number, ayah.text, ayah.tafseer);
                             playChime('click');
                           }}
-                          className="px-2.5 py-1 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white text-xs font-bold flex items-center gap-1 shadow-xs transition-all"
+                          className="px-2.5 py-1 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white text-xs font-bold flex items-center gap-1 shadow-xs transition-all"
                           title="فتح تفسير ابن كثير وأسباب النزول وتصحيح التلاوة بالذكاء الاصطناعي"
                         >
                           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -429,7 +429,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#0F6B50] dark:text-[#2DD4BF] border border-emerald-300/40">
+                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-[#38BDF8] border border-sky-300/40">
                           الآية {toArabicNumerals(ayah.number)}
                         </span>
                         <span className="font-bold text-xs text-[#7A877B] dark:text-gray-300">
@@ -470,7 +470,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                                     مفردة #{toArabicNumerals(wIdx + 1)}
                                   </span>
                                   <span 
-                                    className="font-quran font-bold text-[#0F6B50] dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-3 py-1 rounded-xl border border-amber-300/40"
+                                    className="font-quran font-bold text-[#0284C7] dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-3 py-1 rounded-xl border border-amber-300/40"
                                     style={{ fontSize: `${fontSize + 2}px` }}
                                   >
                                     <HighlightedText text={wm.word} highlight={searchQuery} />
@@ -496,7 +496,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                     {/* Section 2: Tafseer (Ibn Kathir, Al-Muyassar, Saadi, Mukhtasar) */}
                     {(activeTab === 'combined' || activeTab === 'tafseer') && (
                       <div className="space-y-2 pt-1">
-                        <div className="flex items-center justify-between text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+                        <div className="flex items-center justify-between text-xs font-bold text-[#0284C7] dark:text-[#38BDF8]">
                           <span className="flex items-center gap-1.5">
                             <BookOpen className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                             <span>{TAFSEER_SOURCES.find(s => s.id === selectedTafseerSource)?.name || 'التفسير وبيان المعنى'}:</span>
@@ -512,7 +512,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
                         >
                           {loadingTafseerMap && !customTafseerMap[`${sNum}:${ayah.number}`] && selectedTafseerSource !== 'muyassar' ? (
                             <div className="py-4 text-center text-gray-400 flex items-center justify-center gap-2 text-xs">
-                              <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+                              <Loader2 className="w-4 h-4 animate-spin text-sky-600" />
                               <span>جارٍ تحميل تفسير {TAFSEER_SOURCES.find(s => s.id === selectedTafseerSource)?.shortName}...</span>
                             </div>
                           ) : (
@@ -536,7 +536,7 @@ export const PageTafseerModal: React.FC<PageTafseerModalProps> = ({
           <div className="p-3 sm:p-4 bg-[#FAF8F2] dark:bg-[#101B17] border-t border-[#EAE3D2] dark:border-[#22362D] flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 shrink-0">
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-[#0F6B50] hover:bg-[#138061] text-white font-bold transition-all text-xs"
+              className="px-4 py-2 rounded-xl bg-[#0284C7] hover:bg-[#0EA5E9] text-white font-bold transition-all text-xs"
             >
               العودة إلى المصحف
             </button>

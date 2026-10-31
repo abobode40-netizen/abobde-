@@ -207,6 +207,7 @@ export function onStorageChange(callback: (key: string, value: any) => void): ()
 export const DEFAULT_SETTINGS: AppSettings = {
   isDarkMode: false,
   enableEyeComfortMode: false,
+  appFontScale: 100,
   selectedReciter: 'alafasy',
   quranTheme: 'royal_gold',
   quranFontSize: 24,

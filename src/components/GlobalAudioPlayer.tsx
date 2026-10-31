@@ -30,7 +30,7 @@ export const GlobalAudioPlayer: React.FC = () => {
         
         {/* Progress Bar Background */}
         <div 
-          className="absolute bottom-0 left-0 h-1 bg-[#0F6B50] dark:bg-emerald-400 transition-all duration-300 ease-linear"
+          className="absolute bottom-0 left-0 h-1 bg-[#0284C7] dark:bg-sky-400 transition-all duration-300 ease-linear"
           style={{ width: `${progressPercent}%` }}
         />
 
@@ -39,7 +39,7 @@ export const GlobalAudioPlayer: React.FC = () => {
             {/* Play/Pause Button */}
             <button 
               onClick={() => isPlaying ? pause() : resume()}
-              className="w-10 h-10 shrink-0 rounded-full bg-[#0F6B50] dark:bg-emerald-500 text-white flex items-center justify-center shadow-md active:scale-95 transition-transform"
+              className="w-10 h-10 shrink-0 rounded-full bg-[#0284C7] dark:bg-sky-500 text-white flex items-center justify-center shadow-md active:scale-95 transition-transform"
             >
               {isLoading ? (
                 <Activity className="w-5 h-5 animate-pulse" />
@@ -80,7 +80,7 @@ export const GlobalAudioPlayer: React.FC = () => {
             
             <button 
               onClick={handleToggleSpeed}
-              className="px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-[#0F6B50] dark:text-emerald-300 font-bold text-[11px] sm:text-xs active:scale-95 transition-all w-10 text-center"
+              className="px-2 py-1 rounded-lg bg-sky-50 dark:bg-sky-900/30 text-[#0284C7] dark:text-sky-300 font-bold text-[11px] sm:text-xs active:scale-95 transition-all w-10 text-center"
               title="تغيير سرعة الصوت"
             >
               {playbackSpeed}x

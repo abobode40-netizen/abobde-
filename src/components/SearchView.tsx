@@ -188,14 +188,14 @@ export const SearchView: React.FC<SearchViewProps> = ({
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="w-10 h-10 rounded-xl bg-[#E8F3ED] dark:bg-[#162D24] text-[#0F6B50] dark:text-[#2DD4BF] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+          className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950 text-[#0284C7] dark:text-sky-300 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
           title="العودة"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
         <div className="text-right flex-1 pr-2">
-          <span className="text-[11px] font-bold text-[#B45309] dark:text-amber-300">البحث الموحد الصوتي والنصي</span>
-          <h2 className="text-xl font-bold font-amiri text-[#19302A] dark:text-white">ابحث في جنّة الرحمن</h2>
+          <span className="text-[11px] font-bold text-sky-700 dark:text-sky-300">البحث الموحد الصوتي والنصي</span>
+          <h2 className="text-xl font-bold font-amiri text-slate-900 dark:text-white">ابحث في جنّة الرحمن</h2>
         </div>
       </div>
 
@@ -216,9 +216,9 @@ export const SearchView: React.FC<SearchViewProps> = ({
           placeholder="اكتب أو انطق اسم سورة، أو ذكر..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full bg-white dark:bg-[#1A2621] border-2 border-[#0F6B50]/30 focus:border-[#0F6B50] dark:focus:border-[#2DD4BF] rounded-2xl py-3.5 pr-11 pl-12 text-sm text-right outline-none text-[#19302A] dark:text-white shadow-sm placeholder-[#97A099]"
+          className="w-full bg-white dark:bg-[#0A192F] border-2 border-sky-400/40 focus:border-[#0284C7] dark:focus:border-sky-400 rounded-2xl py-3.5 pr-11 pl-12 text-sm text-right outline-none text-slate-900 dark:text-white shadow-sm placeholder-slate-400"
         />
-        <Search className="w-5 h-5 text-[#0F6B50] absolute right-3.5 top-4 pointer-events-none" />
+        <Search className="w-5 h-5 text-[#0284C7] absolute right-3.5 top-4 pointer-events-none" />
 
         {/* Voice Search Button */}
         {isVoiceSupported && (
@@ -231,7 +231,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
             className={`w-9 h-9 rounded-xl absolute left-2 top-2.5 flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95 ${
               isListening
                 ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-                : 'bg-[#0F6B50]/10 hover:bg-[#0F6B50]/20 text-[#0F6B50] dark:text-[#2DD4BF] dark:bg-emerald-950/40'
+                : 'bg-sky-50 hover:bg-sky-100 text-[#0284C7] dark:text-sky-300 dark:bg-sky-950/60'
             }`}
           >
             {isListening ? <Mic className="w-4 h-4 text-white animate-bounce" /> : <Mic className="w-4 h-4" />}
@@ -248,17 +248,17 @@ export const SearchView: React.FC<SearchViewProps> = ({
       )}
 
       {!trimmed && (
-        <div className="p-8 text-center space-y-3 bg-white dark:bg-[#1A2621] rounded-3xl border border-[#E5DDCF] dark:border-[#2A3C34]">
-          <Search className="w-10 h-10 text-emerald-600/40 mx-auto" />
-          <h3 className="text-sm font-bold text-[#19302A] dark:text-white">ابحث في كنوز التطبيق</h3>
-          <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
+        <div className="p-8 text-center space-y-3 bg-white dark:bg-[#0A192F] rounded-3xl border border-sky-100 dark:border-sky-950">
+          <Search className="w-10 h-10 text-sky-500/40 mx-auto" />
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">ابحث في كنوز التطبيق</h3>
+          <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
             يمكنك كتابة أو نطق اسم أي سورة من القرآن الكريم، أو أي دعاء وذكر من حصن المسلم، أو ثمار المشايخ.
           </p>
         </div>
       )}
 
       {trimmed && !hasResults && (
-        <div className="p-8 text-center bg-white dark:bg-[#1A2621] rounded-2xl border border-dashed border-[#E5DDCF] dark:border-[#2A3C34] text-sm text-gray-500">
+        <div className="p-8 text-center bg-white dark:bg-[#0A192F] rounded-2xl border border-dashed border-sky-200 dark:border-sky-900 text-sm text-slate-500">
           لم يتم العثور على نتائج مطابقة لـ «{query}»
         </div>
       )}
@@ -266,7 +266,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
       {/* Surahs Results */}
       {matchedSurahs.length > 0 && (
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-[#0F6B50] dark:text-[#2DD4BF]">
+          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-[#0284C7] dark:text-sky-300">
             <span>السور القرآنية ({toArabicNumerals(matchedSurahs.length)})</span>
             <BookOpen className="w-4 h-4" />
           </div>
@@ -275,12 +275,12 @@ export const SearchView: React.FC<SearchViewProps> = ({
               <div
                 key={s.number}
                 onClick={() => onSelectSurah(s.startPage)}
-                className="p-3.5 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50] flex items-center justify-between cursor-pointer transition-all active:scale-[0.99]"
+                className="p-3.5 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 hover:border-[#0284C7] flex items-center justify-between cursor-pointer transition-all active:scale-[0.99]"
               >
-                <ChevronLeft className="w-4 h-4 text-gray-400" />
+                <ChevronLeft className="w-4 h-4 text-slate-400" />
                 <div className="text-right">
-                  <h4 className="font-bold text-sm text-[#19302A] dark:text-white">سورة {s.name}</h4>
-                  <span className="text-[11px] text-gray-500">
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white">سورة {s.name}</h4>
+                  <span className="text-[11px] text-slate-500">
                     صفحة {toArabicNumerals(s.startPage)} • {toArabicNumerals(s.numberOfAyahs)} آية
                   </span>
                 </div>
@@ -293,7 +293,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
       {/* Athkar Results */}
       {matchedAthkar.length > 0 && (
         <div className="space-y-2 pt-2">
-          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-[#D97706] dark:text-amber-400">
+          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-sky-700 dark:text-sky-300">
             <span>الأذكار والأدعية ({toArabicNumerals(matchedAthkar.length)})</span>
             <Sparkles className="w-4 h-4" />
           </div>
@@ -302,12 +302,12 @@ export const SearchView: React.FC<SearchViewProps> = ({
               <div
                 key={a.id}
                 onClick={() => onNavigateToTab('athkar')}
-                className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#D97706] text-right cursor-pointer transition-all space-y-1.5"
+                className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 hover:border-sky-400 text-right cursor-pointer transition-all space-y-1.5"
               >
-                <span className="text-[10px] bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 font-bold px-2 py-0.5 rounded-md inline-block">
+                <span className="text-[10px] bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 font-bold px-2 py-0.5 rounded-md inline-block">
                   {a.categoryTitle}
                 </span>
-                <p className="font-amiri text-base leading-relaxed text-[#19302A] dark:text-white line-clamp-3">
+                <p className="font-amiri text-base leading-relaxed text-slate-900 dark:text-white line-clamp-3">
                   {a.text}
                 </p>
               </div>
@@ -319,7 +319,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
       {/* Duas Results */}
       {matchedDuas.length > 0 && (
         <div className="space-y-2 pt-2">
-          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-[#0F6B50] dark:text-[#34D399]">
+          <div className="flex items-center gap-1.5 justify-end text-xs font-bold text-[#0284C7] dark:text-sky-300">
             <span>الأدعية المأثورة ({toArabicNumerals(matchedDuas.length)})</span>
             <BookCheck className="w-4 h-4" />
           </div>
@@ -328,22 +328,22 @@ export const SearchView: React.FC<SearchViewProps> = ({
               <div
                 key={d.id}
                 onClick={() => onNavigateToTab('duas')}
-                className="p-4 rounded-2xl bg-white dark:bg-[#1A2621] border border-[#E5DDCF] dark:border-[#2A3C34] hover:border-[#0F6B50] text-right cursor-pointer transition-all space-y-1.5"
+                className="p-4 rounded-2xl bg-white dark:bg-[#0A192F] border border-sky-100 dark:border-sky-950 hover:border-[#0284C7] text-right cursor-pointer transition-all space-y-1.5"
               >
                 <div className="flex items-center justify-between">
                   {d.grade && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300">
                       {d.grade}
                     </span>
                   )}
-                  <span className="text-xs font-bold text-gray-900 dark:text-white">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
                     {d.title}
                   </span>
                 </div>
-                <p className="font-amiri text-base leading-relaxed text-[#19302A] dark:text-white line-clamp-3">
+                <p className="font-amiri text-base leading-relaxed text-slate-900 dark:text-white line-clamp-3">
                   {d.arabicText}
                 </p>
-                <div className="text-[11px] text-gray-500 flex justify-end">
+                <div className="text-[11px] text-slate-500 flex justify-end">
                   <span>{d.source}</span>
                 </div>
               </div>
@@ -351,6 +351,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
           </div>
         </div>
       )}
+
 
       {/* Mishkat Lessons Results */}
       {matchedMishkat.length > 0 && (

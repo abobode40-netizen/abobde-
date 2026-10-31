@@ -27,14 +27,14 @@ interface TreeShareModalProps {
   trackerData: DayTrackerData;
 }
 
-type CardTheme = 'emerald' | 'gold_dark' | 'pearl_light';
+type CardTheme = 'azure_sky' | 'gold_dark' | 'pearl_light';
 
 export const TreeShareModal: React.FC<TreeShareModalProps> = ({
   isOpen,
   onClose,
   trackerData
 }) => {
-  const [selectedTheme, setSelectedTheme] = useState<CardTheme>('emerald');
+  const [selectedTheme, setSelectedTheme] = useState<CardTheme>('azure_sky');
   const [isGenerating, setIsGenerating] = useState<boolean>(true);
   const [copiedImage, setCopiedImage] = useState<boolean>(false);
   const [copiedText, setCopiedText] = useState<boolean>(false);
@@ -96,39 +96,39 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
     };
 
     // Color Palette definition based on theme
-    let bgGradStart = '#0B4D3B';
-    let bgGradEnd = '#166E54';
-    let borderColor = '#D4AF37';
+    let bgGradStart = '#0A1E3F';
+    let bgGradEnd = '#16467A';
+    let borderColor = '#38BDF8';
     let cardBg = 'rgba(255, 255, 255, 0.08)';
-    let cardBorder = 'rgba(212, 175, 55, 0.35)';
+    let cardBorder = 'rgba(56, 189, 248, 0.35)';
     let primaryText = '#FFFFFF';
-    let subText = '#E0F2E9';
-    let goldText = '#FFDF78';
-    let progressBg = '#073327';
-    let progressFill = '#FFDF78';
+    let subText = '#BAE6FD';
+    let goldText = '#7DD3FC';
+    let progressBg = '#061329';
+    let progressFill = '#38BDF8';
 
     if (selectedTheme === 'gold_dark') {
-      bgGradStart = '#0F1E19';
-      bgGradEnd = '#1B2C24';
-      borderColor = '#E5C07B';
-      cardBg = 'rgba(229, 192, 123, 0.07)';
-      cardBorder = 'rgba(229, 192, 123, 0.4)';
+      bgGradStart = '#0C1A30';
+      bgGradEnd = '#14294A';
+      borderColor = '#38BDF8';
+      cardBg = 'rgba(56, 189, 248, 0.07)';
+      cardBorder = 'rgba(56, 189, 248, 0.4)';
       primaryText = '#FFFFFF';
-      subText = '#D1DDD6';
-      goldText = '#F3D289';
-      progressBg = '#09120F';
-      progressFill = '#F3D289';
+      subText = '#CBD5E1';
+      goldText = '#7DD3FC';
+      progressBg = '#081426';
+      progressFill = '#38BDF8';
     } else if (selectedTheme === 'pearl_light') {
-      bgGradStart = '#FAF7F0';
-      bgGradEnd = '#EFE9DA';
-      borderColor = '#0F6B50';
+      bgGradStart = '#F0F9FF';
+      bgGradEnd = '#E0F2FE';
+      borderColor = '#0284C7';
       cardBg = 'rgba(255, 255, 255, 0.85)';
-      cardBorder = 'rgba(15, 107, 80, 0.25)';
-      primaryText = '#19302A';
-      subText = '#4A5B53';
-      goldText = '#B45309';
-      progressBg = '#E0D8C8';
-      progressFill = '#0F6B50';
+      cardBorder = 'rgba(2, 132, 199, 0.25)';
+      primaryText = '#0C213F';
+      subText = '#334155';
+      goldText = '#0369A1';
+      progressBg = '#BAE6FD';
+      progressFill = '#0284C7';
     }
 
     // 1. Draw Background Gradient
@@ -302,7 +302,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
 
       if (status === 'congregation') {
         pBg = selectedTheme === 'pearl_light' ? '#D1FAE5' : 'rgba(16, 185, 129, 0.25)';
-        pBorder = '#10B981';
+        pBorder = '#38BDF8';
         pLabel = '🕌 جماعة';
         pStatusColor = selectedTheme === 'pearl_light' ? '#065F46' : '#6EE7B7';
       } else if (status === 'alone') {
@@ -370,7 +370,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
         ? (selectedTheme === 'pearl_light' ? '#D1FAE5' : 'rgba(16, 185, 129, 0.2)')
         : (selectedTheme === 'pearl_light' ? '#F9FAFB' : 'rgba(255, 255, 255, 0.03)');
       ctx.strokeStyle = isDone
-        ? '#10B981'
+        ? '#38BDF8'
         : (selectedTheme === 'pearl_light' ? '#E5E7EB' : 'rgba(255, 255, 255, 0.1)');
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -385,7 +385,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
 
       // Checkmark icon
       ctx.textAlign = 'center';
-      ctx.fillStyle = isDone ? '#10B981' : (selectedTheme === 'pearl_light' ? '#D1D5DB' : '#4B5563');
+      ctx.fillStyle = isDone ? '#38BDF8' : (selectedTheme === 'pearl_light' ? '#D1D5DB' : '#4B5563');
       ctx.font = 'bold 20px "Cairo", sans-serif';
       ctx.fillText(isDone ? '✓' : '○', chipX + colWidth - 22, chipY + 28);
     });
@@ -628,9 +628,9 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
           </button>
 
           <div className="text-right">
-            <div className="flex items-center gap-1.5 justify-end text-[#0F6B50] dark:text-[#2DD4BF] font-bold text-base">
+            <div className="flex items-center gap-1.5 justify-end text-[#0284C7] dark:text-[#38BDF8] font-bold text-base">
               <span>مشاركة شجرة العبادات</span>
-              <TreePine className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <TreePine className="w-5 h-5 text-sky-600 dark:text-sky-400" />
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               شارك إنجازك الإيماني كصورة راقية مع الأهل والأصدقاء
@@ -642,7 +642,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
         <div className="p-4 sm:p-5 overflow-y-auto space-y-4 text-right">
           {/* Toast message inside modal */}
           {toastMessage && (
-            <div className="p-3 rounded-2xl bg-emerald-700 text-white text-xs font-bold text-center animate-fadeIn shadow-lg flex items-center justify-center gap-2">
+            <div className="p-3 rounded-2xl bg-sky-700 text-white text-xs font-bold text-center animate-fadeIn shadow-lg flex items-center justify-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-300" />
               <span>{toastMessage}</span>
             </div>
@@ -652,16 +652,16 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500 font-medium">اختر طابع التصميم المفضل:</span>
-              <span className="font-bold text-[#0F6B50] dark:text-[#2DD4BF] flex items-center gap-1">
+              <span className="font-bold text-[#0284C7] dark:text-[#38BDF8] flex items-center gap-1">
                 <Palette className="w-3.5 h-3.5" />
                 طابع الصورة
               </span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: 'emerald' as CardTheme, name: 'الزمردي الملكي', bg: 'from-[#0B4D3B] to-[#166E54]', text: 'text-white' },
-                { id: 'gold_dark' as CardTheme, name: 'الأندلسي الليلي', bg: 'from-[#0F1E19] to-[#1B2C24]', text: 'text-amber-200' },
-                { id: 'pearl_light' as CardTheme, name: 'النقاء الصباحي', bg: 'from-[#FAF7F0] to-[#EFE9DA]', text: 'text-emerald-950' }
+                { id: 'azure_sky' as CardTheme, name: 'السماء الصافية', bg: 'from-[#0A1E3F] to-[#16467A]', text: 'text-white' },
+                { id: 'gold_dark' as CardTheme, name: 'الليل الأزرق', bg: 'from-[#0C1A30] to-[#14294A]', text: 'text-sky-200' },
+                { id: 'pearl_light' as CardTheme, name: 'النقاء الصباحي', bg: 'from-[#F0F9FF] to-[#E0F2FE]', text: 'text-sky-950' }
               ].map((t) => (
                 <button
                   key={t.id}
@@ -671,12 +671,12 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
                   }}
                   className={`p-2.5 rounded-2xl border text-xs font-bold transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
                     selectedTheme === t.id
-                      ? 'border-amber-400 ring-2 ring-amber-400/50 shadow-md scale-102'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 opacity-80'
+                      ? 'border-sky-400 ring-2 ring-sky-400/50 shadow-md scale-102'
+                      : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 opacity-80'
                   } bg-gradient-to-br ${t.bg} ${t.text}`}
                 >
                   <span>{t.name}</span>
-                  {selectedTheme === t.id && <Check className="w-3.5 h-3.5 text-amber-400" />}
+                  {selectedTheme === t.id && <Check className="w-3.5 h-3.5 text-sky-400" />}
                 </button>
               ))}
             </div>
@@ -685,17 +685,17 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
           {/* High Quality Canvas Image Preview */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-[11px] text-gray-500">دقة فائقة (1080×1350) مناسبة للواتساب والستوري</span>
-              <span className="font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1">
-                <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="text-[11px] text-slate-500">دقة فائقة (1080×1350) مناسبة للواتساب والستوري</span>
+              <span className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                <ImageIcon className="w-3.5 h-3.5 text-sky-600" />
                 معاينة البطاقة الجاهزة
               </span>
             </div>
 
-            <div className="p-2 rounded-2xl bg-gray-100 dark:bg-[#0E1A15] border border-gray-200 dark:border-gray-800 flex items-center justify-center overflow-hidden relative min-h-[280px]">
+            <div className="p-2 rounded-2xl bg-slate-100 dark:bg-[#071324] border border-slate-200 dark:border-slate-800 flex items-center justify-center overflow-hidden relative min-h-[280px]">
               {isGenerating ? (
-                <div className="flex flex-col items-center justify-center gap-2 text-gray-400 py-12">
-                  <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                <div className="flex flex-col items-center justify-center gap-2 text-slate-400 py-12">
+                  <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin" />
                   <span className="text-xs font-bold">جاري توليد الصورة الفنية...</span>
                 </div>
               ) : imagePreviewUrl ? (
@@ -716,9 +716,9 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
             {/* Native Full Share Button */}
             <button
               onClick={handleNativeShare}
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-[#0F6B50] via-[#148668] to-[#0F6B50] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-600/30 transition-all active:scale-98 cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-[#0284C7] via-[#0369A1] to-[#0284C7] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-sky-600/30 transition-all active:scale-98 cursor-pointer"
             >
-              <Share2 className="w-4 h-4 text-amber-300" />
+              <Share2 className="w-4 h-4 text-sky-200" />
               <span>مشاركة مباشرة عبر التطبيقات (واتساب، ستوري، تليجرام)</span>
             </button>
 
@@ -727,7 +727,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
               {/* Download PNG */}
               <button
                 onClick={handleDownloadImage}
-                className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-[#0F6B50] dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-[#0284C7] dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/60 border border-sky-200 dark:border-sky-800 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>تحميل الصورة (PNG)</span>
@@ -736,9 +736,9 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
               {/* Copy Image to Clipboard */}
               <button
                 onClick={handleCopyImageToClipboard}
-                className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-[#B45309] dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="p-3 rounded-2xl bg-sky-100/60 dark:bg-sky-900/40 text-sky-900 dark:text-sky-200 hover:bg-sky-200 border border-sky-300 dark:border-sky-700 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
-                {copiedImage ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                {copiedImage ? <Check className="w-4 h-4 text-sky-600" /> : <Copy className="w-4 h-4" />}
                 <span>{copiedImage ? 'تم نسخ الصورة' : 'نسخ الصورة للحافظة'}</span>
               </button>
             </div>
@@ -785,7 +785,7 @@ export const TreeShareModal: React.FC<TreeShareModalProps> = ({
                   className="py-2 px-1 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center gap-1 transition-all cursor-pointer"
                   title="نسخ التقرير كنص"
                 >
-                  {copiedText ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  {copiedText ? <Check className="w-4 h-4 text-sky-600" /> : <Copy className="w-4 h-4" />}
                   <span className="text-[10px]">{copiedText ? 'تم النسخ' : 'نسخ النص'}</span>
                 </button>
               </div>

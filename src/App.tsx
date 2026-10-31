@@ -35,6 +35,7 @@ import { HomeButtonFloating } from './components/HomeButtonFloating';
 import { GlobalAudioPlayer } from './components/GlobalAudioPlayer';
 import { NetworkStatusBanner } from './components/NetworkStatusBanner';
 import { InstallPwaBanner } from './components/InstallPwaBanner';
+import { TopNavbarWithDropdown } from './components/TopNavbarWithDropdown';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<AppTab>(() => {
@@ -71,6 +72,19 @@ export default function App() {
     }
     saveSettings(settings);
   }, [settings]);
+
+  // Synchronize global font zoom scale across the entire application and DOM
+  useEffect(() => {
+    const scale = settings.appFontScale || 100;
+    document.documentElement.classList.remove('font-scale-100', 'font-scale-115', 'font-scale-130', 'font-scale-145');
+    document.documentElement.classList.add(`font-scale-${scale}`);
+    document.documentElement.style.setProperty('--app-font-scale', String(scale / 100));
+  }, [settings.appFontScale]);
+
+  const handleUpdateFontScale = (scale: 100 | 115 | 130 | 145) => {
+    const updated = { ...settings, appFontScale: scale };
+    handleUpdateSettings(updated);
+  };
 
   // Synchronize with IndexedDB recovery and cross-tab/service-worker changes
   useEffect(() => {
@@ -145,12 +159,26 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] dark:bg-[#0F1715] text-[#19302A] dark:text-[#E6F0EC] transition-colors duration-300 flex flex-col font-cairo">
+    <div className="min-h-screen islamic-blue-pattern text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo arabesque-watermark">
       {/* Network Offline / Online Notification Banner */}
       <NetworkStatusBanner />
 
       {/* PWA Install Banner for instant offline access */}
       <InstallPwaBanner />
+
+      {/* Top Navbar with Doors Dropdown and Global Font Zoom Control */}
+      {!(currentTab === 'quran' && isQuranFocusMode) && (
+        <TopNavbarWithDropdown
+          currentTab={currentTab}
+          onSelectTab={(tab) => {
+            setIsQuranFocusMode(false);
+            setCurrentTab(tab);
+          }}
+          onOpenSebha={() => setIsSebhaOpen(true)}
+          fontScale={settings.appFontScale || 100}
+          onChangeFontScale={handleUpdateFontScale}
+        />
+      )}
 
       {/* Global Quick Home Button (available everywhere in all tabs & subviews) */}
       <HomeButtonFloating
@@ -179,6 +207,8 @@ export default function App() {
                 onOpenSebha={() => setIsSebhaOpen(true)}
                 trackerData={trackerData}
                 lastReadPage={lastReadPage}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -205,6 +235,8 @@ export default function App() {
                   setTargetMushafPage(null);
                 }}
                 onUpdateSettings={handleUpdateSettings}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -220,7 +252,6 @@ export default function App() {
             >
               <AthkarView
                 onThikrCompleted={() => {
-                  // Increment athkar completed in tracker
                   const updated = {
                     ...trackerData,
                     athkarCompletedCount: trackerData.athkarCompletedCount + 1,
@@ -232,6 +263,8 @@ export default function App() {
                   handleUpdateTracker(updated);
                 }}
                 onOpenSebha={() => setIsSebhaOpen(true)}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -249,6 +282,8 @@ export default function App() {
                 trackerData={trackerData}
                 onUpdateTracker={handleUpdateTracker}
                 onOpenSebha={() => setIsSebhaOpen(true)}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -265,6 +300,8 @@ export default function App() {
               <DuasView
                 onBack={() => setCurrentTab('home')}
                 onOpenMushafPage={handleOpenMushafPage}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -281,6 +318,8 @@ export default function App() {
               <MishkatAlNoorView
                 onBack={() => setCurrentTab('home')}
                 onNavigateToTab={(tab) => setCurrentTab(tab)}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
               />
             </motion.div>
           )}
@@ -294,7 +333,11 @@ export default function App() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="w-full"
             >
-              <ThimarView onBackToHome={() => setCurrentTab('home')} />
+              <ThimarView 
+                onBackToHome={() => setCurrentTab('home')} 
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
+              />
             </motion.div>
           )}
 

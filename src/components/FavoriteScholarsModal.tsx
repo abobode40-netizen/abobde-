@@ -77,9 +77,9 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
           </button>
 
           <div className="text-right">
-            <div className="flex items-center gap-1.5 justify-end text-[#0F6B50] dark:text-[#2DD4BF] font-bold text-base">
+            <div className="flex items-center gap-1.5 justify-end text-[#0284C7] dark:text-[#38BDF8] font-bold text-base">
               <span>المشايخ والعلماء المفضلون</span>
-              <GraduationCap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <GraduationCap className="w-5 h-5 text-sky-600 dark:text-sky-400" />
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               اختر مشايخك المفضلين لتصفية الدروس والفوائد بضغطة واحدة
@@ -96,7 +96,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="ابحث عن اسم الشيخ أو لقبه..."
-              className="w-full py-2 pl-4 pr-9 text-xs rounded-xl bg-white dark:bg-[#192A23] border border-gray-200 dark:border-gray-700 text-[#19302A] dark:text-white placeholder:text-gray-400 focus:outline-none focus:border-[#0F6B50]"
+              className="w-full py-2 pl-4 pr-9 text-xs rounded-xl bg-white dark:bg-[#192A23] border border-gray-200 dark:border-gray-700 text-[#19302A] dark:text-white placeholder:text-gray-400 focus:outline-none focus:border-[#0284C7]"
             />
             <Search className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2" />
           </div>
@@ -111,7 +111,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
                 }}
                 className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
                   activeFilterTab === 'all'
-                    ? 'bg-[#0F6B50] text-white shadow-xs'
+                    ? 'bg-[#0284C7] text-white shadow-xs'
                     : 'bg-white dark:bg-[#172721] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
                 }`}
               >
@@ -125,7 +125,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
                 }}
                 className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1 ${
                   activeFilterTab === 'favorites_only'
-                    ? 'bg-[#0F6B50] text-white shadow-xs'
+                    ? 'bg-[#0284C7] text-white shadow-xs'
                     : 'bg-white dark:bg-[#172721] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
                 }`}
               >
@@ -149,7 +149,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
               {activeFilterTab === 'favorites_only' && (
                 <button
                   onClick={() => setActiveFilterTab('all')}
-                  className="text-xs text-emerald-600 font-bold hover:underline"
+                  className="text-xs text-sky-600 font-bold hover:underline"
                 >
                   عرض جميع المشايخ لإضافتهم للمفضلة
                 </button>
@@ -166,7 +166,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
                   key={scholar.id}
                   className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 text-right ${
                     isFav
-                      ? 'bg-emerald-50/50 dark:bg-emerald-950/25 border-emerald-300 dark:border-emerald-800/80 shadow-xs'
+                      ? 'bg-sky-50/50 dark:bg-sky-950/25 border-sky-300 dark:border-sky-800/80 shadow-xs'
                       : 'bg-white dark:bg-[#172721] border-gray-200/80 dark:border-gray-800 hover:border-gray-300'
                   }`}
                 >
@@ -195,7 +195,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
                           onClose();
                           playChime('click');
                         }}
-                        className="text-[10px] font-bold text-[#0F6B50] dark:text-[#2DD4BF] hover:underline whitespace-nowrap"
+                        className="text-[10px] font-bold text-[#0284C7] dark:text-[#38BDF8] hover:underline whitespace-nowrap"
                         title="عرض مقاطع هذا الشيخ فقط"
                       >
                         عرض الدروس
@@ -233,7 +233,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
                     {/* Stats Badges */}
                     <div className="flex items-center justify-end gap-2 pt-1 text-[10px] text-gray-500 font-medium">
                       {lessonsCount > 0 && (
-                        <span className="flex items-center gap-1 bg-emerald-50 dark:bg-[#12221B] px-2 py-0.5 rounded-md text-[#0F6B50] dark:text-emerald-300 border border-emerald-200/50">
+                        <span className="flex items-center gap-1 bg-sky-50 dark:bg-[#12221B] px-2 py-0.5 rounded-md text-[#0284C7] dark:text-sky-300 border border-sky-200/50">
                           <Headphones className="w-3 h-3" />
                           <span>{lessonsCount} مقاطع صوتية</span>
                         </span>
@@ -256,7 +256,7 @@ export const FavoriteScholarsModal: React.FC<FavoriteScholarsModalProps> = ({
         <div className="p-3 bg-gray-50 dark:bg-[#101C17] border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-[#0F6B50] text-white font-bold hover:bg-[#138061] transition-all cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-[#0284C7] text-white font-bold hover:bg-[#0EA5E9] transition-all cursor-pointer"
           >
             تم وحفظ الاختيارات
           </button>
