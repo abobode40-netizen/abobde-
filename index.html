@@ -3,6 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <script>
+      // Catch and suppress benign Vite dev server WebSocket transport disconnect in iframe sandbox
+      window.addEventListener('error', function(e) {
+        if (e && ((e.filename && e.filename.indexOf('@vite/client') !== -1) || (e.message && (e.message.indexOf('WebSocket') !== -1 || e.message.indexOf('createWebSocketModuleRunnerTransport') !== -1)))) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          return true;
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function(e) {
+        var str = e && e.reason ? String(e.reason) : '';
+        if (str.indexOf('WebSocket') !== -1 || str.indexOf('createWebSocketModuleRunnerTransport') !== -1) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      });
+    </script>
     <title>جنّة الرحمن - رفيقك في الذكر والقرآن</title>
     <meta name="description" content="تطبيق وموقع جنّة الرحمن للقرآن الكريم وغراس الأذكار وثمار المشايخ وشجرة العبادات اليومية." />
     <meta name="theme-color" content="#0A192F" />
@@ -21,35 +38,27 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // تسجيل وتحديث عامل الخدمة (Service Worker) فوراً مع التحديث التلقائي
+      // Clear any stale service workers in dev sandbox preview to ensure 100% fresh instant loading
       if ('serviceWorker' in navigator) {
-        var refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', function() {
-          if (!refreshing) {
-            refreshing = true;
-            window.location.reload();
-          }
-        });
-
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then(function(registration) {
-            // فحص وجود أي إصدار أحدث فور فتح التطبيق
-            registration.update();
-
-            registration.onupdatefound = function() {
-              var installingWorker = registration.installing;
-              if (installingWorker) {
-                installingWorker.onstatechange = function() {
-                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    installingWorker.postMessage({ type: 'SKIP_WAITING' });
-                  }
-                };
-              }
-            };
-          })
-          .catch(function(err) {
-            console.warn('Service worker registration failed:', err);
+        var isDevEnv = window.location.hostname.includes('run.app') || window.location.hostname === 'localhost' || window.location.port === '3000';
+        if (isDevEnv) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            for (var i = 0; i < regs.length; i++) {
+              regs[i].unregister();
+            }
           });
+          if ('caches' in window) {
+            caches.keys().then(function(keys) {
+              keys.forEach(function(k) {
+                if (k.indexOf('static') !== -1 || k.indexOf('dynamic') !== -1) {
+                  caches.delete(k);
+                }
+              });
+            });
+          }
+        } else {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function() {});
+        }
       }
     </script>
   </body>

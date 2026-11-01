@@ -98,6 +98,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // CRITICAL: Never intercept or cache dev server internal requests, Vite scripts, hot reload, or source modules
+  if (
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/@') ||
+    url.pathname.startsWith('/node_modules/') ||
+    url.pathname.includes('vite') ||
+    url.search.includes('v=') ||
+    url.search.includes('import') ||
+    url.search.includes('t=')
+  ) {
+    return;
+  }
+
   // A. Page Navigation (HTML Document): Network-First when online to ensure latest features display immediately
   if (request.mode === 'navigate') {
     event.respondWith(
