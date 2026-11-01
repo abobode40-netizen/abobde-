@@ -90,27 +90,36 @@
   background: linear-gradient(135deg, #d4af37 0%, #e5c158 50%, #c19e2b 100%);
 }
 
-/* Islamic Geometric Arabesque Watermark Pattern (خلفية إسلامية خافتة تحت الكلام) */
+/* Islamic Geometric Arabesque Watermark Pattern (خلفية إسلامية زرقاء خافتة مع زخارف مخفية أنيقة) */
 .islamic-blue-pattern {
-  background-color: #0b1a2f;
+  background-color: #071529;
   background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(29, 78, 137, 0.25) 0%, transparent 70%),
-    radial-gradient(ellipse at 50% 100%, rgba(13, 40, 77, 0.3) 0%, transparent 70%),
-    url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%236495ed' fill-opacity='0.045' fill-rule='evenodd'%3E%3Cpath d='M36 0l9 9-9 9-9-9 9-9zm0 36l9 9-9 9-9-9 9-9zM0 36l9-9 9 9-9 9-9-9zm72 0l-9-9-9 9 9 9 9-9zm-18-18l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zm36 36l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zM36 18a18 18 0 1 0 0 36 18 18 0 0 0 0-36zm0 4a14 14 0 1 1 0 28 14 14 0 0 1 0-28zm0 5a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3a6 6 0 1 1 0 12 6 6 0 0 1 0-12z'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 50% 100%, rgba(14, 45, 84, 0.45) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.8' stroke-opacity='0.055'%3E%3Cpath d='M40 0L48 20L68 20L52 32L58 52L40 40L22 52L28 32L12 20L32 20Z'/%3E%3Cpath d='M40 80L48 60L68 60L52 48L58 28L40 40L22 28L28 48L12 60L32 60Z'/%3E%3Ccircle cx='40' cy='40' r='14' stroke='%23fbbf24' stroke-opacity='0.035'/%3E%3Ccircle cx='40' cy='40' r='26'/%3E%3Cpath d='M0 40h80M40 0v80' stroke-dasharray='2,4' stroke-opacity='0.03'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
 }
 
-/* Arabesque card overlay watermark beneath text */
+/* Subtle arabesque watermark for cards and overlays */
 .arabesque-watermark {
-  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.035' fill-rule='evenodd'%3E%3Cpath d='M40 0L48 20L68 20L52 32L58 52L40 40L22 52L28 32L12 20L32 20Z'/%3E%3Cpath d='M40 80L48 60L68 60L52 48L58 28L40 40L22 28L28 48L12 60L32 60Z'/%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+}
+.arabesque-watermark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.7' stroke-opacity='0.035'%3E%3Cpolygon points='36,4 43,26 65,26 48,39 54,61 36,48 18,61 24,39 7,26 29,26'/%3E%3Ccircle cx='36' cy='36' r='18'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.8;
+  border-radius: inherit;
 }
 
 /* Light theme with celestial blue hue & arabesque watermark */
 .light-blue-theme {
-  background-color: #f1f6fc;
-  color: #0f243e;
+  background-color: #f0f6fd;
+  color: #0c213d;
   background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(200, 222, 245, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse at 50% 0%, rgba(186, 220, 255, 0.45) 0%, transparent 70%),
     url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23194576' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M36 0l9 9-9 9-9-9 9-9zm0 36l9 9-9 9-9-9 9-9zM0 36l9-9 9 9-9 9-9-9zm72 0l-9-9-9 9 9 9 9-9zm-18-18l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zm36 36l9-9 9 9-9 9-9-9zm-36 0l9-9 9 9-9 9-9-9zM36 18a18 18 0 1 0 0 36 18 18 0 0 0 0-36zm0 4a14 14 0 1 1 0 28 14 14 0 0 1 0-28zm0 5a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3a6 6 0 1 1 0 12 6 6 0 0 1 0-12z'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
 }
