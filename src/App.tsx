@@ -160,7 +160,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen islamic-blue-pattern text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo arabesque-watermark">
+    <div className="min-h-screen bg-[#08162b] text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo">
       {/* Network Offline / Online Notification Banner */}
       <NetworkStatusBanner />
 
