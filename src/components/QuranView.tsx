@@ -2053,18 +2053,19 @@ export const QuranView: React.FC<QuranViewProps> = ({
                           >
                             <span 
                               onClick={() => {
-                                if (isPlayingThisAyah) {
-                                  toggleAudio();
-                                } else {
-                                  playAyah(sNum, surahItem.name, ayah.number, rawText);
-                                  playChime('click');
-                                }
+                                handleOpenAyahDetails({
+                                  surahNumber: sNum,
+                                  surahName: surahItem.name,
+                                  ayahNumber: ayah.number,
+                                  ayahText: rawText,
+                                  defaultTafseer: ayah.tafseer
+                                });
                               }}
-                              title={isPlayingThisAyah ? 'جارٍ تلاوة هذه الآية (انقر للإيقاف)' : 'انقر للاستماع لهذه الآية وتظليلها'}
+                              title="انقر لقراءة مختصر التفسير باللغة العربية ومعاني الكلمات والاستماع"
                               className={`cursor-pointer transition-colors ${
                                 isPlayingThisAyah 
-                                  ? 'font-bold' 
-                                  : 'hover:text-[#0284C7] dark:hover:text-amber-200'
+                                  ? 'font-bold text-[#0284C7] dark:text-amber-300 bg-amber-200/50 dark:bg-amber-900/50 rounded px-1' 
+                                  : 'hover:text-[#0284C7] dark:hover:text-amber-200 hover:bg-amber-100/50 dark:hover:bg-amber-900/30 rounded px-0.5'
                               }`}
                             >
                               {rawText}
@@ -2081,7 +2082,7 @@ export const QuranView: React.FC<QuranViewProps> = ({
                                   defaultTafseer: ayah.tafseer
                                 });
                               }}
-                              title={`الآية ${toArabicNumerals(ayah.number)} - اضغط لتفاصيل الآية والتفسير`}
+                              title={`الآية ${toArabicNumerals(ayah.number)} - اضغط لمختصر التفسير باللغة العربية`}
                               className={`inline-block px-1 font-bold font-quran select-none cursor-pointer hover:scale-125 transition-transform align-baseline text-[0.9em] ${
                                 isPlayingThisAyah 
                                   ? 'text-[#B45309] dark:text-amber-300 animate-pulse font-extrabold scale-110' 

@@ -1,4 +1,4 @@
-import { DayTrackerData, AppSettings, Bookmark, PrayerStatus, ReciterId } from '../types';
+import { DayTrackerData, AppSettings, Bookmark, PrayerStatus, ReciterId, TafseerFavoriteAyah } from '../types';
 
 export const STORAGE_KEYS = {
   SETTINGS: 'jannat_settings_v1',
@@ -10,7 +10,8 @@ export const STORAGE_KEYS = {
   SEBHA_COUNT: 'jannat_sebha_count_v1',
   FAVORITE_AUDIO_LESSONS: 'jannat_fav_audio_lessons_v1',
   FAVORITE_SCHOLARS: 'jannat_fav_scholars_v1',
-  LAST_RECITER: 'jannat_last_reciter_v1'
+  LAST_RECITER: 'jannat_last_reciter_v1',
+  TAFSEER_FAVORITES: 'jannat_tafseer_favorites_v1'
 };
 
 /* ==========================================================================
@@ -378,6 +379,25 @@ export async function loadBookmarksAsync(): Promise<Bookmark[]> {
 }
 
 /* ==========================================================================
+   Tafseer Favorites Engine (Offline & LocalStorage Synchronized)
+   ========================================================================== */
+export function loadTafseerFavorites(): TafseerFavoriteAyah[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.TAFSEER_FAVORITES);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
+
+export function saveTafseerFavorites(favorites: TafseerFavoriteAyah[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS.TAFSEER_FAVORITES, JSON.stringify(favorites));
+  } catch {}
+  setIndexedDBItem(STORAGE_KEYS.TAFSEER_FAVORITES, favorites);
+  broadcastLocalChange(STORAGE_KEYS.TAFSEER_FAVORITES, favorites);
+}
+
+/* ==========================================================================
    Last Read Page (Quran Reading History)
    ========================================================================== */
 export function loadLastReadPage(): number {
@@ -495,6 +515,7 @@ export async function syncAllToIndexedDB(): Promise<void> {
     { key: STORAGE_KEYS.SEBHA_COUNT, val: loadSebhaCount() },
     { key: STORAGE_KEYS.FAVORITE_AUDIO_LESSONS, val: loadFavoriteAudioLessons() },
     { key: STORAGE_KEYS.FAVORITE_SCHOLARS, val: loadFavoriteScholars() },
+    { key: STORAGE_KEYS.TAFSEER_FAVORITES, val: loadTafseerFavorites() },
     { key: STORAGE_KEYS.TRACKER_PREFIX + getTodayKey(), val: loadDayTracker() }
   ];
 
@@ -549,6 +570,7 @@ export function exportBackupJSON(): string {
     sebhaCount: loadSebhaCount(),
     favoriteAudioLessons: loadFavoriteAudioLessons(),
     favoriteScholars: loadFavoriteScholars(),
+    tafseerFavorites: loadTafseerFavorites(),
     lastReciter: loadLastReciter()
   };
   return JSON.stringify(data, null, 2);
@@ -564,6 +586,7 @@ export function importBackupJSON(jsonStr: string): boolean {
     if (parsed.sebhaCount !== undefined) saveSebhaCount(parsed.sebhaCount);
     if (parsed.favoriteAudioLessons) saveFavoriteAudioLessons(parsed.favoriteAudioLessons);
     if (parsed.favoriteScholars) saveFavoriteScholars(parsed.favoriteScholars);
+    if (parsed.tafseerFavorites) saveTafseerFavorites(parsed.tafseerFavorites);
     if (parsed.lastReciter) saveLastReciter(parsed.lastReciter);
     syncAllToIndexedDB().catch(() => {});
     return true;
@@ -617,6 +640,7 @@ export async function initStorageSync(): Promise<void> {
         STORAGE_KEYS.SEBHA_COUNT,
         STORAGE_KEYS.FAVORITE_AUDIO_LESSONS,
         STORAGE_KEYS.FAVORITE_SCHOLARS,
+        STORAGE_KEYS.TAFSEER_FAVORITES,
         STORAGE_KEYS.TRACKER_PREFIX + getTodayKey()
       ];
 

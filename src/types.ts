@@ -1,4 +1,4 @@
-export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings' | 'qibla';
+export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings' | 'qibla' | 'tafseer_adawi';
 
 export type ReciterId = 
   | 'alafasy' 
@@ -155,12 +155,22 @@ export interface OneMinuteDeed {
 
 export interface Bookmark {
   id: string;
-  type: 'surah' | 'page' | 'ayah' | 'thikr' | 'thimarah' | 'dua' | 'mishkat';
+  type: 'surah' | 'page' | 'ayah' | 'thikr' | 'thimarah' | 'dua' | 'mishkat' | 'tafseer_ayah';
   title: string;
   subtitle: string;
   targetId: string | number;
   createdAt: number;
   pageNumber?: number;
+}
+
+export interface TafseerFavoriteAyah {
+  id: string; // `${surahNumber}:${ayahNumber}`
+  surahNumber: number;
+  surahName: string;
+  ayahNumber: number;
+  ayahText: string;
+  tafseerText?: string;
+  savedAt: number;
 }
 
 export type DuaCategoryType = 'youth_guidance' | 'khatm' | 'quran' | 'sunnah' | 'ruqyah' | 'magic_jinn' | 'kuroob' | 'hidayah' | 'jawami';

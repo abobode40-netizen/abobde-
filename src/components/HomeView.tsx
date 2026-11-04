@@ -10,7 +10,7 @@ import { toArabicNumerals } from '../data/quranData';
 import { playChime, triggerHaptic } from '../utils/audio';
 import { loadBookmarks, loadBookmarksAsync, onStorageChange } from '../utils/storage';
 import { GitHubBridgeModal } from './GitHubBridgeModal';
-import { DoorActionBar } from './DoorActionBar';
+import { HijriDateBanner } from './HijriDateBanner';
 import { UniversalExportModal } from './UniversalExportModal';
 import heroMasjidImg from '../assets/images/hero_masjid_arch_moon_1793474399589.jpg';
 
@@ -108,6 +108,17 @@ const ThimarScrollIcon: React.FC<{ className?: string }> = ({ className = "w-8 h
   </svg>
 );
 
+// 8. Tafseer Ibn Kathir - Sheikh Mustafa Al-Adawi Icon (مختصر تفسير ابن كثير)
+const TafseerAdawiBookIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+    <path d="M6 6h9" strokeWidth="1.6" />
+    <path d="M6 10h9" strokeWidth="1.6" />
+    <path d="M6 14h6" strokeWidth="1.6" />
+    <polygon points="16,13 17,16 20,16 18,18 19,21 16,19 13,21 14,18 12,16 15,16" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeWidth="1" />
+  </svg>
+);
+
 export const HomeView: React.FC<HomeViewProps> = ({
   onNavigate,
   onOpenMushafPage,
@@ -151,17 +162,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <div className="pb-24 pt-2 px-3 sm:px-4 max-w-lg mx-auto space-y-3.5 animate-fadeIn" dir="rtl">
-      {/* Universal Action Bar: Zoom and Export */}
-      <DoorActionBar
-        doorTitle="الرئيسية • جنّة الرحمن"
-        fontScale={fontScale}
-        onChangeFontScale={onChangeFontScale}
-        onOpenExport={() => setIsExportOpen(true)}
-        swipeHint="اختر أي باب للانطلاق في رحلتك ⇆"
-      />
+      {/* Beautiful Islamic Hijri Date Banner */}
+      <HijriDateBanner />
 
       {/* App Top Utility Bar: Search, Settings & Identity */}
-      <div className="flex items-center justify-between bg-[#0b1b33]/90 backdrop-blur-md p-3 rounded-2xl border border-sky-500/30 shadow-md">
+      <div className="flex items-center justify-between bg-white/90 dark:bg-[#06291e]/90 backdrop-blur-md p-3 rounded-2xl border border-amber-500/40 shadow-xs">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => {
@@ -169,7 +174,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               onNavigate('search');
             }}
             aria-label="البحث في التطبيق"
-            className="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center transition-all active:scale-95 text-sky-200 hover:text-white cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-white/10 hover:bg-amber-100 dark:hover:bg-white/20 border border-amber-200/80 dark:border-white/15 flex items-center justify-center transition-all active:scale-95 text-[#042e22] dark:text-emerald-200 hover:text-emerald-900 dark:hover:text-white cursor-pointer"
           >
             <Search className="w-3.5 h-3.5" />
           </button>
@@ -180,7 +185,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               onNavigate('settings');
             }}
             aria-label="فتح الإعدادات"
-            className="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center transition-all active:scale-95 text-sky-200 hover:text-white cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-white/10 hover:bg-amber-100 dark:hover:bg-white/20 border border-amber-200/80 dark:border-white/15 flex items-center justify-center transition-all active:scale-95 text-[#042e22] dark:text-emerald-200 hover:text-emerald-900 dark:hover:text-white cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5" />
           </button>
@@ -193,7 +198,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             }}
             title="جسر GitHub والنشر العام"
             aria-label="جسر GitHub والنشر العام"
-            className="w-8 h-8 rounded-xl bg-sky-400/20 hover:bg-sky-400/30 border border-sky-300/30 flex items-center justify-center transition-all active:scale-95 text-sky-200 hover:text-white cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-amber-100/80 dark:bg-emerald-900/40 hover:bg-amber-200 dark:hover:bg-emerald-800/50 border border-amber-300/80 dark:border-emerald-500/30 flex items-center justify-center transition-all active:scale-95 text-[#042e22] dark:text-emerald-200 hover:text-emerald-900 dark:hover:text-white cursor-pointer"
           >
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
@@ -203,11 +208,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         <div className="flex items-center gap-2">
           <div className="text-right">
-            <h1 className="text-sm font-bold text-white tracking-tight">جنّة الرحمن</h1>
-            <p className="text-[10px] text-sky-200 font-medium">زاد المسلم ورفيق القلوب</p>
+            <h1 className="text-base font-black text-[#042e22] dark:text-emerald-100 tracking-tight">جنّة الرحمن</h1>
+            <p className="text-[11px] text-[#0b4534] dark:text-emerald-300 font-bold">زاد المسلم ورفيق القلوب</p>
           </div>
-          <div className="w-8 h-8 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center overflow-hidden">
-            <Sparkles className="w-4 h-4 text-sky-300" />
+          <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-emerald-500/20 border border-amber-300/80 dark:border-emerald-400/30 flex items-center justify-center overflow-hidden">
+            <Sparkles className="w-4 h-4 text-amber-700 dark:text-amber-300" />
           </div>
         </div>
       </div>
@@ -245,15 +250,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onOpenMushafPage(lastReadPage || 1);
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <QuranBookIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             القرآن الكريم
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             صفحة {toArabicNumerals(lastReadPage || 1)}
           </span>
         </button>
@@ -265,15 +270,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onNavigate('athkar');
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <AthkarRosaryIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             الأذكار
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             حصن المسلم وغراس الجنة
           </span>
         </button>
@@ -285,15 +290,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onOpenSebha();
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <ElectronicSebhaIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             المسبحة الإلكترونية
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             عداد التسبيح والاستغفار
           </span>
         </button>
@@ -305,15 +310,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onNavigate('tracker');
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <PrayerMosqueIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             الصلاة والقبلة والمواقيت
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             أوقات الصلاة، القبلة، والشجرة
           </span>
         </button>
@@ -325,15 +330,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onNavigate('duas');
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <DuaHandsIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             الأدعية المأثورة
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             الرقية الشرعية والسنّة
           </span>
         </button>
@@ -345,36 +350,59 @@ export const HomeView: React.FC<HomeViewProps> = ({
             triggerHaptic('selection');
             onNavigate('mishkat');
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <MishkatLampIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             مشكاة الأنوار
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             قبسات السيرة والشباب
           </span>
         </button>
 
-        {/* Card 7: ثمار المشايخ (يمتد بعرض متناسق ومريح) */}
+        {/* Card 7: ثمار المشايخ */}
         <button
           onClick={() => {
             playChime('click');
             triggerHaptic('selection');
             onNavigate('thimar');
           }}
-          className="p-5 rounded-3xl bg-gradient-to-b from-[#edf4fc] via-[#e2eefa] to-[#d4e4f7] dark:from-[#132847] dark:via-[#102340] dark:to-[#0c1d35] border border-[#bfd8f5] dark:border-sky-500/30 text-center flex flex-col items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all group cursor-pointer relative overflow-hidden col-span-2"
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/40 dark:border-amber-400/30 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#0e3b68]/15 to-[#0a2745]/10 dark:from-sky-400/20 dark:to-sky-500/10 flex items-center justify-center text-[#0e3b68] dark:text-sky-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-800/15 to-emerald-900/25 dark:from-emerald-400/20 dark:to-emerald-500/10 flex items-center justify-center text-[#064e3b] dark:text-emerald-200 group-hover:scale-110 transition-transform mb-2 shadow-xs">
             <ThimarScrollIcon className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-[#0d345e] dark:text-sky-100 group-hover:text-sky-600 dark:group-hover:text-white transition-colors">
+          <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-[#065f46] dark:group-hover:text-white transition-colors">
             ثمار المشايخ
           </h3>
-          <span className="text-[10px] text-[#0d345e]/70 dark:text-sky-300 font-medium mt-0.5">
-            درر كبار العلماء والأئمة والمواعظ الخالدة
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
+            درر كبار العلماء والأئمة
+          </span>
+        </button>
+
+        {/* Card 8: مختصر تفسير ابن كثير - الشيخ مصطفى العدوي */}
+        <button
+          onClick={() => {
+            playChime('click');
+            triggerHaptic('selection');
+            onNavigate('tafseer_adawi');
+          }}
+          className="p-5 rounded-3xl bg-gradient-to-b from-white via-[#fdfbf7] to-[#f5efe1] dark:from-[#093327] dark:via-[#06291e] dark:to-[#041d15] border-2 border-amber-500/60 dark:border-amber-400/40 text-center flex flex-col items-center justify-center shadow-xs hover:shadow-md hover:border-amber-500 active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+        >
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 dark:from-amber-400/20 dark:to-amber-500/10 flex items-center justify-center text-amber-700 dark:text-amber-300 group-hover:scale-110 transition-transform mb-2 shadow-xs">
+            <TafseerAdawiBookIcon className="w-7 h-7" />
+          </div>
+          <div className="flex items-center gap-1 justify-center">
+            <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold">جديد</span>
+            <h3 className="font-black text-base text-[#042e22] dark:text-emerald-100 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+              مختصر ابن كثير
+            </h3>
+          </div>
+          <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
+            للشيخ مصطفى العدوي
           </span>
         </button>
       </div>

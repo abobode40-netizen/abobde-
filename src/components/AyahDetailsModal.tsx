@@ -60,8 +60,8 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
   const [tafseerSearchQuery, setTafseerSearchQuery] = useState('');
   const [showFullSurahModal, setShowFullSurahModal] = useState(false);
 
-  // Tafseer Source Selection (Ibn Kathir, Muyassar, Sa'di, Mukhtasar)
-  const [selectedTafseerSource, setSelectedTafseerSource] = useState<TafseerSourceId>('ibn_kathir');
+  // Tafseer Source Selection (Mukhtasar, Muyassar, Ibn Kathir, Sa'di)
+  const [selectedTafseerSource, setSelectedTafseerSource] = useState<TafseerSourceId>('mukhtasar');
   const [currentTafseerContent, setCurrentTafseerContent] = useState<string>('');
   const [isLoadingTafseer, setIsLoadingTafseer] = useState<boolean>(false);
 
@@ -163,13 +163,34 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
         
         {/* Header Ribbon */}
         <div className="p-4 sm:p-5 border-b border-[#EAE3D2] dark:border-[#22362D] bg-[#FAF8F2] dark:bg-[#111C18] flex items-center justify-between shrink-0">
-          <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-[#1C2C25] flex items-center justify-center text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:scale-105 active:scale-95 transition-all"
-            aria-label="إغلاق"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-[#1C2C25] flex items-center justify-center text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:scale-105 active:scale-95 transition-all"
+              aria-label="إغلاق"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {onToggleAyahBookmark && (
+              <button
+                onClick={() => {
+                  onToggleAyahBookmark();
+                  playChime('click');
+                  triggerHaptic(25);
+                }}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer ${
+                  isAyahBookmarked
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : 'bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 hover:bg-amber-200'
+                }`}
+                title={isAyahBookmarked ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+              >
+                <BookMarked className={`w-4 h-4 ${isAyahBookmarked ? 'fill-current' : ''}`} />
+                <span>{isAyahBookmarked ? 'في المفضلة' : 'حفظ بالمفضلة'}</span>
+              </button>
+            )}
+          </div>
 
           <div className="text-right">
             <div className="flex items-center gap-1.5 justify-end">
@@ -180,15 +201,15 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 سورة {surahName}
               </h3>
             </div>
-            <span className="text-[11px] text-[#78887F] dark:text-[#8D9F95] block mt-0.5">
-              بيان وتفسير ابن كثير، معاني الكلمات، وأسباب النزول والتدبر
+            <span className="text-[11px] text-[#78887F] dark:text-[#8D9F95] block mt-0.5 font-medium">
+              مختصر تفسير القرآن الكريم باللغة العربية • معاني الكلمات والتدبر
             </span>
           </div>
         </div>
 
         {/* 4 Distinct Navigation Tabs (Pinned at top below header) */}
         <div className="flex border-b border-[#EAE3D2] dark:border-[#22362D] bg-[#F7F4EC] dark:bg-[#111C18] overflow-x-auto no-scrollbar px-2 pt-2 shrink-0">
-          {/* Tab 1: Ibn Kathir */}
+          {/* Tab 1: Concise Arabic Tafseer */}
           <button
             onClick={() => {
               setActiveTab('ibn_kathir');
@@ -201,7 +222,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>تفسير ابن كثير والبيان</span>
+            <span>مختصر التفسير والبيان (عربي)</span>
           </button>
 
           {/* Tab 2: Word Meanings */}

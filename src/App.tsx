@@ -37,15 +37,11 @@ import { NetworkStatusBanner } from './components/NetworkStatusBanner';
 import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { TopNavbarWithDropdown } from './components/TopNavbarWithDropdown';
 import { GlobalPrayerAlertModal } from './components/GlobalPrayerAlertModal';
+import { TafseerAdawiView } from './components/TafseerAdawiView';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<AppTab>(() => {
-    return (localStorage.getItem('janat_current_tab') as AppTab) || 'home';
-  });
-
-  useEffect(() => {
-    localStorage.setItem('janat_current_tab', currentTab);
-  }, [currentTab]);
+  // Always open on the main Home View upon opening the program as requested
+  const [currentTab, setCurrentTab] = useState<AppTab>('home');
   const [settings, setSettings] = useState<AppSettings>(loadSettings());
   const [trackerData, setTrackerData] = useState<DayTrackerData>(loadDayTracker());
   const [lastReadPage, setLastReadPage] = useState<number>(loadLastReadPage());
@@ -160,7 +156,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08162b] text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo">
+    <div className="min-h-screen islamic-bg-blue text-[#071f3d] dark:text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo">
       {/* Network Offline / Online Notification Banner */}
       <NetworkStatusBanner />
 
@@ -389,11 +385,28 @@ export default function App() {
               <QiblaCompassView onBackToHome={() => setCurrentTab('home')} />
             </motion.div>
           )}
+
+          {currentTab === 'tafseer_adawi' && (
+            <motion.div
+              key="tafseer_adawi"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="w-full"
+            >
+              <TafseerAdawiView
+                onBack={() => setCurrentTab('home')}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       {/* Global Navigation Bar (shown on core tabs when not in focus mode) */}
-      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar', 'qibla'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
+      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar', 'qibla', 'tafseer_adawi'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
         <Navbar
           currentTab={currentTab}
           onSelectTab={(tab) => {

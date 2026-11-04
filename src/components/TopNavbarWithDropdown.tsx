@@ -135,6 +135,15 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
       accentColor: '#8B5CF6'
     },
     {
+      id: 'tafseer_adawi',
+      title: 'مختصر تفسير ابن كثير (الشيخ مصطفى العدوي)',
+      subtitle: 'الصحيح المسند وتجريد التفسير من الإسرائيليات والفوائد التربوية',
+      badge: 'جديد • التفسير المصفى',
+      badgeColor: 'bg-amber-600',
+      icon: BookOpen,
+      accentColor: '#F59E0B'
+    },
+    {
       id: 'search',
       title: 'البحث الشامل',
       subtitle: 'ابحث في الآيات، الأدعية، وقبسات السيرة',
@@ -188,7 +197,7 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0a192f]/90 dark:bg-[#081527]/95 backdrop-blur-md border-b border-[#20436d]/60 shadow-lg select-none">
+    <header className="sticky top-0 z-40 w-full bg-[#043325]/95 dark:bg-[#031d15]/95 backdrop-blur-md border-b-2 border-amber-500/60 shadow-md select-none">
       <div className="max-w-lg mx-auto px-3 h-14 flex items-center justify-between gap-2 relative">
         {/* Right side: App branding & Doors Dropdown Button */}
         <div className="flex items-center gap-2 relative" ref={dropdownRef}>
@@ -198,61 +207,61 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
               playChime('click');
               setIsOpen(!isOpen);
             }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#132c52] to-[#1c3f73] hover:from-[#1b3d70] hover:to-[#244f8f] border border-[#3b6da4]/50 shadow-inner text-white transition-all active:scale-95 group"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#064e3b] to-[#047857] hover:from-[#043e2f] hover:to-[#035e44] border border-amber-400/60 shadow-sm text-white transition-all active:scale-95 group cursor-pointer"
             title="انقر لفتح قائمة كل الأبواب"
             aria-label="قائمة أبواب التطبيق"
           >
             <currentDoor.icon className="w-4 h-4 text-amber-300 transition-transform group-hover:scale-110" />
             <div className="text-right flex items-center gap-1.5">
-              <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+              <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide">
                 {currentDoor.title.split(' ')[0]} {currentDoor.title.split(' ')[1] || ''}
               </span>
-              <ChevronDown className={`w-3.5 h-3.5 text-amber-200 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-amber-300 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </div>
           </button>
 
           {/* Doors Dropdown Menu */}
           {isOpen && (
-            <div className="absolute top-12 right-0 w-[310px] sm:w-[350px] bg-[#0c1f3b] border border-[#2b588f] rounded-2xl shadow-2xl overflow-hidden animate-fadeIn z-50 p-3 space-y-3 arabesque-watermark">
+            <div className="absolute top-12 right-0 w-[310px] sm:w-[350px] bg-white dark:bg-[#0c1f3b] border-2 border-sky-200 dark:border-[#2b588f] rounded-2xl shadow-2xl overflow-hidden animate-fadeIn z-50 p-3 space-y-3">
               {/* Dropdown Header */}
-              <div className="flex items-center justify-between pb-2 border-b border-[#1f3f68]">
+              <div className="flex items-center justify-between pb-2 border-b border-sky-100 dark:border-[#1f3f68]">
                 <div className="text-right">
-                  <h3 className="text-xs font-bold text-white flex items-center gap-1 justify-end">
+                  <h3 className="text-xs font-black text-[#071f3d] dark:text-white flex items-center gap-1 justify-end">
                     <span>أبواب جنّة الرحمن</span>
-                    <Sparkle className="w-3.5 h-3.5 text-amber-300" />
+                    <Sparkle className="w-3.5 h-3.5 text-amber-500 dark:text-amber-300" />
                   </h3>
-                  <p className="text-[10px] text-sky-200/70">الوصول السريع لكافة أقسام التطبيق</p>
+                  <p className="text-[10px] text-sky-700 dark:text-sky-200/70 font-medium">الوصول السريع لكافة أقسام التطبيق</p>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-sky-200 flex items-center justify-center transition-all"
+                  className="w-6 h-6 rounded-lg bg-sky-100 dark:bg-white/10 hover:bg-sky-200 dark:hover:bg-white/20 text-[#071f3d] dark:text-sky-200 flex items-center justify-center transition-all cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               {/* Font scaling control inside dropdown */}
-              <div className="bg-[#122b50] p-2.5 rounded-xl border border-[#234b7d] flex items-center justify-between">
-                <span className="text-[11px] font-bold text-sky-100 flex items-center gap-1">
-                  <Type className="w-3.5 h-3.5 text-amber-300" />
+              <div className="bg-sky-50 dark:bg-[#122b50] p-2.5 rounded-xl border border-sky-200 dark:border-[#234b7d] flex items-center justify-between">
+                <span className="text-[11px] font-bold text-[#071f3d] dark:text-sky-100 flex items-center gap-1">
+                  <Type className="w-3.5 h-3.5 text-amber-600 dark:text-amber-300" />
                   <span>حجم الخط في الأبواب:</span>
                 </span>
-                <div className="flex items-center gap-1.5 bg-[#0a182e] px-1.5 py-1 rounded-lg border border-[#295080]">
+                <div className="flex items-center gap-1.5 bg-white dark:bg-[#0a182e] px-1.5 py-1 rounded-lg border border-sky-200 dark:border-[#295080]">
                   <button
                     onClick={() => handleStepScale('down')}
                     disabled={fontScale <= 100}
-                    className="w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-sky-200 hover:text-white hover:bg-white/10 disabled:opacity-30 transition-all"
+                    className="w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-[#071f3d] dark:text-sky-200 hover:text-sky-900 dark:hover:text-white hover:bg-sky-100 dark:hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
                     title="تصغير الخط"
                   >
                     A-
                   </button>
-                  <span className="text-[10px] font-bold text-amber-300 px-1 min-w-[42px] text-center">
+                  <span className="text-[10px] font-black text-[#0369a1] dark:text-amber-300 px-1 min-w-[42px] text-center font-mono">
                     {getScaleLabel(fontScale)}
                   </span>
                   <button
                     onClick={() => handleStepScale('up')}
                     disabled={fontScale >= 145}
-                    className="w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-sky-200 hover:text-white hover:bg-white/10 disabled:opacity-30 transition-all"
+                    className="w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-[#071f3d] dark:text-sky-200 hover:text-sky-900 dark:hover:text-white hover:bg-sky-100 dark:hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
                     title="تكبير الخط"
                   >
                     A+
@@ -267,13 +276,13 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
                   value={filterQuery}
                   onChange={(e) => setFilterQuery(e.target.value)}
                   placeholder="ابحث عن باب..."
-                  className="w-full bg-[#081527] border border-[#20436d] rounded-xl px-3 py-1.5 pr-8 text-xs text-white placeholder-sky-300/40 focus:outline-none focus:border-amber-400 text-right"
+                  className="w-full bg-sky-50/80 dark:bg-[#081527] border border-sky-200 dark:border-[#20436d] rounded-xl px-3 py-1.5 pr-8 text-xs text-[#071f3d] dark:text-white placeholder-sky-700/50 dark:placeholder-sky-300/40 focus:outline-none focus:border-sky-500 text-right"
                 />
-                <Search className="w-3.5 h-3.5 text-sky-300/50 absolute right-2.5 top-2.5 pointer-events-none" />
+                <Search className="w-3.5 h-3.5 text-sky-600 dark:text-sky-300/50 absolute right-2.5 top-2.5 pointer-events-none" />
                 {filterQuery && (
                   <button
                     onClick={() => setFilterQuery('')}
-                    className="absolute left-2 top-2 text-sky-300/50 hover:text-white"
+                    className="absolute left-2 top-2 text-sky-600 dark:text-sky-300/50 hover:text-sky-900 dark:hover:text-white"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -294,30 +303,30 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
                         setIsOpen(false);
                         onSelectTab(door.id);
                       }}
-                      className={`w-full text-right p-2.5 rounded-xl transition-all flex items-center justify-between border ${
+                      className={`w-full text-right p-2.5 rounded-xl transition-all flex items-center justify-between border cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-l from-amber-500/20 to-[#193a67] border-amber-400/60 ring-1 ring-amber-400/40'
-                          : 'bg-[#0f2545]/70 hover:bg-[#14325a] border-[#204574]/60 text-sky-100 hover:border-[#336aa6]'
+                          ? 'bg-sky-100/90 dark:bg-gradient-to-l dark:from-amber-500/20 dark:to-[#193a67] border-sky-400 dark:border-amber-400/60 ring-1 ring-sky-400/40'
+                          : 'bg-white dark:bg-[#0f2545]/70 hover:bg-sky-50 dark:hover:bg-[#14325a] border-sky-200 dark:border-[#204574]/60 text-[#071f3d] dark:text-sky-100 hover:border-sky-300'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         {door.badge && (
-                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md text-white ${door.badgeColor || 'bg-amber-600'}`}>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md text-white ${door.badgeColor || 'bg-sky-600'}`}>
                             {door.badge}
                           </span>
                         )}
-                        {isActive && <Check className="w-3.5 h-3.5 text-amber-300" />}
+                        {isActive && <Check className="w-3.5 h-3.5 text-sky-600 dark:text-amber-300" />}
                       </div>
 
                       <div className="flex items-center gap-2.5">
                         <div>
-                          <h4 className="text-xs font-bold text-white flex items-center justify-end gap-1">
+                          <h4 className="text-xs font-extrabold text-[#071f3d] dark:text-white flex items-center justify-end gap-1">
                             {door.title}
                           </h4>
-                          <p className="text-[10px] text-sky-200/60 line-clamp-1">{door.subtitle}</p>
+                          <p className="text-[10px] text-[#224b78] dark:text-sky-200/60 line-clamp-1">{door.subtitle}</p>
                         </div>
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-white/10"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-sky-200 dark:border-white/10"
                           style={{ backgroundColor: `${door.accentColor}25`, color: door.accentColor }}
                         >
                           <Icon className="w-4 h-4" />
@@ -334,13 +343,13 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
         {/* Center / Left: Quick Font Scale Buttons & Sebha Action */}
         <div className="flex items-center gap-1.5">
           {/* Global Font Zoom Button Group (A- / A / A+) */}
-          <div className="flex items-center bg-[#0d223e] border border-[#2b5587] rounded-xl p-0.5 shadow-sm">
+          <div className="flex items-center bg-sky-50 dark:bg-[#0d223e] border border-sky-200 dark:border-[#2b5587] rounded-xl p-0.5 shadow-xs">
             <button
               onClick={() => handleStepScale('down')}
               disabled={fontScale <= 100}
               title="تصغير خط البيانات"
               aria-label="تصغير خط البيانات"
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-sky-200 hover:text-white hover:bg-white/10 active:scale-90 disabled:opacity-30 transition-all cursor-pointer"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-[#071f3d] dark:text-sky-200 hover:text-sky-900 dark:hover:text-white hover:bg-sky-100 dark:hover:bg-white/10 active:scale-90 disabled:opacity-30 transition-all cursor-pointer"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
@@ -354,7 +363,7 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
                 setTimeout(() => setShowScaleToast(false), 1600);
               }}
               title="تغيير مقياس الخط لجميع الأبواب"
-              className="px-2 py-0.5 text-[10px] font-extrabold text-amber-300 hover:bg-white/10 rounded-md transition-all flex items-center gap-1 cursor-pointer"
+              className="px-2 py-0.5 text-[10px] font-black text-[#0369a1] dark:text-amber-300 hover:bg-sky-100 dark:hover:bg-white/10 rounded-md transition-all flex items-center gap-1 cursor-pointer font-mono"
             >
               <span>{fontScale}%</span>
             </button>
@@ -364,7 +373,7 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
               disabled={fontScale >= 145}
               title="تكبير خط البيانات في كل الأبواب"
               aria-label="تكبير خط البيانات في كل الأبواب"
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-sky-200 hover:text-white hover:bg-white/10 active:scale-90 disabled:opacity-30 transition-all cursor-pointer"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-[#071f3d] dark:text-sky-200 hover:text-sky-900 dark:hover:text-white hover:bg-sky-100 dark:hover:bg-white/10 active:scale-90 disabled:opacity-30 transition-all cursor-pointer"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
