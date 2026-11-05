@@ -119,6 +119,18 @@ const TafseerAdawiBookIcon: React.FC<{ className?: string }> = ({ className = "w
   </svg>
 );
 
+// 9. Al-Qaida Al-Nooraniyah Quranic Reading Icon (القاعدة النورانية)
+const NooraniyahBookIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    <path d="M6 8h2" strokeWidth="1.6" />
+    <path d="M6 12h2" strokeWidth="1.6" />
+    <path d="M16 8h2" strokeWidth="1.6" />
+    <circle cx="12" cy="7" r="1.5" fill="currentColor" />
+  </svg>
+);
+
 export const HomeView: React.FC<HomeViewProps> = ({
   onNavigate,
   onOpenMushafPage,
@@ -404,6 +416,35 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <span className="text-[10px] text-[#0b4534] dark:text-emerald-300 font-bold mt-0.5">
             للشيخ مصطفى العدوي
           </span>
+        </button>
+
+        {/* Card 9: القاعدة النورانية لتعليم القرآن الكريم */}
+        <button
+          onClick={() => {
+            playChime('click');
+            triggerHaptic('selection');
+            onNavigate('nooraniyah');
+          }}
+          className="col-span-2 p-5 rounded-3xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-white border-2 border-amber-300 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all group cursor-pointer relative overflow-hidden"
+        >
+          <div className="flex items-center justify-between">
+            <div className="text-right">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-white text-amber-900 shadow-xs">
+                  باب جديد مصوّر
+                </span>
+                <h3 className="font-black text-lg text-white font-amiri group-hover:text-amber-100 transition-colors">
+                  القاعدة النورانية لتعليم قراءة القرآن
+                </h3>
+              </div>
+              <p className="text-xs text-amber-100/95 mt-1 leading-relaxed">
+                منهج منظم بالصور التعليمية، مخارج الحروف، الحركات، والتهجي الصوتي السليم
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform shadow-inner">
+              <NooraniyahBookIcon className="w-8 h-8" />
+            </div>
+          </div>
         </button>
       </div>
 

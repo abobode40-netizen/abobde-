@@ -1,4 +1,4 @@
-export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings' | 'qibla' | 'tafseer_adawi';
+export type AppTab = 'home' | 'quran' | 'athkar' | 'duas' | 'mishkat' | 'tracker' | 'thimar' | 'search' | 'settings' | 'qibla' | 'tafseer_adawi' | 'nooraniyah';
 
 export type ReciterId = 
   | 'alafasy' 

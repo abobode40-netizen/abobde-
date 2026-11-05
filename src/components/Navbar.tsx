@@ -116,6 +116,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab, onOpenS
                 </div>
               </button>
 
+              {/* باب القاعدة النورانية لتعليم القرآن */}
+              <button
+                onClick={() => handleSelectFromDoors('nooraniyah')}
+                className={`p-3.5 rounded-2xl text-right border transition-all flex flex-col justify-between min-h-[105px] col-span-2 bg-gradient-to-r from-amber-950/50 via-amber-900/40 to-sky-950/40 ${
+                  currentTab === 'nooraniyah'
+                    ? 'border-amber-400 ring-2 ring-amber-400/40'
+                    : 'border-sky-800/50 hover:border-amber-400'
+                }`}
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white shadow-sm">
+                    جديد • تعليم القراءة والمخارج
+                  </span>
+                  <div className="w-8 h-8 rounded-xl bg-amber-900/70 text-amber-300 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white mt-2">باب القاعدة النورانية الشاملة</h4>
+                  <p className="text-[10px] text-amber-200/90 line-clamp-1 mt-0.5">
+                    تعليم قراءة القرآن الكريم بالرسم العثماني والمخارج واللوحات المصورة المنهجية
+                  </p>
+                </div>
+              </button>
+
               {/* الأدعية المأثورة */}
               <button
                 onClick={() => handleSelectFromDoors('duas')}

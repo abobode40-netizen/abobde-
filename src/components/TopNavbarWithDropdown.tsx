@@ -138,9 +138,18 @@ export const TopNavbarWithDropdown: React.FC<TopNavbarWithDropdownProps> = ({
       id: 'tafseer_adawi',
       title: 'مختصر تفسير ابن كثير (الشيخ مصطفى العدوي)',
       subtitle: 'الصحيح المسند وتجريد التفسير من الإسرائيليات والفوائد التربوية',
-      badge: 'جديد • التفسير المصفى',
-      badgeColor: 'bg-amber-600',
+      badge: 'التفسير المصفى',
+      badgeColor: 'bg-emerald-600',
       icon: BookOpen,
+      accentColor: '#10B981'
+    },
+    {
+      id: 'nooraniyah',
+      title: 'القاعدة النورانية وتعليم القرآن',
+      subtitle: 'تعليم القراءة بالرسم العثماني والمخارج واللوحات المصورة',
+      badge: 'جديد مصوّر',
+      badgeColor: 'bg-amber-600',
+      icon: Sparkles,
       accentColor: '#F59E0B'
     },
     {

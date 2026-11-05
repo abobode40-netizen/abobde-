@@ -34,10 +34,10 @@ import { VoicePracticeModal } from './components/VoicePracticeModal';
 import { HomeButtonFloating } from './components/HomeButtonFloating';
 import { GlobalAudioPlayer } from './components/GlobalAudioPlayer';
 import { NetworkStatusBanner } from './components/NetworkStatusBanner';
-import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { TopNavbarWithDropdown } from './components/TopNavbarWithDropdown';
 import { GlobalPrayerAlertModal } from './components/GlobalPrayerAlertModal';
 import { TafseerAdawiView } from './components/TafseerAdawiView';
+import { NooraniyahView } from './components/NooraniyahView';
 
 export default function App() {
   // Always open on the main Home View upon opening the program as requested
@@ -159,9 +159,6 @@ export default function App() {
     <div className="min-h-screen islamic-bg-blue text-[#071f3d] dark:text-[#EAF1FA] transition-colors duration-300 flex flex-col font-cairo">
       {/* Network Offline / Online Notification Banner */}
       <NetworkStatusBanner />
-
-      {/* PWA Install Banner for instant offline access */}
-      <InstallPwaBanner />
 
       {/* Top Navbar with Doors Dropdown and Global Font Zoom Control */}
       {!(currentTab === 'quran' && isQuranFocusMode) && (
@@ -402,11 +399,28 @@ export default function App() {
               />
             </motion.div>
           )}
+
+          {currentTab === 'nooraniyah' && (
+            <motion.div
+              key="nooraniyah"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="w-full"
+            >
+              <NooraniyahView
+                onBackToHome={() => setCurrentTab('home')}
+                fontScale={settings.appFontScale || 100}
+                onChangeFontScale={handleUpdateFontScale}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       {/* Global Navigation Bar (shown on core tabs when not in focus mode) */}
-      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar', 'qibla', 'tafseer_adawi'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
+      {(['home', 'quran', 'athkar', 'tracker', 'duas', 'mishkat', 'thimar', 'qibla', 'tafseer_adawi', 'nooraniyah'].includes(currentTab) && !(currentTab === 'quran' && isQuranFocusMode)) && (
         <Navbar
           currentTab={currentTab}
           onSelectTab={(tab) => {

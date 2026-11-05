@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronDown,
   Sun,
@@ -20,18 +21,14 @@ import {
   RotateCcw,
   Search,
   Sparkles,
-  Layers,
   ArrowRight,
   Flame,
-  Info,
-  Volume2,
-  Pause
+  Info
 } from 'lucide-react';
 import { ATHKAR_CATEGORIES } from '../data/athkarData';
 import { toArabicNumerals } from '../data/quranData';
 import { AthkarCategory, ThikrItem } from '../types';
 import { playChime, triggerHaptic } from '../utils/audio';
-import { speakThikr, stopAthkarAudio } from '../utils/athkarAudio';
 
 interface HisnMuslimAccordionProps {
   athkarProgress: Record<string, number>;
@@ -59,46 +56,6 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilterCategory, setActiveFilterCategory] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  // Audio player state
-  const [playingThikrId, setPlayingThikrId] = useState<string | null>(null);
-  const [audioProgressPercent, setAudioProgressPercent] = useState<number>(0);
-
-  // Cleanup audio on unmount
-  React.useEffect(() => {
-    return () => {
-      stopAthkarAudio();
-    };
-  }, []);
-
-  const handlePlaySingleThikr = (thikrId: string, text: string, maxCount: number) => {
-    if (playingThikrId === thikrId) {
-      stopAthkarAudio();
-      setPlayingThikrId(null);
-      setAudioProgressPercent(0);
-      showToast('تم إيقاف الاستماع الصوتي');
-    } else {
-      setPlayingThikrId(thikrId);
-      setAudioProgressPercent(0);
-      triggerHaptic('light');
-
-      speakThikr(
-        thikrId,
-        text,
-        (id, percent) => {
-          setAudioProgressPercent(percent);
-        },
-        (id) => {
-          onIncrementThikr(id, maxCount);
-          setAudioProgressPercent(100);
-          setPlayingThikrId(null);
-        },
-        () => {
-          setPlayingThikrId(null);
-        }
-      );
-    }
-  };
 
   // Toggle category accordion
   const toggleCategory = (categoryId: string) => {
@@ -236,7 +193,7 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
   return (
     <div className="space-y-4">
       {/* Intro Header & Overall Progress Banner */}
-      <div className="p-4 rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#10335e] to-[#184882] text-white shadow-md border border-sky-400/30 relative overflow-hidden">
+      <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-[#0c2448] via-[#10335e] to-[#184882] text-white shadow-md border border-sky-400/30 relative overflow-hidden">
         <div className="absolute -left-6 -bottom-6 w-28 h-28 rounded-full bg-sky-400/15 pointer-events-none blur-sm" />
         <div className="flex items-center justify-between relative z-10">
           <div className="flex items-center gap-2.5">
@@ -278,13 +235,13 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
           <div className="flex items-center gap-1.5">
             <button
               onClick={handleExpandAll}
-              className="text-[11px] bg-white/10 hover:bg-white/20 text-sky-100 hover:text-white px-2.5 py-1 rounded-lg transition-all active:scale-95"
+              className="text-[11px] bg-white/10 hover:bg-white/20 text-sky-100 hover:text-white px-2.5 py-1 rounded-lg transition-all active:scale-95 cursor-pointer"
             >
               فتح الكل
             </button>
             <button
               onClick={handleCollapseAll}
-              className="text-[11px] bg-white/10 hover:bg-white/20 text-sky-100 hover:text-white px-2.5 py-1 rounded-lg transition-all active:scale-95"
+              className="text-[11px] bg-white/10 hover:bg-white/20 text-sky-100 hover:text-white px-2.5 py-1 rounded-lg transition-all active:scale-95 cursor-pointer"
             >
               طي الكل
             </button>
@@ -305,7 +262,7 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute left-3.5 top-3.5 text-xs text-slate-400 hover:text-slate-600 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full"
+            className="absolute left-3.5 top-3.5 text-xs text-slate-400 hover:text-slate-600 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full cursor-pointer"
           >
             مسح
           </button>
@@ -347,7 +304,7 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
       {/* Quick Electronic Sebha Banner */}
       <div 
         onClick={onOpenSebha}
-        className="p-3 rounded-2xl bg-gradient-to-r from-sky-500/10 via-blue-600/10 to-cyan-500/10 border border-sky-300/40 dark:border-sky-700/40 flex items-center justify-between cursor-pointer hover:border-sky-400 transition-all"
+        className="p-3.5 rounded-2xl bg-gradient-to-r from-sky-500/10 via-blue-600/10 to-cyan-500/10 border border-sky-300/40 dark:border-sky-700/40 flex items-center justify-between cursor-pointer hover:border-sky-400 transition-all"
       >
         <span className="text-xs font-bold text-sky-700 dark:text-sky-300 bg-white dark:bg-[#0A192F] px-2.5 py-1 rounded-lg shadow-xs border border-sky-200 dark:border-sky-800">
           مسبحة الأذكار
@@ -355,7 +312,7 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
         <div className="text-right flex items-center gap-2">
           <div>
             <span className="text-xs font-bold text-slate-900 dark:text-white block">المسبحة الإلكترونية الحرة</span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400">سبّح واستغفر بعداد حر وأصوات تسبيح هادئة</span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400">سبّح واستغفر بعداد حر وأصوات هادئة</span>
           </div>
           <div className="w-8 h-8 rounded-lg bg-[#0284C7] text-white flex items-center justify-center">
             <Flame className="w-4 h-4 text-sky-200" />
@@ -433,187 +390,162 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
                 </div>
               </button>
 
-              {/* Accordion Content Panel */}
-              {isOpen && (
-                <div className="px-3 sm:px-4 pb-4 pt-1 border-t border-slate-100 dark:border-slate-800 space-y-3 animate-fadeIn">
-                  {/* Category Action Bar */}
-                  <div className="flex items-center justify-between pt-2 pb-1 text-xs border-b border-slate-100 dark:border-slate-800">
-                    <button
-                      onClick={() => onResetCategory(category.id)}
-                      className="text-slate-500 hover:text-sky-600 dark:hover:text-sky-300 font-semibold flex items-center gap-1 cursor-pointer transition-colors"
-                      title="إعادة تصفير عداد أذكار هذا الباب"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span>إعادة العدادات</span>
-                    </button>
-
-                    <button
-                      onClick={() => onSelectCategoryForStream(category.id)}
-                      className="text-[#0284C7] dark:text-sky-300 font-bold flex items-center gap-1 hover:underline cursor-pointer"
-                    >
-                      <span>عرض في شاشة العداد التفاعلي</span>
-                      <ArrowRight className="w-3.5 h-3.5 rotate-180" />
-                    </button>
-                  </div>
-
-                  {/* List of Thikr Items inside Category */}
-                  <div className="space-y-3">
-                    {matchedItems.map((thikr, idx) => {
-                      const currentCount = athkarProgress[thikr.id] || 0;
-                      const isDone = currentCount >= thikr.repeatCount;
-
-                      return (
-                        <div
-                          key={thikr.id}
-                          className={`p-4 rounded-2xl border transition-all duration-200 text-right space-y-2.5 ${
-                            isDone
-                              ? 'bg-sky-50/70 dark:bg-[#0B213F] border-sky-300 dark:border-sky-700'
-                              : 'bg-white dark:bg-[#08182D] border-sky-100 dark:border-sky-900/50'
-                          }`}
+              {/* Accordion Content Panel with Smooth Animation */}
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-3 sm:px-4 pb-4 pt-1 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                      {/* Category Action Bar */}
+                      <div className="flex items-center justify-between pt-2 pb-1 text-xs border-b border-slate-100 dark:border-slate-800">
+                        <button
+                          onClick={() => onResetCategory(category.id)}
+                          className="text-slate-500 hover:text-sky-600 dark:hover:text-sky-300 font-semibold flex items-center gap-1 cursor-pointer transition-colors"
+                          title="إعادة تصفير عداد أذكار هذا الباب"
                         >
-                          {/* Item Meta & Actions Header */}
-                          <div className="flex items-center justify-between text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-800">
-                            {/* Action Buttons: Audio Listen, Copy, Share */}
-                            <div className="flex items-center gap-1">
-                              <button
-                                onClick={() => handlePlaySingleThikr(thikr.id, thikr.text, thikr.repeatCount)}
-                                className={`px-2 py-0.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all cursor-pointer active:scale-95 ${
-                                  playingThikrId === thikr.id
-                                    ? 'bg-amber-500 text-white ring-2 ring-amber-300 animate-pulse'
-                                    : 'bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-sky-300 hover:bg-sky-200'
-                                }`}
-                                title={playingThikrId === thikr.id ? 'إيقاف الصوت' : 'استمع لهذا الذكر بصوت خاشع هادئ (عربي فصيح)'}
-                              >
-                                {playingThikrId === thikr.id ? <Pause className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                                <span>{playingThikrId === thikr.id ? 'إيقاف' : 'استمع 🎧'}</span>
-                              </button>
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>إعادة العدادات</span>
+                        </button>
 
-                              <button
-                                onClick={() => handleCopy(thikr.text, thikr.id)}
-                                className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
-                                title="نسخ الذكر"
-                              >
-                                {copiedId === thikr.id ? (
-                                  <Check className="w-3.5 h-3.5 text-sky-600" />
-                                ) : (
-                                  <Copy className="w-3.5 h-3.5" />
-                                )}
-                              </button>
+                        <button
+                          onClick={() => onSelectCategoryForStream(category.id)}
+                          className="text-[#0284C7] dark:text-sky-300 font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                        >
+                          <span>عرض في شاشة العداد التفاعلي</span>
+                          <ArrowRight className="w-3.5 h-3.5 rotate-180" />
+                        </button>
+                      </div>
 
-                              <button
-                                onClick={() => handleShare(thikr.text, thikr.source)}
-                                className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
-                                title="مشاركة الذكر"
-                              >
-                                <Share2 className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
+                      {/* List of Thikr Items inside Category */}
+                      <div className="space-y-3">
+                        {matchedItems.map((thikr, idx) => {
+                          const currentCount = athkarProgress[thikr.id] || 0;
+                          const isDone = currentCount >= thikr.repeatCount;
 
-                            {/* Number in category + Status */}
-                            <div className="flex items-center gap-2">
-                              {isDone && (
-                                <span className="bg-sky-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                                  <Check className="w-3 h-3" />
-                                  <span>مكتمل</span>
-                                </span>
-                              )}
-                              <span className="font-bold text-xs text-sky-700 dark:text-sky-300">
-                                التكرار: {toArabicNumerals(thikr.repeatCount)} {thikr.repeatCount === 1 ? 'مرة' : 'مرات'}
-                              </span>
-                              <span className="w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] font-bold">
-                                {toArabicNumerals(idx + 1)}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Main Thikr Text */}
-                          <p className="font-amiri text-base sm:text-lg leading-relaxed text-slate-900 dark:text-sky-50 select-text">
-                            {thikr.text}
-                          </p>
-
-                          {/* Progress Indicators: Repetitions & Live Speech Audio */}
-                          <div className="space-y-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
-                            <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                              <span>
-                                {playingThikrId === thikr.id ? (
-                                  <span className="text-amber-600 dark:text-amber-300 font-bold flex items-center gap-1 animate-pulse">
-                                    <Volume2 className="w-3 h-3 text-amber-500 inline" />
-                                    <span>تلاوة خاشعة ({toArabicNumerals(audioProgressPercent)}%)</span>
-                                  </span>
-                                ) : (
-                                  <span>الإنجاز: {toArabicNumerals(Math.round((currentCount / thikr.repeatCount) * 100))}%</span>
-                                )}
-                              </span>
-                              <span>
-                                {toArabicNumerals(currentCount)}/{toArabicNumerals(thikr.repeatCount)}
-                              </span>
-                            </div>
-
-                            {/* Repetition Completion Progress Bar */}
-                            <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
-                              <div
-                                className={`h-full rounded-full transition-all duration-300 ${
-                                  isDone ? 'bg-sky-600' : 'bg-gradient-to-r from-sky-400 to-[#0284C7]'
-                                }`}
-                                style={{ width: `${Math.min(100, (currentCount / thikr.repeatCount) * 100)}%` }}
-                              />
-                            </div>
-
-                            {/* Live Speech Audio Progress Bar (Active when audio is playing for this thikr) */}
-                            {playingThikrId === thikr.id && (
-                              <div className="w-full bg-amber-100 dark:bg-amber-950/60 h-1 rounded-full overflow-hidden">
-                                <div
-                                  className="h-full bg-amber-500 rounded-full transition-all duration-150"
-                                  style={{ width: `${audioProgressPercent}%` }}
-                                />
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Fadl / Virtue Box */}
-                          {thikr.fadl && (
-                            <div className="p-2.5 rounded-xl bg-sky-50/50 dark:bg-[#061224] border border-sky-100 dark:border-sky-900/60 text-xs space-y-1">
-                              <div className="flex items-center gap-1 font-bold text-sky-700 dark:text-sky-300 text-[11px]">
-                                <Info className="w-3 h-3" />
-                                <span>الفضل والأثر:</span>
-                              </div>
-                              <p className="text-slate-600 dark:text-slate-300 leading-normal text-[11px]">
-                                {thikr.fadl}
-                              </p>
-                              {thikr.source && (
-                                <span className="block text-[10px] text-slate-400 dark:text-slate-500 font-medium pt-0.5">
-                                  المصدر: {thikr.source}
-                                </span>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Interactive Tap Counter */}
-                          <div className="pt-1 flex items-center justify-between">
-                            <span className="text-[11px] text-slate-500 font-medium">
-                              المتبقي: {toArabicNumerals(Math.max(0, thikr.repeatCount - currentCount))}
-                            </span>
-
-                            <button
-                              onClick={() => onIncrementThikr(thikr.id, thikr.repeatCount)}
-                              className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-xs cursor-pointer ${
+                          return (
+                            <div
+                              key={thikr.id}
+                              className={`p-4 rounded-2xl border transition-all duration-200 text-right space-y-2.5 ${
                                 isDone
-                                  ? 'bg-sky-700 text-white cursor-default'
-                                  : 'bg-[#0284C7] hover:bg-sky-500 text-white'
+                                  ? 'bg-sky-50/70 dark:bg-[#0B213F] border-sky-300 dark:border-sky-700'
+                                  : 'bg-white dark:bg-[#08182D] border-sky-100 dark:border-sky-900/50'
                               }`}
                             >
-                              <span>{isDone ? 'تم بحمد الله' : 'سبّح / اذكر'}</span>
-                              <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
-                                {toArabicNumerals(currentCount)}/{toArabicNumerals(thikr.repeatCount)}
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                              {/* Item Meta & Actions Header */}
+                              <div className="flex items-center justify-between text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-800">
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={() => handleCopy(thikr.text, thikr.id)}
+                                    className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
+                                    title="نسخ الذكر"
+                                  >
+                                    {copiedId === thikr.id ? (
+                                      <Check className="w-3.5 h-3.5 text-sky-600" />
+                                    ) : (
+                                      <Copy className="w-3.5 h-3.5" />
+                                    )}
+                                  </button>
+
+                                  <button
+                                    onClick={() => handleShare(thikr.text, thikr.source)}
+                                    className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
+                                    title="مشاركة الذكر"
+                                  >
+                                    <Share2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  {isDone && (
+                                    <span className="bg-sky-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                      <Check className="w-3 h-3" />
+                                      <span>مكتمل</span>
+                                    </span>
+                                  )}
+                                  <span className="font-bold text-xs text-sky-700 dark:text-sky-300">
+                                    التكرار: {toArabicNumerals(thikr.repeatCount)} {thikr.repeatCount === 1 ? 'مرة' : 'مرات'}
+                                  </span>
+                                  <span className="w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] font-bold">
+                                    {toArabicNumerals(idx + 1)}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Main Thikr Text */}
+                              <p className="font-amiri text-base sm:text-lg leading-relaxed text-slate-900 dark:text-sky-50 select-text">
+                                {thikr.text}
+                              </p>
+
+                              {/* Progress Indicators */}
+                              <div className="space-y-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                                <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-slate-400">
+                                  <span>الإنجاز: {toArabicNumerals(Math.round((currentCount / thikr.repeatCount) * 100))}%</span>
+                                  <span>
+                                    {toArabicNumerals(currentCount)}/{toArabicNumerals(thikr.repeatCount)}
+                                  </span>
+                                </div>
+
+                                <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
+                                  <div
+                                    className={`h-full rounded-full transition-all duration-300 ${
+                                      isDone ? 'bg-sky-600' : 'bg-gradient-to-r from-sky-400 to-[#0284C7]'
+                                    }`}
+                                    style={{ width: `${Math.min(100, (currentCount / thikr.repeatCount) * 100)}%` }}
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Fadl / Virtue Box */}
+                              {thikr.fadl && (
+                                <div className="p-2.5 rounded-xl bg-sky-50/50 dark:bg-[#061224] border border-sky-100 dark:border-sky-900/60 text-xs space-y-1">
+                                  <div className="flex items-center gap-1 font-bold text-sky-700 dark:text-sky-300 text-[11px]">
+                                    <Info className="w-3 h-3" />
+                                    <span>الفضل والأثر:</span>
+                                  </div>
+                                  <p className="text-slate-600 dark:text-slate-300 leading-normal text-[11px]">
+                                    {thikr.fadl}
+                                  </p>
+                                  {thikr.source && (
+                                    <span className="block text-[10px] text-slate-400 dark:text-slate-500 font-medium pt-0.5">
+                                      المصدر: {thikr.source}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* Interactive Tap Counter */}
+                              <div className="pt-1 flex items-center justify-between">
+                                <span className="text-[11px] text-slate-500 font-medium">
+                                  المتبقي: {toArabicNumerals(Math.max(0, thikr.repeatCount - currentCount))}
+                                </span>
+
+                                <button
+                                  onClick={() => onIncrementThikr(thikr.id, thikr.repeatCount)}
+                                  className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-xs cursor-pointer ${
+                                    isDone
+                                      ? 'bg-sky-700 text-white cursor-default'
+                                      : 'bg-[#0284C7] hover:bg-sky-500 text-white'
+                                  }`}
+                                >
+                                  <span>{isDone ? 'تم بحمد الله' : 'سبّح / اذكر'}</span>
+                                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
+                                    {toArabicNumerals(currentCount)}/{toArabicNumerals(thikr.repeatCount)}
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           );
         })}
