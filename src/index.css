@@ -10,16 +10,16 @@
 
   body {
     font-family: var(--font-cairo);
-    background-color: #f7f4ec;
-    color: #042e22;
+    background-color: #e0f2fe;
+    color: #022c43;
     user-select: text;
     -webkit-tap-highlight-color: transparent;
     font-size: calc(1rem * var(--app-font-scale));
   }
 
   .dark body {
-    background-color: #041913;
-    color: #f2f7f5;
+    background-color: #0b223d;
+    color: #f8fafc;
   }
 
   /* Font scale modifications across the DOM */
@@ -69,59 +69,62 @@
   font-size: calc(1.25em * var(--app-font-scale));
 }
 
-/* Custom smooth scrollbar with spiritual sapphire tone */
+/* Custom smooth scrollbar with spiritual luminous sky blue tone */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(14, 43, 78, 0.08);
+  background: rgba(2, 132, 199, 0.08);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(30, 95, 160, 0.35);
+  background: rgba(2, 132, 199, 0.4);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(14, 116, 186, 0.6);
+  background: rgba(2, 132, 199, 0.75);
 }
 
-/* Islamic Geometric & Border Accents with Royal Gold & Sapphire */
+/* Islamic Geometric & Border Accents with Sky Blue & Royal Gold */
 .islamic-border {
-  border: 1.5px solid rgba(202, 138, 4, 0.45);
-  box-shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.1);
+  border: 1.5px solid rgba(2, 132, 199, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.12);
 }
 
 .islamic-blue-gradient {
-  background: linear-gradient(135deg, #f0f7fe 0%, #e1effd 50%, #d4e7fb 100%);
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
 }
 
 .dark .islamic-blue-gradient {
-  background: linear-gradient(135deg, #091a30 0%, #0d294d 50%, #153c6c 100%);
+  background: linear-gradient(135deg, #0c2a4a 0%, #071e36 50%, #031427 100%);
 }
 
-/* High-Contrast Islamic Sapphire Card (بطاقة الياقوت الإسلامي عالية التباين والوضوح) */
-.islamic-sapphire-card {
-  background: linear-gradient(155deg, #ffffff 0%, #f6faff 60%, #eaf3fc 100%);
-  border: 1.5px solid #b3d4f5;
-  box-shadow: 0 8px 24px -4px rgba(12, 40, 75, 0.08), 0 2px 6px -1px rgba(12, 40, 75, 0.04);
-  color: #071f3d;
+/* High-Contrast Luminous Sky Blue Islamic Card (بطاقة الأزرق الفاتح والواضح عالي التباين) */
+.islamic-sapphire-card,
+.islamic-emerald-card {
+  background: linear-gradient(155deg, #ffffff 0%, #f0f9ff 55%, #e0f2fe 100%);
+  border: 1.5px solid #7dd3fc;
+  box-shadow: 0 8px 24px -4px rgba(2, 132, 199, 0.12), 0 2px 6px -1px rgba(2, 132, 199, 0.06);
+  color: #022c43;
   position: relative;
   transition: all 0.25s ease-in-out;
 }
 
-.islamic-sapphire-card:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 12px 28px -4px rgba(12, 40, 75, 0.14), 0 4px 12px -1px rgba(56, 189, 248, 0.2);
+.islamic-sapphire-card:hover,
+.islamic-emerald-card:hover {
+  border-color: #0284c7;
+  box-shadow: 0 12px 28px -4px rgba(2, 132, 199, 0.2), 0 4px 12px -1px rgba(56, 189, 248, 0.25);
 }
 
-.dark .islamic-sapphire-card {
-  background: linear-gradient(155deg, #0e2648 0%, #08172c 100%);
-  border: 1.5px solid rgba(56, 189, 248, 0.45);
+.dark .islamic-sapphire-card,
+.dark .islamic-emerald-card {
+  background: linear-gradient(155deg, #0e2a4a 0%, #091e36 100%);
+  border: 1.5px solid rgba(56, 189, 248, 0.5);
   box-shadow: 0 10px 28px -4px rgba(2, 8, 18, 0.65), 0 2px 8px -1px rgba(0, 0, 0, 0.4);
   color: #F8FAFC;
 }
 
-/* Crystal-Clear Arabic Headings inside Sapphire Cards */
+/* Crystal-Clear Arabic Headings inside Cards */
 .islamic-sapphire-card h1,
 .islamic-sapphire-card h2,
 .islamic-sapphire-card h3,
@@ -129,8 +132,14 @@
 .islamic-sapphire-card h5,
 .islamic-sapphire-card h6,
 .islamic-sapphire-card .card-title,
-.islamic-sapphire-card .heading-highlight {
-  color: #071f3d !important;
+.islamic-sapphire-card .heading-highlight,
+.islamic-emerald-card h1,
+.islamic-emerald-card h2,
+.islamic-emerald-card h3,
+.islamic-emerald-card h4,
+.islamic-emerald-card h5,
+.islamic-emerald-card h6 {
+  color: #022c43 !important;
   font-weight: 800;
   letter-spacing: -0.01em;
   line-height: 1.45;
@@ -143,7 +152,13 @@
 .dark .islamic-sapphire-card h5,
 .dark .islamic-sapphire-card h6,
 .dark .islamic-sapphire-card .card-title,
-.dark .islamic-sapphire-card .heading-highlight {
+.dark .islamic-sapphire-card .heading-highlight,
+.dark .islamic-emerald-card h1,
+.dark .islamic-emerald-card h2,
+.dark .islamic-emerald-card h3,
+.dark .islamic-emerald-card h4,
+.dark .islamic-emerald-card h5,
+.dark .islamic-emerald-card h6 {
   color: #FFFFFF !important;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -153,39 +168,45 @@
 
 /* High-Contrast Secondary Text and Paragraphs */
 .islamic-sapphire-card p,
-.islamic-sapphire-card .card-body {
-  color: #173b64;
+.islamic-sapphire-card .card-body,
+.islamic-emerald-card p {
+  color: #03456c;
   line-height: 1.75;
 }
 
 .dark .islamic-sapphire-card p,
-.dark .islamic-sapphire-card .card-body {
+.dark .islamic-sapphire-card .card-body,
+.dark .islamic-emerald-card p {
   color: #E2E8F0;
   line-height: 1.75;
 }
 
 /* Clear High-Contrast Subtitles and Metadata */
 .islamic-sapphire-card .card-subtitle,
-.islamic-sapphire-card .card-meta {
+.islamic-sapphire-card .card-meta,
+.islamic-emerald-card .card-subtitle {
   color: #0284c7 !important;
   font-weight: 700;
 }
 
 .dark .islamic-sapphire-card .card-subtitle,
-.dark .islamic-sapphire-card .card-meta {
-  color: #93C5FD !important;
+.dark .islamic-sapphire-card .card-meta,
+.dark .islamic-emerald-card .card-subtitle {
+  color: #7dd3fc !important;
   font-weight: 600;
 }
 
-/* Golden Accents inside Sapphire Cards */
+/* Golden Accents inside Cards */
 .islamic-sapphire-card .text-gold,
-.islamic-sapphire-card .badge-gold {
+.islamic-sapphire-card .badge-gold,
+.islamic-emerald-card .text-gold {
   color: #b45309 !important;
   font-weight: 700;
 }
 
 .dark .islamic-sapphire-card .text-gold,
-.dark .islamic-sapphire-card .badge-gold {
+.dark .islamic-sapphire-card .badge-gold,
+.dark .islamic-emerald-card .text-gold {
   color: #FDE047 !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
@@ -194,62 +215,62 @@
   background: linear-gradient(135deg, #d4af37 0%, #e5c158 50%, #c19e2b 100%);
 }
 
-/* Spiritual Emerald, Ivory Parchment & Gold Islamic Background (خلفية الروضة الإسلامية المباركة) */
+/* Luminous Sky Blue Islamic Background System (خلفية الأزرق الفاتح والواضح المشرقة) */
 .islamic-blue-pattern,
 .islamic-bg-blue,
 .islamic-sanctuary-bg {
-  background-color: #f7f4ec;
+  background-color: #e0f2fe;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(253, 230, 138, 0.55) 0%, transparent 60%),
-    linear-gradient(175deg, #f8f5ee 0%, #f0ebd9 50%, #e8e0cc 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23b45309' stroke-width='0.85' stroke-opacity='0.16'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z'/%3E%3Cpolygon points='40,16 47,33 64,40 47,47 40,64 33,47 16,40 33,33'/%3E%3Ccircle cx='40' cy='40' r='24'/%3E%3Cpath d='M40 0 L40 80 M0 40 L80 40'/%3E%3Cpath d='M12 12 L68 68 M12 68 L68 12'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.35) 0%, transparent 65%),
+    linear-gradient(175deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%230284c7' stroke-width='0.85' stroke-opacity='0.15'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z'/%3E%3Cpolygon points='40,16 47,33 64,40 47,47 40,64 33,47 16,40 33,33'/%3E%3Ccircle cx='40' cy='40' r='24'/%3E%3Cpath d='M40 0 L40 80 M0 40 L80 40'/%3E%3Cpath d='M12 12 L68 68 M12 68 L68 12'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
 }
 
 .dark .islamic-blue-pattern,
 .dark .islamic-bg-blue,
 .dark .islamic-sanctuary-bg {
-  background-color: #041913;
+  background-color: #081d36;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.25) 0%, transparent 70%),
-    linear-gradient(175deg, #06261d 0%, #041a13 50%, #02100b 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23fde047' stroke-width='0.8' stroke-opacity='0.15'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z'/%3E%3Cpolygon points='40,16 47,33 64,40 47,47 40,64 33,47 16,40 33,33'/%3E%3Ccircle cx='40' cy='40' r='24'/%3E%3Cpath d='M40 0 L40 80 M0 40 L80 40'/%3E%3Cpath d='M12 12 L68 68 M12 68 L68 12'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.3) 0%, transparent 70%),
+    linear-gradient(175deg, #0e2a4a 0%, #081d36 50%, #041224 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.8' stroke-opacity='0.18'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z'/%3E%3Cpolygon points='40,16 47,33 64,40 47,47 40,64 33,47 16,40 33,33'/%3E%3Ccircle cx='40' cy='40' r='24'/%3E%3Cpath d='M40 0 L40 80 M0 40 L80 40'/%3E%3Cpath d='M12 12 L68 68 M12 68 L68 12'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
 }
 
 /* Islamic Arabesque Subtle Watermark for Headers and Cards */
 .arabesque-watermark {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 25 75 40 100 50 C75 60 60 75 50 100 C40 75 25 60 0 50 C25 40 40 25 50 0 Z' fill='none' stroke='%23b45309' stroke-width='1' stroke-opacity='0.12'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 25 75 40 100 50 C75 60 60 75 50 100 C40 75 25 60 0 50 C25 40 40 25 50 0 Z' fill='none' stroke='%230284c7' stroke-width='1' stroke-opacity='0.12'/%3E%3C/svg%3E");
   background-position: center;
 }
 
-/* Light theme with rich parchment & emerald contrast */
+/* Bright Light Sky Blue Theme */
 .light-blue-theme {
-  background-color: #f7f4ec;
-  color: #042e22;
+  background-color: #e0f2fe;
+  color: #022c43;
 }
 
 .quran-page-bg {
-  background-color: #FFFDF7;
-  background-image: radial-gradient(#E8DFC8 0.75px, transparent 0.75px);
+  background-color: #f8fafc;
+  background-image: radial-gradient(#bae6fd 0.85px, transparent 0.85px);
   background-size: 16px 16px;
 }
 
 .dark .quran-page-bg {
-  background-color: #0b1a2d;
-  background-image: radial-gradient(#1e385c 0.75px, transparent 0.75px);
+  background-color: #081d36;
+  background-image: radial-gradient(#1d4ed8 0.85px, transparent 0.85px);
 }
 
-/* Eye Comfort / Sepia Warm Tone for Quranic Pages */
+/* Eye Comfort / Warm Sky Tone for Quranic Pages */
 .quran-page-sepia {
-  background-color: #F7EEDB !important;
-  background-image: radial-gradient(#D6C6A5 0.85px, transparent 0.85px) !important;
+  background-color: #f0f9ff !important;
+  background-image: radial-gradient(#7dd3fc 0.85px, transparent 0.85px) !important;
   background-size: 16px 16px;
-  color: #2D2319 !important;
+  color: #022c43 !important;
 }
 
 .dark .quran-page-sepia {
-  background-color: #172435 !important;
-  background-image: radial-gradient(#264060 0.85px, transparent 0.85px) !important;
-  color: #E6F0FA !important;
+  background-color: #0f2c4e !important;
+  background-image: radial-gradient(#0284c7 0.85px, transparent 0.85px) !important;
+  color: #F8FAFC !important;
 }

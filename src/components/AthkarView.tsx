@@ -10,11 +10,17 @@ import {
   Sparkles,
   Layers,
   BookOpen,
-  Download
+  Download,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  Headphones
 } from 'lucide-react';
 import { ATHKAR_CATEGORIES } from '../data/athkarData';
 import { toArabicNumerals } from '../data/quranData';
 import { playChime, triggerHaptic } from '../utils/audio';
+import { speakThikr, stopAthkarAudio } from '../utils/athkarAudio';
 import { HisnMuslimAccordion } from './HisnMuslimAccordion';
 import { DoorActionBar } from './DoorActionBar';
 import { UniversalExportModal } from './UniversalExportModal';
@@ -39,8 +45,99 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [athkarProgress, setAthkarProgress] = useState<Record<string, number>>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isExportOpen, setIsExportOpen] = useState(false);
+
+  // Audio player state
+  const [playingThikrId, setPlayingThikrId] = useState<string | null>(null);
+  const [audioProgressPercent, setAudioProgressPercent] = useState<number>(0);
+  const [isPlaylistActive, setIsPlaylistActive] = useState<boolean>(false);
+
+  // Stop active audio on unmount or category switch
+  React.useEffect(() => {
+    return () => {
+      stopAthkarAudio();
+      setPlayingThikrId(null);
+      setIsPlaylistActive(false);
+    };
+  }, [selectedCategory]);
+
+  const handlePlaySingleThikr = (thikrId: string, text: string, maxCount: number) => {
+    if (playingThikrId === thikrId) {
+      stopAthkarAudio();
+      setPlayingThikrId(null);
+      setAudioProgressPercent(0);
+      setIsPlaylistActive(false);
+      showToast('تم إيقاف الاستماع الصوتي');
+    } else {
+      setIsPlaylistActive(false);
+      playThikrAudio(thikrId, text, maxCount, false);
+    }
+  };
+
+  const playThikrAudio = (thikrId: string, text: string, maxCount: number, isPlaylistMode: boolean = false) => {
+    setPlayingThikrId(thikrId);
+    setAudioProgressPercent(0);
+    triggerHaptic('light');
+
+    speakThikr(
+      thikrId,
+      text,
+      (id, percent) => {
+        setAudioProgressPercent(percent);
+      },
+      (id) => {
+        // Auto increment counter on audio completion
+        handleIncrement(id, maxCount);
+        setAudioProgressPercent(100);
+
+        if (isPlaylistMode) {
+          const currentIndex = itemsToDisplay.findIndex(i => i.id === id);
+          if (currentIndex >= 0 && currentIndex < itemsToDisplay.length - 1) {
+            const nextThikr = itemsToDisplay[currentIndex + 1];
+            const nextEl = document.getElementById(`thikr-card-${nextThikr.id}`);
+            if (nextEl) {
+              nextEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            setTimeout(() => {
+              playThikrAudio(nextThikr.id, nextThikr.text, nextThikr.repeatCount, true);
+            }, 600);
+          } else {
+            setPlayingThikrId(null);
+            setIsPlaylistActive(false);
+            showToast('تمت تلاوة جميع أذكار الفئة بحمد الله ✨');
+            playChime('milestone');
+          }
+        } else {
+          setPlayingThikrId(null);
+        }
+      },
+      () => {
+        setPlayingThikrId(null);
+        setIsPlaylistActive(false);
+      }
+    );
+  };
+
+  const handleToggleFullPlaylist = () => {
+    if (isPlaylistActive || playingThikrId) {
+      stopAthkarAudio();
+      setPlayingThikrId(null);
+      setIsPlaylistActive(false);
+      setAudioProgressPercent(0);
+      showToast('تم إيقاف التلاوة الصوتية');
+    } else {
+      if (itemsToDisplay.length > 0) {
+        setIsPlaylistActive(true);
+        const first = itemsToDisplay[0];
+        const el = document.getElementById(`thikr-card-${first.id}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        playThikrAudio(first.id, first.text, first.repeatCount, true);
+        showToast(`بدأت التلاوة الصوتية لأذكار: ${activeCategory.title} 🎧`);
+      }
+    }
+  };
 
   // Swipe handling
   const touchStartXRef = useRef<number | null>(null);
@@ -242,20 +339,35 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
               </div>
             </div>
 
-            {/* Category progress bar */}
+            {/* Category progress bar & Global Audio Playlist Button */}
             {!searchQuery && (
               <div className="mt-4 pt-3 border-t border-sky-500/20 flex items-center justify-between gap-2 text-xs flex-wrap">
                 <button
-                  onClick={() => handleResetCategory(activeCategory.id)}
-                  className="text-sky-200 hover:text-white font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                  onClick={handleToggleFullPlaylist}
+                  className={`px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer ${
+                    isPlaylistActive
+                      ? 'bg-amber-400 text-amber-950 ring-2 ring-amber-300 animate-pulse'
+                      : 'bg-white/15 hover:bg-white/25 text-white border border-white/20'
+                  }`}
+                  title="تشغيل التلاوة الصوتية الخاشعة لجميع أذكار هذه الفئة باللغة العربية الفصحى"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>إعادة البدء</span>
+                  <Volume2 className={`w-4 h-4 ${isPlaylistActive ? 'animate-bounce text-amber-950' : 'text-sky-300'}`} />
+                  <span>{isPlaylistActive ? 'إيقاف التلاوة الصوتي' : 'استمع لأذكار الفئة كاملة 🎧'}</span>
                 </button>
 
-                <span className="font-bold text-sky-100">
-                  أتممت {toArabicNumerals(completedCount)} من {toArabicNumerals(activeCategory.items.length)} أذكار
-                </span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleResetCategory(activeCategory.id)}
+                    className="text-sky-200 hover:text-white font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>إعادة البدء</span>
+                  </button>
+
+                  <span className="font-bold text-sky-100">
+                    أتممت {toArabicNumerals(completedCount)} من {toArabicNumerals(activeCategory.items.length)} أذكار
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -324,21 +436,37 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
             {itemsToDisplay.map((thikr) => {
               const currentCount = athkarProgress[thikr.id] || 0;
               const isDone = currentCount >= thikr.repeatCount;
+              const isThisAudioPlaying = playingThikrId === thikr.id;
 
               return (
                 <div
                   id={`thikr-card-${thikr.id}`}
                   key={thikr.id}
                   className={`p-5 rounded-2xl border transition-all duration-300 relative ${
-                    isDone
+                    isThisAudioPlaying
+                      ? 'bg-amber-50/80 dark:bg-[#1A2C3D] border-amber-400 ring-2 ring-amber-300/40'
+                      : isDone
                       ? 'bg-sky-50/70 dark:bg-[#0B213F] border-sky-300 dark:border-sky-700'
                       : 'bg-white dark:bg-[#0A192F] border-sky-100 dark:border-sky-950'
                   } shadow-sm space-y-3 text-right`}
                 >
                   {/* Top Meta Info */}
                   <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100 dark:border-slate-800">
-                    {/* Actions */}
+                    {/* Actions: Audio Listen, Copy, Share */}
                     <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handlePlaySingleThikr(thikr.id, thikr.text, thikr.repeatCount)}
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95 ${
+                          isThisAudioPlaying
+                            ? 'bg-amber-500 text-white ring-2 ring-amber-300 animate-pulse'
+                            : 'bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-sky-300 hover:bg-sky-200'
+                        }`}
+                        title={isThisAudioPlaying ? 'إيقاف الاستماع الصوتي' : 'استمع لهذا الذكر بصوت خاشع هادئ (عربي فصيح)'}
+                      >
+                        {isThisAudioPlaying ? <Pause className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                        <span>{isThisAudioPlaying ? 'إيقاف' : 'استمع 🎧'}</span>
+                      </button>
+
                       <button
                         onClick={() => handleCopy(thikr.text, thikr.id)}
                         className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
@@ -372,6 +500,45 @@ export const AthkarView: React.FC<AthkarViewProps> = ({
                   <p className="font-amiri text-lg sm:text-xl leading-relaxed text-slate-900 dark:text-sky-50">
                     {thikr.text}
                   </p>
+
+                  {/* Progress Indicators: Repetitions & Live Speech Audio */}
+                  <div className="space-y-1.5 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                      <span>
+                        {isThisAudioPlaying ? (
+                          <span className="text-amber-600 dark:text-amber-300 font-bold flex items-center gap-1 animate-pulse">
+                            <Volume2 className="w-3.5 h-3.5 text-amber-500 inline" />
+                            <span>جارٍ التلاوة الخاشعة ({toArabicNumerals(audioProgressPercent)}%)</span>
+                          </span>
+                        ) : (
+                          <span>تقدم التكرار: {toArabicNumerals(Math.round((currentCount / thikr.repeatCount) * 100))}%</span>
+                        )}
+                      </span>
+                      <span>
+                        {toArabicNumerals(currentCount)} من {toArabicNumerals(thikr.repeatCount)}
+                      </span>
+                    </div>
+
+                    {/* Repetition Completion Progress Bar */}
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
+                      <div
+                        className={`h-full rounded-full transition-all duration-300 ${
+                          isDone ? 'bg-sky-600' : 'bg-gradient-to-r from-sky-400 to-[#0284C7]'
+                        }`}
+                        style={{ width: `${Math.min(100, (currentCount / thikr.repeatCount) * 100)}%` }}
+                      />
+                    </div>
+
+                    {/* Live Speech Audio Progress Bar (Shows when playing audio for this card) */}
+                    {isThisAudioPlaying && (
+                      <div className="w-full bg-amber-100 dark:bg-amber-950/60 h-1.5 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-amber-500 rounded-full transition-all duration-150"
+                          style={{ width: `${audioProgressPercent}%` }}
+                        />
+                      </div>
+                    )}
+                  </div>
 
                   {/* Virtue / Fadl and Source */}
                   {thikr.fadl && (

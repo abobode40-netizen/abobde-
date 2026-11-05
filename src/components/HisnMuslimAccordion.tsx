@@ -23,12 +23,15 @@ import {
   Layers,
   ArrowRight,
   Flame,
-  Info
+  Info,
+  Volume2,
+  Pause
 } from 'lucide-react';
 import { ATHKAR_CATEGORIES } from '../data/athkarData';
 import { toArabicNumerals } from '../data/quranData';
 import { AthkarCategory, ThikrItem } from '../types';
 import { playChime, triggerHaptic } from '../utils/audio';
+import { speakThikr, stopAthkarAudio } from '../utils/athkarAudio';
 
 interface HisnMuslimAccordionProps {
   athkarProgress: Record<string, number>;
@@ -56,6 +59,46 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilterCategory, setActiveFilterCategory] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Audio player state
+  const [playingThikrId, setPlayingThikrId] = useState<string | null>(null);
+  const [audioProgressPercent, setAudioProgressPercent] = useState<number>(0);
+
+  // Cleanup audio on unmount
+  React.useEffect(() => {
+    return () => {
+      stopAthkarAudio();
+    };
+  }, []);
+
+  const handlePlaySingleThikr = (thikrId: string, text: string, maxCount: number) => {
+    if (playingThikrId === thikrId) {
+      stopAthkarAudio();
+      setPlayingThikrId(null);
+      setAudioProgressPercent(0);
+      showToast('تم إيقاف الاستماع الصوتي');
+    } else {
+      setPlayingThikrId(thikrId);
+      setAudioProgressPercent(0);
+      triggerHaptic('light');
+
+      speakThikr(
+        thikrId,
+        text,
+        (id, percent) => {
+          setAudioProgressPercent(percent);
+        },
+        (id) => {
+          onIncrementThikr(id, maxCount);
+          setAudioProgressPercent(100);
+          setPlayingThikrId(null);
+        },
+        () => {
+          setPlayingThikrId(null);
+        }
+      );
+    }
+  };
 
   // Toggle category accordion
   const toggleCategory = (categoryId: string) => {
@@ -430,8 +473,21 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
                         >
                           {/* Item Meta & Actions Header */}
                           <div className="flex items-center justify-between text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-800">
-                            {/* Action Buttons: Copy, Share */}
+                            {/* Action Buttons: Audio Listen, Copy, Share */}
                             <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handlePlaySingleThikr(thikr.id, thikr.text, thikr.repeatCount)}
+                                className={`px-2 py-0.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all cursor-pointer active:scale-95 ${
+                                  playingThikrId === thikr.id
+                                    ? 'bg-amber-500 text-white ring-2 ring-amber-300 animate-pulse'
+                                    : 'bg-sky-100 dark:bg-sky-950 text-[#0284C7] dark:text-sky-300 hover:bg-sky-200'
+                                }`}
+                                title={playingThikrId === thikr.id ? 'إيقاف الصوت' : 'استمع لهذا الذكر بصوت خاشع هادئ (عربي فصيح)'}
+                              >
+                                {playingThikrId === thikr.id ? <Pause className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                                <span>{playingThikrId === thikr.id ? 'إيقاف' : 'استمع 🎧'}</span>
+                              </button>
+
                               <button
                                 onClick={() => handleCopy(thikr.text, thikr.id)}
                                 className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
@@ -474,6 +530,45 @@ export const HisnMuslimAccordion: React.FC<HisnMuslimAccordionProps> = ({
                           <p className="font-amiri text-base sm:text-lg leading-relaxed text-slate-900 dark:text-sky-50 select-text">
                             {thikr.text}
                           </p>
+
+                          {/* Progress Indicators: Repetitions & Live Speech Audio */}
+                          <div className="space-y-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                            <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-slate-400">
+                              <span>
+                                {playingThikrId === thikr.id ? (
+                                  <span className="text-amber-600 dark:text-amber-300 font-bold flex items-center gap-1 animate-pulse">
+                                    <Volume2 className="w-3 h-3 text-amber-500 inline" />
+                                    <span>تلاوة خاشعة ({toArabicNumerals(audioProgressPercent)}%)</span>
+                                  </span>
+                                ) : (
+                                  <span>الإنجاز: {toArabicNumerals(Math.round((currentCount / thikr.repeatCount) * 100))}%</span>
+                                )}
+                              </span>
+                              <span>
+                                {toArabicNumerals(currentCount)}/{toArabicNumerals(thikr.repeatCount)}
+                              </span>
+                            </div>
+
+                            {/* Repetition Completion Progress Bar */}
+                            <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
+                              <div
+                                className={`h-full rounded-full transition-all duration-300 ${
+                                  isDone ? 'bg-sky-600' : 'bg-gradient-to-r from-sky-400 to-[#0284C7]'
+                                }`}
+                                style={{ width: `${Math.min(100, (currentCount / thikr.repeatCount) * 100)}%` }}
+                              />
+                            </div>
+
+                            {/* Live Speech Audio Progress Bar (Active when audio is playing for this thikr) */}
+                            {playingThikrId === thikr.id && (
+                              <div className="w-full bg-amber-100 dark:bg-amber-950/60 h-1 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-amber-500 rounded-full transition-all duration-150"
+                                  style={{ width: `${audioProgressPercent}%` }}
+                                />
+                              </div>
+                            )}
+                          </div>
 
                           {/* Fadl / Virtue Box */}
                           {thikr.fadl && (
